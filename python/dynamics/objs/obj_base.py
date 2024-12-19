@@ -51,6 +51,10 @@ class ObjBase(ABC):
     def loc(self) -> np.ndarray:
         return self._cur_loc
 
+    @property
+    def vel(self) -> np.ndarray:
+        return self._cur_vel
+
     def _update_loc_and_vel(
         self, forces: Forces, t_start: float, t_end: float, t_step: float
     ) -> None:

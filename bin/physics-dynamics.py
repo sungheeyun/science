@@ -14,14 +14,14 @@ from dynamics.force.const_force import ConstForce
 if __name__ == "__main__":
 
     # objects
-    rigid_ball: RigidBall = RigidBall(1.0, (2, 0), (-1, 0))
+    rigid_ball: RigidBall = RigidBall(1.0, (1, 0), (-2, 0))
 
     # force sources
     spring: LeftHorizontalSpring = LeftHorizontalSpring(
         3.0,
         0.0,
     )
-    gravity: ConstForce = ConstForce((-1, 0))
+    gravity: ConstForce = ConstForce((-1.5, 0))
     forces: Forces = Forces(spring, gravity)
 
     # Set up the figure and axis
@@ -34,8 +34,8 @@ if __name__ == "__main__":
 
     # Set title and labels
     ax.set_title("one-dimensional rigid ball motion", pad=10)
-    ax.set_xlabel("Position (m)")
-    ax.set_ylabel("y")
+    ax.set_xlabel("x (m)")
+    ax.set_ylabel("potential energy")
 
     ax.add_patch(rigid_ball.obj)
     # ax.add_patch(ball)
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     ax.axhline(y=0, color="black", linestyle="-", alpha=0.3)
 
     # Add time display
-    time_text = ax.text(0.02, 0.85, "", transform=ax.transAxes)
+    info_text = ax.text(0.02, 0.85, "", transform=ax.transAxes)
 
     # draw potential energy
     xp_1d: np.ndarray = np.linspace(-5, 5, 100)
@@ -69,26 +69,26 @@ if __name__ == "__main__":
     def init():
         """Initialize animation"""
         # ball.center = (0, 0)
-        time_text.set_text("")
+        info_text.set_text("")
 
         # return ball, time_text
-        return rigid_ball.obj, time_text
+        return rigid_ball.obj, info_text
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.050  # Convert frame number to time (seconds)
+        t = frame * 0.010  # Convert frame number to time (seconds)
 
         rigid_ball.update(t, forces)
 
         # Update time display
-        time_text.set_text(f"time: {t:.1f} sec")
+        info_text.set_text(f"{rigid_ball.loc[0]:.2f} m, {rigid_ball.vel[0]:.3f} m/s @ {t:.3f} sec")
 
         # return time_text, ball
-        return rigid_ball.obj, time_text
+        return rigid_ball.obj, info_text
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=100000, interval=50, blit=True, repeat=False
+        fig, animate, init_func=init, frames=100000, interval=10, blit=True, repeat=False
     )
 
     plt.show()
