@@ -37,6 +37,7 @@ class ObjBase(ABC):
         self._cur_time = next_time
 
         self._update_obj()
+        forces.update_obj(next_time, self._cur_loc)
 
     @property
     @abstractmethod
