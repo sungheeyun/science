@@ -16,6 +16,3 @@ class ForceBase(ABC):
     @abstractmethod
     def x_potential_energy(self, x_1d: np.ndarray) -> np.ndarray:
         pass
-
-    # @abstractmethod
-    # def draw(self, ax: Axis) -> None:
