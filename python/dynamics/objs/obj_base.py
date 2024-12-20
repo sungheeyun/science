@@ -3,12 +3,11 @@ base class for all objects in dynamics package
 """
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 import numpy as np
 import numpy.linalg as la
 from matplotlib.patches import Patch
-
-from dynamics.force.forces import Forces
 
 
 class ObjBase(ABC):
@@ -27,7 +26,7 @@ class ObjBase(ABC):
         )
         self._cur_time: float = 0.0
 
-    def update(self, next_time: float, forces: Forces) -> None:
+    def update(self, next_time: float, forces: Any) -> None:
         assert next_time >= self._cur_time, (next_time, self._cur_time)
         if next_time == self._cur_time:
             return
@@ -56,19 +55,13 @@ class ObjBase(ABC):
     def vel(self) -> np.ndarray:
         return self._cur_vel
 
-    def _update_loc_and_vel(
-        self, forces: Forces, t_start: float, t_end: float, t_step: float
-    ) -> None:
+    def _update_loc_and_vel(self, forces: Any, t_start: float, t_end: float, t_step: float) -> None:
         t_stamps: np.ndarray = np.hstack((np.arange(t_start, t_end, t_step), t_end))
 
         for idx, t_1 in enumerate(t_stamps[:-1]):
             t_2: float = t_stamps[idx + 1]
 
             next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
-            self._cur_vel += (
-                (t_2 - t_1)
-                * forces.force((t_1 + t_2) / 2.0, (self._cur_loc + next_loc) / 2.0, self._cur_vel)
-                / self.mass
-            )
+            self._cur_vel += (t_2 - t_1) * forces.force((t_1 + t_2) / 2.0, self) / self.mass
 
             self._cur_loc = next_loc

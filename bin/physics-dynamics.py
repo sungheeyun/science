@@ -4,7 +4,7 @@ simulate dynamics in physics
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter
+from matplotlib.animation import FuncAnimation, PillowWriter  # noqa:F401
 
 from dynamics.force.forces import Forces
 from dynamics.objs.rigid_ball import RigidBall
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         # ball.center = (0, 0)
         info_text.set_text("")
 
-        return forces.objs + [rigid_ball.obj, info_text]
+        return list(forces.objs) + [rigid_ball.obj, info_text]
 
     def animate(frame):
         """Animation function"""
@@ -69,11 +69,11 @@ if __name__ == "__main__":
         rigid_ball.update(t, forces)
 
         # Update time display
-        info_text.set_text(
-            f"{frame} - x: {rigid_ball.loc[0]:.2f} m, v_x: {rigid_ball.vel[0]:.3f} m/s @ {t:.3f} sec"
-        )
+        x_loc: float = float(rigid_ball.loc[0])
+        v_x_vel: float = float(rigid_ball.vel[0])
+        info_text.set_text(f"{frame} - x: {x_loc:.2f} m, v_x: {v_x_vel:.3f} m/s @ {t:.3f} sec")
 
-        return forces.objs + [rigid_ball.obj, info_text]
+        return list(forces.objs) + [rigid_ball.obj, info_text]
 
     # Create animation
     anim = FuncAnimation(

@@ -2,13 +2,14 @@
 non-sticky left horizontal spring
 """
 
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 
 from dynamics.force.force_base import ForceBase
+from dynamics.objs.obj_base import ObjBase
 
 
 class NonStickyLeftHorizontalSpring(ForceBase):
@@ -33,18 +34,18 @@ class NonStickyLeftHorizontalSpring(ForceBase):
 
         self._line2d: Line2D = self._create_obj()
 
-    def _create_obj(self) -> Artist:
+    def _create_obj(self) -> Line2D:
         return Line2D(
             xdata=self._equilibrium_point - np.linspace(self._x_stretch, 0.0, self._t_1d_p.size),
             ydata=self._amplitude * np.sin(self._t_1d_p),
             **self._obj_kwargs
         )
 
-    def _force(self, time: float, loc: np.ndarray, vel: np.ndarray) -> np.ndarray:
+    def _force(self, time: float, obj: ObjBase) -> np.ndarray:
         force_x: float = (
             0.0
-            if loc[0] >= self._equilibrium_point
-            else self._spring_constant * (self._equilibrium_point - loc[0])
+            if obj.loc[0] >= self._equilibrium_point
+            else self._spring_constant * (self._equilibrium_point - obj.loc[0])
         )
         return np.array([force_x, 0.0])
 
@@ -57,7 +58,7 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         )
 
     @property
-    def objs(self) -> list[Artist]:
+    def objs(self) -> Sequence[Artist]:
         return [self._line2d]
 
     def update_obj(self, time: float, loc: np.ndarray) -> None:

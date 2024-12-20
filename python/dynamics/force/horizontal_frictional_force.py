@@ -2,11 +2,12 @@
 frictional force
 """
 
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 from matplotlib.artist import Artist
 
+from dynamics.objs.obj_base import ObjBase
 from dynamics.force.force_base import ForceBase
 from matplotlib.lines import Line2D
 
@@ -31,7 +32,7 @@ class HorizontalFrictionalForce(ForceBase):
         )
         self._line2d_list: list[Line2D] = [
             Line2D(
-                xdata=x_1d_p[idx : idx + 2],
+                xdata=x_1d_p[idx : idx + 2],  # noqa: E203
                 ydata=[-self._height, 0.0],
                 linewidth=1.5,
                 color="black",
@@ -41,12 +42,14 @@ class HorizontalFrictionalForce(ForceBase):
             for idx in range(x_1d_p.size - 1)
         ]
 
-    def _force(self, time: float, loc: np.ndarray, vel: np.ndarray) -> np.ndarray:
-        return np.array([0.0 if loc[0] >= self._boundary else (-self._coef_friction * vel[0]), 0.0])
+    def _force(self, time: float, obj: ObjBase) -> np.ndarray:
+        return np.array(
+            [0.0 if obj.loc[0] >= self._boundary else (-self._coef_friction * obj.vel[0]), 0.0]
+        )
 
     def x_potential_energy(self, x_1d: np.ndarray) -> np.ndarray:
         return np.zeros_like(x_1d)
 
     @property
-    def objs(self) -> list[Artist]:
+    def objs(self) -> Sequence[Artist]:
         return self._line2d_list
