@@ -5,7 +5,7 @@ constant force
 import numpy as np
 
 from dynamics.force.one_obj_force_base import OneObjForceBase
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 
 
 class ConstOneObjForce(OneObjForceBase):

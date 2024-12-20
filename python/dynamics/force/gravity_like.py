@@ -5,7 +5,7 @@ to the mass of an object
 
 import numpy as np
 
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 from dynamics.force.one_obj_force_base import OneObjForceBase
 
 

@@ -9,7 +9,7 @@ from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 
 from dynamics.force.one_obj_force_base import OneObjForceBase
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 
 
 class NonStickyLeftHorizontalSpring(OneObjForceBase):

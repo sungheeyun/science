@@ -9,7 +9,7 @@ from typing import Sequence
 import numpy as np
 from matplotlib.artist import Artist
 
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 
 
 class OneObjForceBase(ABC):

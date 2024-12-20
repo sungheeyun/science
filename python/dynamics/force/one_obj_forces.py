@@ -8,11 +8,11 @@ from typing import Sequence
 import numpy as np
 from matplotlib.artist import Artist
 
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 from dynamics.force.one_obj_force_base import OneObjForceBase
 
 
-class Forces(OneObjForceBase):
+class OneObjForces(OneObjForceBase):
     def __init__(self, *forces: OneObjForceBase):
         self._forces: tuple[OneObjForceBase, ...] = forces
 

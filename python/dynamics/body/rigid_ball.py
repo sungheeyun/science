@@ -7,7 +7,7 @@ from typing import Any
 import numpy as np
 from matplotlib.patches import Circle, Patch
 
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 
 
 class RigidBall(BodyBase):

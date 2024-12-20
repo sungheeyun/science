@@ -7,7 +7,7 @@ from typing import Any, Sequence
 import numpy as np
 from matplotlib.artist import Artist
 
-from dynamics.objs.body_base import BodyBase
+from dynamics.body.body_base import BodyBase
 from dynamics.force.one_obj_force_base import OneObjForceBase
 from matplotlib.lines import Line2D
 
