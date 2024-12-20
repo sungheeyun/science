@@ -9,19 +9,19 @@ from typing import Sequence
 import numpy as np
 from matplotlib.artist import Artist
 
-from dynamics.objs.obj_base import ObjBase
+from dynamics.objs.body_base import BodyBase
 
 
-class ForceBase(ABC):
-    def force(self, time: float, obj: ObjBase) -> np.ndarray:
-        return self._force(time, obj)
+class OneObjForceBase(ABC):
+    def one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
+        return self._one_obj_force(time, obj)
 
     @abstractmethod
-    def _force(self, time: float, obj: ObjBase) -> np.ndarray:
+    def _one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
         pass
 
     @abstractmethod
-    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
+    def x_potential_energy(self, obj: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         pass
 
     @property

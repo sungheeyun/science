@@ -7,12 +7,12 @@ from typing import Any, Sequence
 import numpy as np
 from matplotlib.artist import Artist
 
-from dynamics.objs.obj_base import ObjBase
-from dynamics.force.force_base import ForceBase
+from dynamics.objs.body_base import BodyBase
+from dynamics.force.one_obj_force_base import OneObjForceBase
 from matplotlib.lines import Line2D
 
 
-class HorizontalFrictionalForce(ForceBase):
+class HorizontalFrictionalOneObjForce(OneObjForceBase):
     def __init__(
         self,
         coef_friction: float,
@@ -42,12 +42,12 @@ class HorizontalFrictionalForce(ForceBase):
             for idx in range(x_1d_p.size - 1)
         ]
 
-    def _force(self, time: float, obj: ObjBase) -> np.ndarray:
+    def _one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
         return np.array(
             [0.0 if obj.loc[0] >= self._boundary else (-self._coef_friction * obj.vel[0]), 0.0]
         )
 
-    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
+    def x_potential_energy(self, obj: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return np.zeros_like(x_1d)
 
     @property

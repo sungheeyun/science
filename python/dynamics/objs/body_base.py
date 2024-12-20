@@ -10,7 +10,7 @@ import numpy.linalg as la
 from matplotlib.patches import Patch
 
 
-class ObjBase(ABC):
+class BodyBase(ABC):
     def __init__(
         self,
         mass: float,
@@ -31,7 +31,10 @@ class ObjBase(ABC):
         if next_time == self._cur_time:
             return
 
-        t_step: float = min(1e-4, 1e-4 / la.norm(self._cur_vel))  # type: ignore
+        t_step: float = min(
+            1e-4,
+            1e-4 / (la.norm(self._cur_vel) if la.norm(self._cur_vel) > 0.0 else 1.0),  # type:ignore
+        )
         self._update_loc_and_vel(forces, self._cur_time, next_time, t_step)
         self._cur_time = next_time
 
@@ -62,6 +65,6 @@ class ObjBase(ABC):
             t_2: float = t_stamps[idx + 1]
 
             next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
-            self._cur_vel += (t_2 - t_1) * forces.force((t_1 + t_2) / 2.0, self) / self.mass
+            self._cur_vel += (t_2 - t_1) * forces.one_obj_force((t_1 + t_2) / 2.0, self) / self.mass
 
             self._cur_loc = next_loc

@@ -8,11 +8,11 @@ import numpy as np
 from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 
-from dynamics.force.force_base import ForceBase
-from dynamics.objs.obj_base import ObjBase
+from dynamics.force.one_obj_force_base import OneObjForceBase
+from dynamics.objs.body_base import BodyBase
 
 
-class NonStickyLeftHorizontalSpring(ForceBase):
+class NonStickyLeftHorizontalSpring(OneObjForceBase):
     def __init__(
         self,
         spring_constant: float,
@@ -31,17 +31,18 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         self._amplitude: float = 0.1
         self._x_stretch: float = 5.0
         self._t_1d_p: np.ndarray = np.linspace(0.0, self._num_coils * 2.0 * np.pi, self._num_pnt_p)
+        self._ydata: np.ndarray = self._amplitude * np.sin(self._t_1d_p)
 
         self._line2d: Line2D = self._create_obj()
 
     def _create_obj(self) -> Line2D:
         return Line2D(
             xdata=self._equilibrium_point - np.linspace(self._x_stretch, 0.0, self._t_1d_p.size),
-            ydata=self._amplitude * np.sin(self._t_1d_p),
-            **self._obj_kwargs
+            ydata=self._ydata,
+            **self._obj_kwargs,
         )
 
-    def _force(self, time: float, obj: ObjBase) -> np.ndarray:
+    def _one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
         force_x: float = (
             0.0
             if obj.loc[0] >= self._equilibrium_point
@@ -49,7 +50,7 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         )
         return np.array([force_x, 0.0])
 
-    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
+    def x_potential_energy(self, obj: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return (
             0.5
             * self._spring_constant
