@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # Set title and labels
     ax.set_title("one-dimensional rigid ball motion", pad=10)
     ax.set_xlabel("x (m)")
-    ax.set_ylabel("potential energy")
+    ax.set_ylabel("potential energy (J)")
 
     # ax.add_patch(ball)
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.100  # Convert frame number to time (seconds)
+        t = frame * 0.010  # Convert frame number to time (seconds)
 
         rigid_ball.update(t, forces)
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=200, interval=10, blit=True, repeat=False
+        fig, animate, init_func=init, frames=5000, interval=2, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)
