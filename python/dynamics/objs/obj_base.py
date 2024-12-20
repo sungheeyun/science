@@ -67,7 +67,7 @@ class ObjBase(ABC):
             next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
             self._cur_vel += (
                 (t_2 - t_1)
-                * forces.force((t_1 + t_2) / 2.0, (self._cur_loc + next_loc) / 2.0)
+                * forces.force((t_1 + t_2) / 2.0, (self._cur_loc + next_loc) / 2.0, self._cur_vel)
                 / self.mass
             )
 

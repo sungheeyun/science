@@ -1,5 +1,5 @@
 """
-spring
+non-sticky left horizontal spring
 """
 
 from typing import Any
@@ -37,12 +37,10 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         return Line2D(
             xdata=self._equilibrium_point - np.linspace(self._x_stretch, 0.0, self._t_1d_p.size),
             ydata=self._amplitude * np.sin(self._t_1d_p),
-            linestyle="-",
-            color="blue",
-            linewidth=1.5,
+            **self._obj_kwargs
         )
 
-    def _force(self, time: float, loc: np.ndarray) -> np.ndarray:
+    def _force(self, time: float, loc: np.ndarray, vel: np.ndarray) -> np.ndarray:
         force_x: float = (
             0.0
             if loc[0] >= self._equilibrium_point
@@ -59,8 +57,8 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         )
 
     @property
-    def obj(self) -> Artist | None:
-        return self._line2d
+    def objs(self) -> list[Artist]:
+        return [self._line2d]
 
     def update_obj(self, time: float, loc: np.ndarray) -> None:
         self._line2d.set_xdata(

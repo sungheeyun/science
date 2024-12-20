@@ -10,11 +10,11 @@ from matplotlib.artist import Artist
 
 
 class ForceBase(ABC):
-    def force(self, time: float, loc: np.ndarray) -> np.ndarray:
-        return self._force(time, loc)
+    def force(self, time: float, loc: np.ndarray, vel: np.ndarray) -> np.ndarray:
+        return self._force(time, loc, vel)
 
     @abstractmethod
-    def _force(self, time: float, loc: np.ndarray) -> np.ndarray:
+    def _force(self, time: float, loc: np.ndarray, vel: np.ndarray) -> np.ndarray:
         pass
 
     @abstractmethod
@@ -22,8 +22,8 @@ class ForceBase(ABC):
         pass
 
     @property
-    def obj(self) -> Artist | None:
-        return None
+    def objs(self) -> list[Artist]:
+        return list()
 
     def update_obj(self, time: float, loc: np.ndarray) -> None:
         pass

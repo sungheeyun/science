@@ -4,12 +4,13 @@ simulate dynamics in physics
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 
 from dynamics.force.forces import Forces
 from dynamics.objs.rigid_ball import RigidBall
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.force.const_force import ConstForce
+from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
 
 if __name__ == "__main__":
 
@@ -18,21 +19,22 @@ if __name__ == "__main__":
 
     # force sources
     spring: NonStickyLeftHorizontalSpring = NonStickyLeftHorizontalSpring(
-        3.0,
+        5.0,
         0.0,
     )
     gravity: ConstForce = ConstForce((-3.0, 0))
-    forces: Forces = Forces(spring, gravity)
+    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.3, 0)
+
+    forces: Forces = Forces(spring, gravity, friction)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    ax.add_artist(spring.obj)
+    [ax.add_artist(obj) for obj in forces.objs]
     ax.add_patch(rigid_ball.obj)
 
-    ax.set_xlim(-3, 3)
-    ax.set_xticks([-4, -3, -2, -1, 0, 1, 2, 3, 4])
-    ax.set_ylim(-1, 1)
+    ax.set_xlim(-3.0, 3.0)
+    ax.set_ylim(-1.0, 1.0)
     ax.set_aspect("equal")
     ax.grid(axis="x")
 
@@ -62,18 +64,23 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.100  # Convert frame number to time (seconds)
 
         rigid_ball.update(t, forces)
 
         # Update time display
-        info_text.set_text(f"{rigid_ball.loc[0]:.2f} m, {rigid_ball.vel[0]:.3f} m/s @ {t:.3f} sec")
+        info_text.set_text(
+            f"{frame} - x: {rigid_ball.loc[0]:.2f} m, v_x: {rigid_ball.vel[0]:.3f} m/s @ {t:.3f} sec"
+        )
 
         return forces.objs + [rigid_ball.obj, info_text]
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=100000, interval=5, blit=True, repeat=False
+        fig, animate, init_func=init, frames=200, interval=10, blit=True, repeat=False
     )
+
+    # writer = PillowWriter(fps=20)
+    # anim.save("ball_motion.gif", writer=writer)
 
     plt.show()
