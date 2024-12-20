@@ -21,7 +21,7 @@ class ForceBase(ABC):
         pass
 
     @abstractmethod
-    def x_potential_energy(self, x_1d: np.ndarray) -> np.ndarray:
+    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
         pass
 
     @property

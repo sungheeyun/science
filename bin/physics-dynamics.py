@@ -9,20 +9,20 @@ from matplotlib.animation import FuncAnimation, PillowWriter  # noqa:F401
 from dynamics.force.forces import Forces
 from dynamics.objs.rigid_ball import RigidBall
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
-from dynamics.force.const_force import ConstForce
+from dynamics.force.gravity_like import GravityLike
 from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
 
 if __name__ == "__main__":
 
     # objects
-    rigid_ball: RigidBall = RigidBall(1.0, (1, 0), (-2, 0))
+    rigid_ball: RigidBall = RigidBall(2.0, (1, 0), (-2, 0))
 
     # force sources
     spring: NonStickyLeftHorizontalSpring = NonStickyLeftHorizontalSpring(
         5.0,
         0.0,
     )
-    gravity: ConstForce = ConstForce((-3.0, 0))
+    gravity: GravityLike = GravityLike((-3.0, 0))
     friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.3, 0)
 
     forces: Forces = Forces(spring, gravity, friction)
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     # draw potential energy
     xp_1d: np.ndarray = np.linspace(-5, 5, 100)
-    ax.plot(xp_1d, forces.x_potential_energy(xp_1d) * 0.25, "k")
+    ax.plot(xp_1d, forces.x_potential_energy(rigid_ball, xp_1d) * 0.25, "k")
 
     def init():
         """Initialize animation"""
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.050  # Convert frame number to time (seconds)
 
         rigid_ball.update(t, forces)
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=5000, interval=2, blit=True, repeat=False
+        fig, animate, init_func=init, frames=5000, interval=1, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

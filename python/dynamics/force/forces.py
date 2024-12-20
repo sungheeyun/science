@@ -19,8 +19,10 @@ class Forces(ForceBase):
     def _force(self, time: float, obj: ObjBase) -> np.ndarray:
         return np.vstack([force.force(time, obj) for force in self._forces]).sum(axis=0)
 
-    def x_potential_energy(self, x_1d: np.ndarray) -> np.ndarray:
-        return np.vstack([force.x_potential_energy(x_1d) for force in self._forces]).sum(axis=0)
+    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
+        return np.vstack([force.x_potential_energy(obj, x_1d) for force in self._forces]).sum(
+            axis=0
+        )
 
     @property
     def objs(self) -> Sequence[Artist]:

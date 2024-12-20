@@ -49,7 +49,7 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         )
         return np.array([force_x, 0.0])
 
-    def x_potential_energy(self, x_1d: np.ndarray) -> np.ndarray:
+    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
         return (
             0.5
             * self._spring_constant

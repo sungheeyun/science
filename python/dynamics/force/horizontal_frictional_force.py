@@ -47,7 +47,7 @@ class HorizontalFrictionalForce(ForceBase):
             [0.0 if obj.loc[0] >= self._boundary else (-self._coef_friction * obj.vel[0]), 0.0]
         )
 
-    def x_potential_energy(self, x_1d: np.ndarray) -> np.ndarray:
+    def x_potential_energy(self, obj: ObjBase, x_1d: np.ndarray) -> np.ndarray:
         return np.zeros_like(x_1d)
 
     @property
