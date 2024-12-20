@@ -6,10 +6,10 @@ to the mass of an object
 import numpy as np
 
 from dynamics.body.body_base import BodyBase
-from dynamics.force.one_obj_force_base import OneObjForceBase
+from dynamics.force.one_body_force_base import OneBodyForceBase
 
 
-class GravityLike(OneObjForceBase):
+class GravityLike(OneBodyForceBase):
     def __init__(self, acceleration: np.ndarray | list[float] | tuple[float, ...]) -> None:
         self._acceleration: np.ndarray = np.array(acceleration, float)
 

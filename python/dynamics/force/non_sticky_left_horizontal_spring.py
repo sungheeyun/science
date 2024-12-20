@@ -8,11 +8,11 @@ import numpy as np
 from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 
-from dynamics.force.one_obj_force_base import OneObjForceBase
+from dynamics.force.one_body_force_base import OneBodyForceBase
 from dynamics.body.body_base import BodyBase
 
 
-class NonStickyLeftHorizontalSpring(OneObjForceBase):
+class NonStickyLeftHorizontalSpring(OneBodyForceBase):
     def __init__(
         self,
         spring_constant: float,

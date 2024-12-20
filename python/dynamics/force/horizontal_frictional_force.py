@@ -8,11 +8,11 @@ import numpy as np
 from matplotlib.artist import Artist
 
 from dynamics.body.body_base import BodyBase
-from dynamics.force.one_obj_force_base import OneObjForceBase
+from dynamics.force.one_body_force_base import OneBodyForceBase
 from matplotlib.lines import Line2D
 
 
-class HorizontalFrictionalOneObjForce(OneObjForceBase):
+class HorizontalFrictionalForce(OneBodyForceBase):
     def __init__(
         self,
         coef_friction: float,

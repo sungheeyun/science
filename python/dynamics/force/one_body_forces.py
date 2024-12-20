@@ -9,12 +9,12 @@ import numpy as np
 from matplotlib.artist import Artist
 
 from dynamics.body.body_base import BodyBase
-from dynamics.force.one_obj_force_base import OneObjForceBase
+from dynamics.force.one_body_force_base import OneBodyForceBase
 
 
-class OneObjForces(OneObjForceBase):
-    def __init__(self, *forces: OneObjForceBase):
-        self._forces: tuple[OneObjForceBase, ...] = forces
+class OneBodyForces(OneBodyForceBase):
+    def __init__(self, *forces: OneBodyForceBase):
+        self._forces: tuple[OneBodyForceBase, ...] = forces
 
     def _one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
         return np.vstack([force.one_obj_force(time, obj) for force in self._forces]).sum(axis=0)

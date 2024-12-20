@@ -4,11 +4,11 @@ constant force
 
 import numpy as np
 
-from dynamics.force.one_obj_force_base import OneObjForceBase
+from dynamics.force.one_body_force_base import OneBodyForceBase
 from dynamics.body.body_base import BodyBase
 
 
-class ConstOneObjForce(OneObjForceBase):
+class ConstOneBodyForce(OneBodyForceBase):
     def __init__(self, force: np.ndarray | list[float] | tuple[float, ...]) -> None:
         self._force_vec: np.ndarray = np.array(force, float)
 

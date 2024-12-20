@@ -6,11 +6,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa:F401
 
-from dynamics.force.one_obj_forces import OneObjForces
+from dynamics.force.one_body_forces import OneBodyForces
 from dynamics.body.rigid_ball import RigidBall
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.force.gravity_like import GravityLike
-from dynamics.force.horizontal_frictional_force import HorizontalFrictionalOneObjForce
+from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
 
 if __name__ == "__main__":
 
@@ -23,9 +23,9 @@ if __name__ == "__main__":
         0.0,
     )
     gravity: GravityLike = GravityLike((-3.0, 0))
-    friction: HorizontalFrictionalOneObjForce = HorizontalFrictionalOneObjForce(0.0, 0)
+    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.0, 0)
 
-    forces: OneObjForces = OneObjForces(spring, gravity, friction)
+    forces: OneBodyForces = OneBodyForces(spring, gravity, friction)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))

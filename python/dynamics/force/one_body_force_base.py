@@ -12,7 +12,7 @@ from matplotlib.artist import Artist
 from dynamics.body.body_base import BodyBase
 
 
-class OneObjForceBase(ABC):
+class OneBodyForceBase(ABC):
     def one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
         return self._one_obj_force(time, obj)
 
