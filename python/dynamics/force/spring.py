@@ -17,7 +17,6 @@ from dynamics.body.vertical_wall_1d import VerticalWall1D
 
 
 class Spring(ForceBase):
-    _UNIT_SPRINT_CONSTANT_LINE_WIDTH: float = 1.0
 
     def __init__(
         self,

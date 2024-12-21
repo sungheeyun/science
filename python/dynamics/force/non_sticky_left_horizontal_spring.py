@@ -2,6 +2,7 @@
 non-sticky left horizontal spring
 """
 
+import math
 from typing import Any, Sequence
 
 import numpy as np
@@ -23,7 +24,12 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         assert spring_constant > 0.0, spring_constant
         self._spring_constant: float = spring_constant
         self._equilibrium_point: float = equilibrium_point
-        self._obj_kwargs: dict[str, Any] = self._DEFAULT_SPRING_OBJ_KWARGS.copy()
+        self._obj_kwargs: dict[str, Any] = dict(
+            linestyle="-",
+            color="blue",
+            linewidth=self._UNIT_SPRINT_CONSTANT_LINE_WIDTH
+            * math.pow(self._spring_constant, 1.0 / 3.0),
+        )
         self._cur_x: float = self._equilibrium_point
         if obj_kwargs is not None:
             self._obj_kwargs.update(**obj_kwargs)
