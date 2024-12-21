@@ -38,30 +38,35 @@ class FrictionalForce2D(ForceBase):
         xy_1d_p: np.ndarray = np.linspace(
             0.0, self._FRICTIONAL_FORCE_STRETCH, int(10 * self._FRICTIONAL_FORCE_STRETCH)
         )
-        self._line2d_list: list[Line2D] = [
-            Line2D(
-                xdata=[
-                    self._upper_right_pnt[0] - self._FRICTIONAL_FORCE_STRETCH,
-                    self._upper_right_pnt[0] - xy,
-                ],
-                ydata=[
-                    self._upper_right_pnt[1] - xy_1d_p[xy_1d_p.size - idx - 1],
-                    self._upper_right_pnt[1],
-                ],
-                **plt_kwargs
-            )
-            for idx, xy in enumerate(xy_1d_p)
-        ] + [
-            Line2D(
-                xdata=[self._upper_right_pnt[0] - xy, self._upper_right_pnt[0]],
-                ydata=[
-                    self._upper_right_pnt[1] - self._FRICTIONAL_FORCE_STRETCH,
-                    self._upper_right_pnt[1] - xy_1d_p[xy_1d_p.size - idx - 1],
-                ],
-                **plt_kwargs
-            )
-            for idx, xy in enumerate(xy_1d_p[:-1])
-        ]
+        self._line2d_list: list[Line2D] = (
+            list()
+            if self._coef_friction == 0.0
+            else [
+                Line2D(
+                    xdata=[
+                        self._upper_right_pnt[0] - self._FRICTIONAL_FORCE_STRETCH,
+                        self._upper_right_pnt[0] - xy,
+                    ],
+                    ydata=[
+                        self._upper_right_pnt[1] - xy_1d_p[xy_1d_p.size - idx - 1],
+                        self._upper_right_pnt[1],
+                    ],
+                    **plt_kwargs
+                )
+                for idx, xy in enumerate(xy_1d_p)
+            ]
+            + [
+                Line2D(
+                    xdata=[self._upper_right_pnt[0] - xy, self._upper_right_pnt[0]],
+                    ydata=[
+                        self._upper_right_pnt[1] - self._FRICTIONAL_FORCE_STRETCH,
+                        self._upper_right_pnt[1] - xy_1d_p[xy_1d_p.size - idx - 1],
+                    ],
+                    **plt_kwargs
+                )
+                for idx, xy in enumerate(xy_1d_p[:-1])
+            ]
+        )
 
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         return (

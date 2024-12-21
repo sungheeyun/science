@@ -40,14 +40,18 @@ class HorizontalFrictionalForce1D(ForceBase):
             self._boundary,
             int(10 * self._FRICTIONAL_FORCE_STRETCH),
         )
-        self._line2d_list: list[Line2D] = [
-            Line2D(
-                xdata=x_1d_p[idx : idx + 2],  # noqa:E203
-                ydata=[-self._FRICTIONAL_FORCE_HEIGHT, 0.0],
-                **plt_kwargs  # noqa: E203
-            )
-            for idx in range(x_1d_p.size - 1)
-        ]
+        self._line2d_list: list[Line2D] = (
+            list()
+            if self._coef_friction == 0.0
+            else [
+                Line2D(
+                    xdata=x_1d_p[idx : idx + 2],  # noqa:E203
+                    ydata=[-self._FRICTIONAL_FORCE_HEIGHT, 0.0],
+                    **plt_kwargs  # noqa: E203
+                )
+                for idx in range(x_1d_p.size - 1)
+            ]
+        )
 
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         return np.array(

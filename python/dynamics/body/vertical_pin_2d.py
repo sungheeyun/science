@@ -21,7 +21,7 @@ class VerticalPin2D(BodyBase):
         loc: np.ndarray | list[float] | tuple[float, ...],
         plt_kwargs: dict[str, Any] | None = None,
     ) -> None:
-        super().__init__(np.inf, loc, None)
+        super().__init__(0.0, loc, None)
         circ_kwargs: dict[str, Any] = dict(
             radius=self._PIN_RADIUS, color=self._PIN_COLOR, fill=True
         )

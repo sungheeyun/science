@@ -34,12 +34,12 @@ if __name__ == "__main__":
     spring_2: Spring = Spring(10.0, 3.0, ball_1, ball_2)
     spring_3: Spring = Spring(5.0, 1.0, ball_2, pin_2)
 
-    friction: FrictionalForce2D = FrictionalForce2D(1, (3.0, 1.5))
-    gravity: GravityLike = GravityLike([-1.0, 0])
+    friction: FrictionalForce2D = FrictionalForce2D(1.0, (3.0, 1.5))
+    gravity: GravityLike = GravityLike([-5.0, 10.0])
 
     # forces: Forces = Forces(spring, friction, gravity)
     # forces: Forces = Forces(spring_1, spring_2, friction)
-    forces: Forces = Forces(spring_1, spring_2, spring_3, friction)
+    forces: Forces = Forces(spring_1, spring_2, spring_3, friction, gravity)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(10, 10))
@@ -81,13 +81,14 @@ if __name__ == "__main__":
         forces.update_objs()
 
         ke: float = bodies.kinetic_energy
-        pe: float = bodies.potential_energy(forces) + forces.potential_energy
+        bpe: float = bodies.potential_energy(forces)
+        fpe: float = forces.potential_energy
 
         info_text.set_text(
             f"{t:.2f} sec. - frame: {frame}"
             f"\n xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
             f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
-            f"\n energy: {ke+pe:.2f} (ke: {ke:.2f} +  pe: {pe:.2f})"
+            f"\n energy: {ke+bpe+fpe:.2f} (ke: {ke:.2f} +  bpe: {bpe:.2f} + fpe: {fpe:.2f})"
         )
 
         return objs

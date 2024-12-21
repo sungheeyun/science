@@ -4,7 +4,6 @@ fixed vertical wall
 
 from typing import Sequence, Any
 
-import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.patches import Polygon
 from matplotlib.artist import Artist
@@ -18,7 +17,7 @@ class VerticalWall1D(BodyBase):
     _WALL_COLOR: str = "red"
 
     def __init__(self, loc_x: float, plt_kwargs: dict[str, Any] | None = None) -> None:
-        super().__init__(np.inf, (loc_x, 0.0), None)
+        super().__init__(0.0, (loc_x, 0.0), None)
         _plt_kwargs: dict[str, Any] = dict(fill=True, color=self._WALL_COLOR)
         if plt_kwargs is not None:
             _plt_kwargs.update(**plt_kwargs)
