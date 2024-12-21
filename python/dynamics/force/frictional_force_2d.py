@@ -27,7 +27,7 @@ class FrictionalForce2D(ForceBase):
             linewidth=1.5,
             color="black",
             linestyle="-",
-            alpha=0.5,
+            alpha=0.1,
         )
         if obj_kwargs is not None:
             plt_kwargs.update(**obj_kwargs)
