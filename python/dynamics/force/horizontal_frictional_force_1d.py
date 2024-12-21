@@ -14,8 +14,6 @@ from matplotlib.lines import Line2D
 
 
 class HorizontalFrictionalForce1D(ForceBase):
-    _FRICTIONAL_FORCE_STRETCH: float = 50.0
-    _NUM_STRIPES: int = int(10 * _FRICTIONAL_FORCE_STRETCH)
     _FRICTIONAL_FORCE_HEIGHT: float = 0.1
 
     def __init__(
@@ -38,7 +36,9 @@ class HorizontalFrictionalForce1D(ForceBase):
         self._boundary: float = boundary
 
         x_1d_p: np.ndarray = np.linspace(
-            self._boundary - self._FRICTIONAL_FORCE_STRETCH, self._boundary, self._NUM_STRIPES
+            self._boundary - self._FRICTIONAL_FORCE_STRETCH,
+            self._boundary,
+            int(10 * self._FRICTIONAL_FORCE_STRETCH),
         )
         self._line2d_list: list[Line2D] = [
             Line2D(

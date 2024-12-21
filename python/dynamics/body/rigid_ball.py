@@ -24,10 +24,10 @@ class RigidBall(BodyBase):
         circ_kwargs: dict[str, Any] = dict(radius=0.1, color="blue", fill=True)
         circ_kwargs.update(**kwargs)
 
-        self._obj = Circle((self._cur_loc[0], self._cur_loc[1]), **circ_kwargs)
+        self._obj = Circle((self.loc[0], self.loc[1]), **circ_kwargs)
 
     def update_obj(self) -> None:
-        self._obj.center = (self._cur_loc[0], self._cur_loc[1])
+        self._obj.center = (self.loc[0], self.loc[1])
 
     def add_objs(self, ax: Axes) -> None:
         ax.add_patch(self._obj)

@@ -14,6 +14,7 @@ from dynamics.body.body_base import BodyBase
 
 
 class ForceBase(ABC):
+    _FRICTIONAL_FORCE_STRETCH: float = 50.0
     _DEFAULT_SPRING_OBJ_KWARGS: dict[str, Any] = dict(linestyle="-", color="blue", linewidth=1.5)
 
     _NUM_COILS_PER_UNIT_LEN: int = 10

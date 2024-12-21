@@ -24,10 +24,10 @@ class VerticalWall(BodyBase):
             _plt_kwargs.update(**plt_kwargs)
 
         vertices = (
-            (self._cur_loc[0] - self._WALL_WIDTH / 2.0, 0.0),
-            (self._cur_loc[0] - self._WALL_WIDTH / 2.0, self._WALL_HEIGHT),
-            (self._cur_loc[0] + self._WALL_WIDTH / 2.0, self._WALL_HEIGHT),
-            (self._cur_loc[0] + self._WALL_WIDTH / 2.0, 0.0),
+            (self.loc[0] - self._WALL_WIDTH / 2.0, 0.0),
+            (self.loc[0] - self._WALL_WIDTH / 2.0, self._WALL_HEIGHT),
+            (self.loc[0] + self._WALL_WIDTH / 2.0, self._WALL_HEIGHT),
+            (self.loc[0] + self._WALL_WIDTH / 2.0, 0.0),
         )
 
         self._polygon: Polygon = Polygon(vertices, **_plt_kwargs)

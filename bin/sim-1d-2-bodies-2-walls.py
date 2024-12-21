@@ -81,8 +81,8 @@ if __name__ == "__main__":
 
         info_text.set_text(
             f"{t:.2f} sec. - frame: {frame}"
-            f", x_1: {ball_1._cur_loc[0]:.2f}, x_2: {ball_2._cur_loc[0]:.2f}"
-            f", v_x_1: {ball_1._cur_vel[0]:.2f}, v_x_2: {ball_2._cur_vel[0]:.2f}"
+            f", x_1: {ball_1.loc[0]:.2f}, x_2: {ball_2.loc[0]:.2f}"
+            f", v_x_1: {ball_1.vel[0]:.2f}, v_x_2: {ball_2.vel[0]:.2f}"
         )
 
         return objs
