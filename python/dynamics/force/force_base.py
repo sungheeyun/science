@@ -22,6 +22,10 @@ class ForceBase(ABC):
     _NUM_PLT_POINTS: int = 1000
     _SPRING_WIDTH: float = 0.1
 
+    @property
+    def is_frictional_force(self) -> bool:
+        return False
+
     @abstractmethod
     def force(self, time: float, boyd: BodyBase) -> np.ndarray:
         pass

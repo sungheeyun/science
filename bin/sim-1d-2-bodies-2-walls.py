@@ -15,6 +15,7 @@ from dynamics.body.vertical_wall_1d import VerticalWall1D
 from dynamics.force.forces import Forces
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
+from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     spring_1: Spring = Spring(5.0, 1.5, wall_1, ball_1)
     spring_2: Spring = Spring(5.0, 2.5, ball_1, ball_2)
     spring_3: Spring = Spring(5.0, 1.5, ball_2, wall_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.5, 3)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.1, 3)
     # gravity: GravityLike = GravityLike([-1.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction)
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     ax.axhline(y=0, color="black", linestyle="-", alpha=0.3)
 
     # Add time display
-    info_text = ax.text(0.02, 0.90, "", transform=ax.transAxes, va="top")
+    info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
 
     lim_info: dict[str, tuple[float, float]] = dict(
         x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
@@ -80,9 +81,11 @@ if __name__ == "__main__":
         forces.update_objs()
 
         info_text.set_text(
-            f"{t:.2f} sec. - frame: {frame}"
-            f", x_1: {ball_1.loc[0]:.2f}, x_2: {ball_2.loc[0]:.2f}"
-            f", v_x_1: {ball_1.vel[0]:.2f}, v_x_2: {ball_2.vel[0]:.2f}"
+            f"@ {t:.2f} sec. - frame: {frame}"
+            + f", x_1: {ball_1.loc[0]:.2f}, x_2: {ball_2.loc[0]:.2f}"
+            + f", v_x_1: {ball_1.vel[0]:.2f}, v_x_2: {ball_2.vel[0]:.2f}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces))
         )
 
         return objs

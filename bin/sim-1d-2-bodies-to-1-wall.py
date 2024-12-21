@@ -16,6 +16,7 @@ from dynamics.force.forces import Forces
 from dynamics.force.gravity_like import GravityLike
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
+from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
@@ -29,11 +30,11 @@ if __name__ == "__main__":
     # forces
     spring_1: Spring = Spring(10, 1.5, wall, ball_1)
     spring_2: Spring = Spring(10, 2.5, ball_1, ball_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.5, 3)
-    gravity: GravityLike = GravityLike([-1.0, 0])
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1.0, 3)
+    gravity: GravityLike = GravityLike([1.0, 0])
 
     # forces: Forces = Forces(spring, friction, gravity)
-    forces: Forces = Forces(spring_1, spring_2, friction)
+    forces: Forces = Forces(spring_1, spring_2, friction, gravity)
     # forces: Forces = Forces(spring_1, spring_2)
 
     # Set up the figure and axis
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     ax.axhline(y=0, color="black", linestyle="-", alpha=0.3)
 
     # Add time display
-    info_text = ax.text(0.02, 0.90, "", transform=ax.transAxes, va="top")
+    info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
 
     lim_info: dict[str, tuple[float, float]] = dict(
         x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
@@ -81,16 +82,18 @@ if __name__ == "__main__":
         forces.update_objs()
 
         info_text.set_text(
-            f"{t:.2f} sec. - frame: {frame}"
-            f", x_1: {ball_1.loc[0]:.2f}, x_2: {ball_2.loc[0]:.2f}"
-            f", v_x_1: {ball_1.vel[0]:.2f}, v_x_2: {ball_2.vel[0]:.2f}"
+            f"@ {t:.2f} sec. - frame: {frame}"
+            + f", x_1: {ball_1.loc[0]:.2f}, x_2: {ball_2.loc[0]:.2f}"
+            + f", v_x_1: {ball_1.vel[0]:.2f}, v_x_2: {ball_2.vel[0]:.2f}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces))
         )
 
         return objs
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=200, interval=10, blit=True, repeat=False
+        fig, animate, init_func=init, frames=1000, interval=10, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

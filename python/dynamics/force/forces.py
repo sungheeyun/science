@@ -25,8 +25,16 @@ class Forces:
     def forces(self) -> tuple[ForceBase, ...]:
         return self._forces
 
-    def force(self, time: float, body: BodyBase) -> np.ndarray:
-        return np.vstack([force.force(time, body) for force in self._forces]).sum(axis=0)
+    def force(self, time: float, body: BodyBase) -> tuple[np.ndarray, np.ndarray]:
+        frictional_force: np.ndarray = np.vstack(
+            [force.force(time, body) for force in self._forces if force.is_frictional_force]
+        ).sum(axis=0)
+
+        non_frictional_force: np.ndarray = np.vstack(
+            [force.force(time, body) for force in self._forces if not force.is_frictional_force]
+        ).sum(axis=0)
+
+        return non_frictional_force + frictional_force, frictional_force
 
     @property
     def potential_energy(self) -> float:

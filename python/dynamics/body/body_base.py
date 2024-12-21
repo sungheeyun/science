@@ -27,10 +27,17 @@ class BodyBase(ABC):
         )
         self._cur_time: float = 0.0
 
+        self._dissipated_energy: float = 0.0
+
     def update(self, t_1: float, t_2: float, forces: Any) -> None:
-        next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
-        self._cur_vel += (t_2 - t_1) * forces.force((t_1 + t_2) / 2.0, self) / self.mass
+        next_loc: np.ndarray = (t_2 - t_1) * self.vel + self.loc
+
+        force, frictional_force = forces.force((t_1 + t_2) / 2.0, self)
+
+        self._cur_vel += (t_2 - t_1) * force / self.mass
         self._cur_loc = next_loc
+
+        self._dissipated_energy += -np.dot(frictional_force, self.vel) * (t_2 - t_1)
 
     @property
     def mass(self) -> float:
@@ -46,11 +53,11 @@ class BodyBase(ABC):
 
     @property
     def loc_text(self):
-        return "(" + ", ".join(f"{loc:.2f}" for loc in self._cur_loc) + ")"
+        return "(" + ", ".join(f"{loc:.2f}" for loc in self.loc) + ")"
 
     @property
     def vel_text(self):
-        return "(" + ", ".join(f"{vel:.2f}" for vel in self._cur_vel) + ")"
+        return "(" + ", ".join(f"{vel:.2f}" for vel in self.vel) + ")"
 
     @property
     def kinetic_energy(self) -> float:
@@ -58,6 +65,10 @@ class BodyBase(ABC):
 
     def body_potential_energy(self, forces: Any) -> float:
         return sum([force.body_potential_energy(self) for force in forces._forces])
+
+    @property
+    def dissipated_energy(self) -> float:
+        return self._dissipated_energy
 
     # visualization
 

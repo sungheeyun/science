@@ -15,6 +15,7 @@ from dynamics.force.forces import Forces
 from dynamics.force.gravity_like import GravityLike
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
+from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
@@ -76,7 +77,9 @@ if __name__ == "__main__":
         bodies.update(t, forces)
         forces.update_objs()
 
-        info_text.set_text(f"frame: {frame}")
+        info_text.set_text(
+            f"@ {t:.2f} sec. - frame: {frame}" + "\n" + "\n".join(energy_info_text(bodies, forces))
+        )
 
         return objs
 

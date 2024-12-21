@@ -52,6 +52,10 @@ class Bodies:
     def potential_energy(self, forces: Forces) -> float:
         return sum([body.body_potential_energy(forces) for body in self._bodies])
 
+    @property
+    def dissipated_energy(self) -> float:
+        return sum([body.dissipated_energy for body in self._bodies])
+
     # visualization
 
     def add_objs(self, ax: Axes) -> None:

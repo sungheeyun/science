@@ -16,6 +16,7 @@ from dynamics.force.forces import Forces
 from dynamics.force.gravity_like import GravityLike
 from dynamics.force.frictional_force_2d import FrictionalForce2D
 from dynamics.force.spring import Spring
+from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
@@ -30,12 +31,12 @@ if __name__ == "__main__":
     bodies: Bodies = Bodies(ball_1, ball_2, pin_2, pin_1)
 
     # forces
-    spring_1: Spring = Spring(10.0, 1.0, pin_1, ball_1)
+    spring_1: Spring = Spring(1.0, 1.0, pin_1, ball_1)
     spring_2: Spring = Spring(10.0, 3.0, ball_1, ball_2)
     spring_3: Spring = Spring(5.0, 1.0, ball_2, pin_2)
 
-    friction: FrictionalForce2D = FrictionalForce2D(1.0, (3.0, 1.5))
-    gravity: GravityLike = GravityLike([-5.0, 10.0])
+    friction: FrictionalForce2D = FrictionalForce2D(1e-1, (2.0, 2.0))
+    gravity: GravityLike = GravityLike([-5.0, 5.0])
 
     # forces: Forces = Forces(spring, friction, gravity)
     # forces: Forces = Forces(spring_1, spring_2, friction)
@@ -80,15 +81,13 @@ if __name__ == "__main__":
         bodies.update(t, forces)
         forces.update_objs()
 
-        ke: float = bodies.kinetic_energy
-        bpe: float = bodies.potential_energy(forces)
-        fpe: float = forces.potential_energy
-
         info_text.set_text(
             f"{t:.2f} sec. - frame: {frame}"
-            f"\n xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
-            f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
-            f"\n energy: {ke+bpe+fpe:.2f} (ke: {ke:.2f} +  bpe: {bpe:.2f} + fpe: {fpe:.2f})"
+            + "\n"
+            + f"xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
+            + f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces))
         )
 
         return objs

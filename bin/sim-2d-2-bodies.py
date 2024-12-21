@@ -15,6 +15,7 @@ from dynamics.force.forces import Forces
 from dynamics.force.gravity_like import GravityLike
 from dynamics.force.frictional_force_2d import FrictionalForce2D
 from dynamics.force.spring import Spring
+from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     ax.set_ylabel("potential energy (J)")
 
     # Add time display
-    info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
+    info_text = ax.text(0.02, 0.975, "", transform=ax.transAxes, va="top")
 
     lim_info: dict[str, tuple[float, float]] = dict(
         x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
@@ -73,8 +74,10 @@ if __name__ == "__main__":
 
         info_text.set_text(
             f"{t:.2f} sec. - frame: {frame}"
-            f", xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
-            f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
+            + f", xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
+            + f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces))
         )
 
         return objs

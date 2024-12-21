@@ -7,13 +7,13 @@ from typing import Any, Sequence
 import numpy as np
 from matplotlib.artist import Artist
 from matplotlib.axes import Axes
-
-from dynamics.body.body_base import BodyBase
-from dynamics.force.force_base import ForceBase
 from matplotlib.lines import Line2D
 
+from dynamics.body.body_base import BodyBase
+from dynamics.force.frictional_force_base import FrictionalForceBase
 
-class HorizontalFrictionalForce1D(ForceBase):
+
+class HorizontalFrictionalForce1D(FrictionalForceBase):
     _FRICTIONAL_FORCE_HEIGHT: float = 0.1
 
     def __init__(

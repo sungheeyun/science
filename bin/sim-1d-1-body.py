@@ -15,6 +15,7 @@ from dynamics.body.bodies import Bodies
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.force.gravity_like import GravityLike
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
+from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     ax.axhline(y=0, color="black", linestyle="-", alpha=0.3)
 
     # display
-    info_text = ax.text(0.02, 0.90, "", transform=ax.transAxes, va="top")
+    info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
 
     # draw potential energy
     xp_1d: np.ndarray = np.linspace(-5, 5, 100)
@@ -92,20 +93,15 @@ if __name__ == "__main__":
         lim_info["v_x_lim"] = (min(v_x_min, v_x_vel), max(v_x_max, v_x_vel))
         v_x_min, v_x_max = lim_info["v_x_lim"]
 
-        ke: float = bodies.kinetic_energy
-        bpe: float = bodies.potential_energy(forces)
-        fpe: float = forces.potential_energy
-
         info_text.set_text(
-            f"{frame}\n "
+            f"@ {t:.2f} sec. - {frame}\n"
             + ", ".join([f"x: {x_loc:.2f} m", f"v_x: {v_x_vel:.3f} m/s"])
-            + f" @ {t:.3f} sec"
-            + "\n "
+            + "\n"
             + ", ".join(
                 [f"x_lim: ({x_min:.2f},{x_max:.2f})", f"v_x_lim: ({v_x_min:.2f},{v_x_max:.2f})"]
             )
-            + f"\n energy: {ke + bpe + fpe:.2f} (ke: {ke:.2f} + bpe {bpe:.2f} + fpe: {fpe:.2f})"
-            + f"\n pe = bpe + fpe = {bpe + fpe:.2f}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces))
         )
 
         return objs
