@@ -71,7 +71,7 @@ class FrictionalForce2D(ForceBase):
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         return (
             -self._coef_friction * body.vel
-            if np.all(body.loc[0] < self._upper_right_pnt)
+            if np.all(body.loc < self._upper_right_pnt)
             else np.zeros_like(body.loc)
         )
 
