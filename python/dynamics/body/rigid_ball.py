@@ -13,6 +13,9 @@ from dynamics.body.body_base import BodyBase
 
 
 class RigidBall(BodyBase):
+    _BALL_RADIUS: float = 0.1
+    _BALL_COLOR: str = "blue"
+
     def __init__(
         self,
         mass: float = 1.0,
@@ -21,7 +24,9 @@ class RigidBall(BodyBase):
         **kwargs
     ) -> None:
         super().__init__(mass, init_loc, init_v)
-        circ_kwargs: dict[str, Any] = dict(radius=0.1, color="blue", fill=True)
+        circ_kwargs: dict[str, Any] = dict(
+            radius=self._BALL_RADIUS, color=self._BALL_COLOR, fill=True
+        )
         circ_kwargs.update(**kwargs)
 
         self._obj = Circle((self.loc[0], self.loc[1]), **circ_kwargs)
