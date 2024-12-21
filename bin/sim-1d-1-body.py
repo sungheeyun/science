@@ -12,7 +12,7 @@ from dynamics.body.rigid_ball import RigidBall
 from dynamics.body.bodies import Bodies
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.force.gravity_like import GravityLike
-from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
+from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 
 if __name__ == "__main__":
 
@@ -26,7 +26,7 @@ if __name__ == "__main__":
         0.0,
     )
     gravity: GravityLike = GravityLike((-3.0, 0))
-    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.3, 0)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.3, 0)
 
     forces: Forces = Forces(spring, gravity, friction)
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title("one-dimensional ball motion", pad=10)
+    ax.set_title("one-dimensional single body motion", pad=10)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 

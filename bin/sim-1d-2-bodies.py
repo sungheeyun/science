@@ -9,29 +9,26 @@ from matplotlib.artist import Artist
 
 from dynamics.body.rigid_ball import RigidBall
 from dynamics.body.bodies import Bodies
-from dynamics.body.vertical_wall import VerticalWall
 from dynamics.force.forces import Forces
 from dynamics.force.gravity_like import GravityLike
-from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
+from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
 
 if __name__ == "__main__":
 
     # bodies
-    wall: VerticalWall = VerticalWall(-3.0)
-    ball_1: RigidBall = RigidBall(1.0, (-1, 0), (0, 0))
+    ball_1: RigidBall = RigidBall(1.0, (-2, 0), (0, 0))
     ball_2: RigidBall = RigidBall(1.0, (2, 0), (0, 0))
 
-    bodies: Bodies = Bodies(ball_1, ball_2, wall)
+    bodies: Bodies = Bodies(ball_1, ball_2)
 
     # forces
-    spring_1: Spring = Spring(5, 1.5, wall, ball_1)
-    spring_2: Spring = Spring(5, 2.5, ball_1, ball_2)
-    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.5, 3)
+    spring: Spring = Spring(10.0, 1.0, ball_1, ball_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1, 3)
     gravity: GravityLike = GravityLike([-1.0, 0])
 
     # forces: Forces = Forces(spring, friction, gravity)
-    forces: Forces = Forces(spring_1, spring_2, friction)
+    forces: Forces = Forces(spring, friction)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -45,7 +42,7 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title("one-dimensional rigid ball motion", pad=10)
+    ax.set_title("one-dimensional two body motion", pad=10)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -77,17 +74,13 @@ if __name__ == "__main__":
         bodies.update(t, forces)
         forces.update_objs()
 
-        info_text.set_text(
-            f"{t:.2f} sec. - frame: {frame}"
-            f", x_1: {ball_1._cur_loc[0]:.2f}, x_2: {ball_2._cur_loc[0]:.2f}"
-            f", v_x_1: {ball_1._cur_vel[0]:.2f}, v_x_2: {ball_2._cur_vel[0]:.2f}"
-        )
+        info_text.set_text(f"frame: {frame}")
 
         return objs
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=100000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=5000, interval=10, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

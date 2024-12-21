@@ -9,26 +9,29 @@ from matplotlib.artist import Artist
 
 from dynamics.body.rigid_ball import RigidBall
 from dynamics.body.bodies import Bodies
+from dynamics.body.vertical_wall import VerticalWall
 from dynamics.force.forces import Forces
-from dynamics.force.gravity_like import GravityLike
-from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
+from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
 
 if __name__ == "__main__":
 
     # bodies
+    wall_1: VerticalWall = VerticalWall(-3.0)
+    wall_2: VerticalWall = VerticalWall(3.0)
     ball_1: RigidBall = RigidBall(1.0, (-2, 0), (0, 0))
     ball_2: RigidBall = RigidBall(1.0, (2, 0), (0, 0))
 
-    bodies: Bodies = Bodies(ball_1, ball_2)
+    bodies: Bodies = Bodies(ball_1, ball_2, wall_1, wall_2)
 
     # forces
-    spring: Spring = Spring(10.0, 1.0, ball_1, ball_2)
-    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(1, 3)
-    gravity: GravityLike = GravityLike([-1.0, 0])
+    spring_1: Spring = Spring(5.0, 1.5, wall_1, ball_1)
+    spring_2: Spring = Spring(5.0, 2.5, ball_1, ball_2)
+    spring_3: Spring = Spring(5.0, 1.5, ball_2, wall_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.5, 3)
+    # gravity: GravityLike = GravityLike([-1.0, 0])
 
-    # forces: Forces = Forces(spring, friction, gravity)
-    forces: Forces = Forces(spring, gravity)
+    forces: Forces = Forces(spring_1, spring_2, spring_3, friction)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -42,7 +45,7 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title("one-dimensional rigid ball motion", pad=10)
+    ax.set_title("one-dimensional two body motion with wall", pad=10)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -69,21 +72,25 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.050  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
 
-        info_text.set_text(f"frame: {frame}")
+        info_text.set_text(
+            f"{t:.2f} sec. - frame: {frame}"
+            f", x_1: {ball_1._cur_loc[0]:.2f}, x_2: {ball_2._cur_loc[0]:.2f}"
+            f", v_x_1: {ball_1._cur_vel[0]:.2f}, v_x_2: {ball_2._cur_vel[0]:.2f}"
+        )
 
         return objs
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=5000, interval=10, blit=True, repeat=False
+        fig, animate, init_func=init, frames=200, interval=10, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)
-    # anim.save("ball_motion.gif", writer=writer)
+    # anim.save("sim-1d-2-bodies-2-walls.gif", writer=writer)
 
     plt.show()

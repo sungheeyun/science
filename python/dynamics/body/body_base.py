@@ -47,20 +47,15 @@ class BodyBase(ABC):
     def vel(self) -> np.ndarray:
         return self._cur_vel
 
-    def _update_loc_and_vel(self, forces: Any, t_start: float, t_end: float, t_step: float) -> None:
-        t_stamps: np.ndarray = np.hstack((np.arange(t_start, t_end, t_step), t_end))
-
-        for idx, t_1 in enumerate(t_stamps[:-1]):
-            t_2: float = t_stamps[idx + 1]
-
-            next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
-            self._cur_vel += (
-                (t_2 - t_1) * forces.one_body_force((t_1 + t_2) / 2.0, self) / self.mass
-            )
-
-            self._cur_loc = next_loc
-
     @property
     @abstractmethod
     def objs(self) -> Sequence[Artist]:
         pass
+
+    @property
+    def loc_text(self):
+        return "(" + ", ".join(f"{loc:.2f}" for loc in self._cur_loc) + ")"
+
+    @property
+    def vel_text(self):
+        return "(" + ", ".join(f"{vel:.2f}" for vel in self._cur_vel) + ")"

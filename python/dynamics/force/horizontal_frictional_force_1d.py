@@ -13,7 +13,7 @@ from dynamics.force.force_base import ForceBase
 from matplotlib.lines import Line2D
 
 
-class HorizontalFrictionalForce(ForceBase):
+class HorizontalFrictionalForce1D(ForceBase):
     _X_STRETCH: float = 50.0
     _NUM_STRIPES: int = int(10 * _X_STRETCH)
     _height: float = 0.1
