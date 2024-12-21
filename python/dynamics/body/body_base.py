@@ -3,11 +3,11 @@ base class for all objects in dynamics package
 """
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
-import numpy.linalg as la
-from matplotlib.patches import Patch
+from matplotlib.artist import Artist
+from matplotlib.axes import Axes
 
 
 class BodyBase(ABC):
@@ -26,28 +26,22 @@ class BodyBase(ABC):
         )
         self._cur_time: float = 0.0
 
-    def update(self, next_time: float, forces: Any) -> None:
-        assert next_time >= self._cur_time, (next_time, self._cur_time)
-        if next_time == self._cur_time:
-            return
+        self._forces: Any = None
 
-        t_step: float = min(
-            1e-4,
-            1e-4 / (la.norm(self._cur_vel) if la.norm(self._cur_vel) > 0.0 else 1.0),  # type:ignore
-        )
-        self._update_loc_and_vel(forces, self._cur_time, next_time, t_step)
-        self._cur_time = next_time
+    def attach_forces(self, forces: Any) -> None:
+        self._forces = forces
 
-        self._update_obj()
-        forces.update_obj(next_time, self._cur_loc)
+    def update(self, t_1: float, t_2: float) -> None:
+        next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
+        self._cur_vel += (t_2 - t_1) * self._forces.force((t_1 + t_2) / 2.0, self) / self.mass
+        self._cur_loc = next_loc
 
-    @property
     @abstractmethod
-    def obj(self) -> Patch:
+    def add_obj(self, ax: Axes) -> None:
         pass
 
     @abstractmethod
-    def _update_obj(self) -> None:
+    def update_obj(self) -> None:
         pass
 
     @property
@@ -65,6 +59,13 @@ class BodyBase(ABC):
             t_2: float = t_stamps[idx + 1]
 
             next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
-            self._cur_vel += (t_2 - t_1) * forces.one_obj_force((t_1 + t_2) / 2.0, self) / self.mass
+            self._cur_vel += (
+                (t_2 - t_1) * forces.one_body_force((t_1 + t_2) / 2.0, self) / self.mass
+            )
 
             self._cur_loc = next_loc
+
+    @property
+    @abstractmethod
+    def objs(self) -> Sequence[Artist]:
+        pass

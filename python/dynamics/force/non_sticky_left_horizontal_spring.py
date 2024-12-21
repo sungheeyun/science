@@ -7,12 +7,13 @@ from typing import Any, Sequence
 import numpy as np
 from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
+from matplotlib.axes import Axes
 
-from dynamics.force.one_body_force_base import OneBodyForceBase
+from dynamics.force.force_base import ForceBase
 from dynamics.body.body_base import BodyBase
 
 
-class NonStickyLeftHorizontalSpring(OneBodyForceBase):
+class NonStickyLeftHorizontalSpring(ForceBase):
     def __init__(
         self,
         spring_constant: float,
@@ -22,7 +23,8 @@ class NonStickyLeftHorizontalSpring(OneBodyForceBase):
         assert spring_constant > 0.0, spring_constant
         self._spring_constant: float = spring_constant
         self._equilibrium_point: float = equilibrium_point
-        self._obj_kwargs: dict[str, Any] = dict(linestyle="-", color="blue", linewidth=1.5)
+        self._obj_kwargs: dict[str, Any] = self._DEFAULT_SPRING_OBJ_KWARGS.copy()
+        self._cur_x: float = self._equilibrium_point
         if obj_kwargs is not None:
             self._obj_kwargs.update(**obj_kwargs)
 
@@ -42,11 +44,12 @@ class NonStickyLeftHorizontalSpring(OneBodyForceBase):
             **self._obj_kwargs,
         )
 
-    def _one_obj_force(self, time: float, obj: BodyBase) -> np.ndarray:
+    def force(self, time: float, body: BodyBase) -> np.ndarray:
+        self._cur_x = body.loc[0]
         force_x: float = (
             0.0
-            if obj.loc[0] >= self._equilibrium_point
-            else self._spring_constant * (self._equilibrium_point - obj.loc[0])
+            if self._cur_x >= self._equilibrium_point
+            else self._spring_constant * (self._equilibrium_point - self._cur_x)
         )
         return np.array([force_x, 0.0])
 
@@ -58,15 +61,18 @@ class NonStickyLeftHorizontalSpring(OneBodyForceBase):
             * np.power(x_1d - self._equilibrium_point, 2.0)
         )
 
-    @property
-    def objs(self) -> Sequence[Artist]:
-        return [self._line2d]
+    def add_obj(self, ax: Axes) -> None:
+        ax.add_artist(self._line2d)
 
-    def update_obj(self, time: float, loc: np.ndarray) -> None:
+    def update_obj(self) -> None:
         self._line2d.set_xdata(
             np.linspace(
                 self._equilibrium_point - self._x_stretch,
-                loc[0] if loc[0] <= self._equilibrium_point else self._equilibrium_point,
+                self._cur_x if self._cur_x <= self._equilibrium_point else self._equilibrium_point,
                 self._t_1d_p.size,
             )
         )
+
+    @property
+    def objs(self) -> Sequence[Artist]:
+        return [self._line2d]

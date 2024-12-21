@@ -1,13 +1,15 @@
 """
-simulate dynamics in physics
+1-d simulate dynamics of a ball where gravity, spring force, and frictional force is applied to it
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa:F401
+from matplotlib.artist import Artist
 
-from dynamics.force.one_body_forces import OneBodyForces
+from dynamics.force.forces import Forces
 from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.bodies import Bodies
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.force.gravity_like import GravityLike
 from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
@@ -15,7 +17,8 @@ from dynamics.force.horizontal_frictional_force import HorizontalFrictionalForce
 if __name__ == "__main__":
 
     # objects
-    rigid_ball: RigidBall = RigidBall(2.0, (1, 0), (0, 0))
+    ball: RigidBall = RigidBall(2.0, (1, 0), (0, 0))
+    bodies: Bodies = Bodies(ball)
 
     # force sources
     spring: NonStickyLeftHorizontalSpring = NonStickyLeftHorizontalSpring(
@@ -23,15 +26,17 @@ if __name__ == "__main__":
         0.0,
     )
     gravity: GravityLike = GravityLike((-3.0, 0))
-    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.0, 0)
+    friction: HorizontalFrictionalForce = HorizontalFrictionalForce(0.3, 0)
 
-    forces: OneBodyForces = OneBodyForces(spring, gravity, friction)
+    forces: Forces = Forces(spring, gravity, friction)
+
+    bodies.attach_forces(forces)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    [ax.add_artist(obj) for obj in forces.objs]
-    ax.add_patch(rigid_ball.obj)
+    bodies.add_obj(ax)
+    forces.add_obj(ax)
 
     ax.set_xlim(-3.0, 3.0)
     ax.set_ylim(-1.0, 1.0)
@@ -39,7 +44,7 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title("one-dimensional rigid ball motion", pad=10)
+    ax.set_title("one-dimensional ball motion", pad=10)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -53,28 +58,31 @@ if __name__ == "__main__":
 
     # draw potential energy
     xp_1d: np.ndarray = np.linspace(-5, 5, 100)
-    ax.plot(xp_1d, forces.x_potential_energy(rigid_ball, xp_1d) * 0.25, "k")
+    ax.plot(xp_1d, forces.x_potential_energy(ball, xp_1d) * 0.25, "k")
 
     lim_info: dict[str, tuple[float, float]] = dict(
         x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
     )
+
+    objs: list[Artist] = list(forces.objs) + list(bodies.objs) + [info_text]
 
     def init():
         """Initialize animation"""
         # ball.center = (0, 0)
         info_text.set_text("")
 
-        return list(forces.objs) + [rigid_ball.obj, info_text]
+        return objs
 
     def animate(frame):
         """Animation function"""
         t = frame * 0.010  # Convert frame number to time (seconds)
 
-        rigid_ball.update(t, forces)
+        bodies.update(t)
+        forces.update_objs()
 
         # Update time display
-        x_loc: float = float(rigid_ball.loc[0])
-        v_x_vel: float = float(rigid_ball.vel[0])
+        x_loc: float = float(ball.loc[0])
+        v_x_vel: float = float(ball.vel[0])
 
         x_min, x_max = lim_info["x_lim"]
         lim_info["x_lim"] = (min(x_min, x_loc), max(x_max, x_loc))
@@ -94,7 +102,7 @@ if __name__ == "__main__":
             )
         )
 
-        return list(forces.objs) + [rigid_ball.obj, info_text]
+        return objs
 
     # Create animation
     anim = FuncAnimation(
