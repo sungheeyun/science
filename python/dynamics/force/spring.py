@@ -17,6 +17,8 @@ from dynamics.body.vertical_wall_1d import VerticalWall1D
 
 
 class Spring(ForceBase):
+    _UNIT_SPRINT_CONSTANT_LINE_WIDTH: float = 1.0
+
     def __init__(
         self,
         spring_constant: float,
@@ -33,7 +35,12 @@ class Spring(ForceBase):
         self._body_1: BodyBase = body_1
         self._body_2: BodyBase = body_2
 
-        self._obj_kwargs: dict[str, Any] = dict(linestyle="-", color="blue", linewidth=1.5)
+        self._obj_kwargs: dict[str, Any] = dict(
+            linestyle="-",
+            color="blue",
+            linewidth=self._UNIT_SPRINT_CONSTANT_LINE_WIDTH
+            * math.pow(self._spring_constant, 1.0 / 3.0),
+        )
         if obj_kwargs is not None:
             self._obj_kwargs.update(**obj_kwargs)
 

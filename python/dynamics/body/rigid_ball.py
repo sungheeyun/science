@@ -3,6 +3,7 @@ rigid ball
 """
 
 from typing import Any, Sequence
+import math
 
 import numpy as np
 from matplotlib.artist import Artist
@@ -13,7 +14,7 @@ from dynamics.body.body_base import BodyBase
 
 
 class RigidBall(BodyBase):
-    _BALL_RADIUS: float = 0.1
+    _UNIT_MASS_BALL_RADIUS: float = 0.1
     _BALL_COLOR: str = "blue"
 
     def __init__(
@@ -25,7 +26,9 @@ class RigidBall(BodyBase):
     ) -> None:
         super().__init__(mass, init_loc, init_v)
         circ_kwargs: dict[str, Any] = dict(
-            radius=self._BALL_RADIUS, color=self._BALL_COLOR, fill=True
+            radius=self._UNIT_MASS_BALL_RADIUS * math.pow(self.mass, 1.0 / 3.0),
+            color=self._BALL_COLOR,
+            fill=True,
         )
         circ_kwargs.update(**kwargs)
 
