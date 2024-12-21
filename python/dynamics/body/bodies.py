@@ -45,6 +45,15 @@ class Bodies:
             for body in self._bodies:
                 body.update(t_1, t_stamps[idx + 1], forces)
 
+    @property
+    def kinetic_energy(self) -> float:
+        return sum([body.kinetic_energy for body in self._bodies])
+
+    def potential_energy(self, forces: Forces) -> float:
+        return sum([body.body_potential_energy(forces) for body in self._bodies])
+
+    # visualization
+
     def add_objs(self, ax: Axes) -> None:
         for body in self._bodies:
             body.add_objs(ax)

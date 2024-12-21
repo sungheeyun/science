@@ -29,6 +29,12 @@ class Forces:
         return np.vstack([force.force(time, body) for force in self._forces]).sum(axis=0)
 
     @property
+    def potential_energy(self) -> float:
+        return sum([force.potential_energy for force in self._forces])
+
+    # visualization
+
+    @property
     def objs(self) -> Sequence[Artist]:
         return reduce(list.__add__, [list(force.objs) for force in self._forces])  # type:ignore
 

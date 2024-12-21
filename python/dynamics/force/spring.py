@@ -59,7 +59,16 @@ class Spring(ForceBase):
             -self._spring_constant * (la.norm(vec_2_1) - self._natural_length) / la.norm(vec_2_1)
         ) * vec_2_1
 
-    # potential energy
+    def body_potential_energy(self, body: BodyBase) -> float:
+        return 0.0
+
+    @property
+    def potential_energy(self) -> float:
+        return (
+            0.5
+            * self._spring_constant
+            * float(la.norm(self._body_1.loc - self._body_2.loc) - self._natural_length) ** 2.0
+        )
 
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         if not isinstance(self._body_1, VerticalWall1D) and not isinstance(
@@ -81,7 +90,7 @@ class Spring(ForceBase):
 
         return 0.5 * self._spring_constant * np.power(x_1d - center_pnt, 2.0)
 
-    # graphical objects
+    # visualization
 
     @property
     def objs(self) -> Sequence[Artist]:

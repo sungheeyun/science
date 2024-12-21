@@ -22,6 +22,24 @@ class ForceBase(ABC):
     _NUM_PLT_POINTS: int = 1000
     _SPRING_WIDTH: float = 0.1
 
+    @abstractmethod
+    def force(self, time: float, boyd: BodyBase) -> np.ndarray:
+        pass
+
+    def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
+        return np.zeros_like(x_1d)
+
+    @abstractmethod
+    def body_potential_energy(self, body: BodyBase) -> float:
+        pass
+
+    @property
+    @abstractmethod
+    def potential_energy(self) -> float:
+        pass
+
+    # visualization
+
     @property
     def objs(self) -> Sequence[Artist]:
         return list()
@@ -30,11 +48,4 @@ class ForceBase(ABC):
         pass
 
     def add_objs(self, ax: Axes) -> None:
-        pass
-
-    def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
-        return np.zeros_like(x_1d)
-
-    @abstractmethod
-    def force(self, time: float, boyd: BodyBase) -> np.ndarray:
         pass

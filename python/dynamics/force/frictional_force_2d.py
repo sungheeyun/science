@@ -70,6 +70,15 @@ class FrictionalForce2D(ForceBase):
             else np.zeros_like(body.loc)
         )
 
+    def body_potential_energy(self, body: BodyBase) -> float:
+        return 0.0
+
+    @property
+    def potential_energy(self) -> float:
+        return 0.0
+
+    # visualization
+
     def add_objs(self, ax: Axes) -> None:
         for line2d in self._line2d_list:
             ax.add_artist(line2d)

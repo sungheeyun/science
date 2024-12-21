@@ -36,14 +36,6 @@ class NonStickyLeftHorizontalSpring(ForceBase):
 
         self._line2d: Line2D = self._create_obj()
 
-    def _create_obj(self) -> Line2D:
-        return Line2D(
-            xdata=self._equilibrium_point
-            - np.linspace(self._SPRING_X_STRETCH, 0.0, self._t_1d_p.size),
-            ydata=self._ydata,
-            **self._obj_kwargs,
-        )
-
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         self._cur_x = body.loc[0]
         force_x: float = (
@@ -53,12 +45,33 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         )
         return np.array([force_x, 0.0])
 
+    def body_potential_energy(self, body: BodyBase) -> float:
+        return 0.0
+
+    @property
+    def potential_energy(self) -> float:
+        return (
+            0.5 * self._spring_constant * (self._cur_x - self._equilibrium_point) ** 2.0
+            if self._cur_x < self._equilibrium_point
+            else 0.0
+        )
+
     def x_potential_energy(self, obj: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return (
             0.5
             * self._spring_constant
             * (x_1d < self._equilibrium_point)
             * np.power(x_1d - self._equilibrium_point, 2.0)
+        )
+
+    # visualization
+
+    def _create_obj(self) -> Line2D:
+        return Line2D(
+            xdata=self._equilibrium_point
+            - np.linspace(self._SPRING_X_STRETCH, 0.0, self._t_1d_p.size),
+            ydata=self._ydata,
+            **self._obj_kwargs,
         )
 
     def add_objs(self, ax: Axes) -> None:

@@ -35,6 +35,12 @@ class VerticalWall1D(BodyBase):
     def update(self, t_1: float, t_2: float, forces: Any) -> None:
         pass
 
+    @property
+    def kinetic_energy(self) -> float:
+        return 0.0
+
+    # visualization
+
     def add_objs(self, ax: Axes) -> None:
         ax.add_patch(self._polygon)
 

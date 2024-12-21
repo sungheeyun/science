@@ -15,5 +15,8 @@ class ConstForce(ForceBase):
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         return self._force_vec
 
+    def body_potential_energy(self, body: BodyBase) -> float:
+        return -float(np.dot(self._force_vec, body.loc))
+
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return -self._force_vec[0] * x_1d

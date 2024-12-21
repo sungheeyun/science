@@ -92,6 +92,10 @@ if __name__ == "__main__":
         lim_info["v_x_lim"] = (min(v_x_min, v_x_vel), max(v_x_max, v_x_vel))
         v_x_min, v_x_max = lim_info["v_x_lim"]
 
+        ke: float = bodies.kinetic_energy
+        bpe: float = bodies.potential_energy(forces)
+        fpe: float = forces.potential_energy
+
         info_text.set_text(
             f"{frame}\n "
             + ", ".join([f"x: {x_loc:.2f} m", f"v_x: {v_x_vel:.3f} m/s"])
@@ -100,6 +104,8 @@ if __name__ == "__main__":
             + ", ".join(
                 [f"x_lim: ({x_min:.2f},{x_max:.2f})", f"v_x_lim: ({v_x_min:.2f},{v_x_max:.2f})"]
             )
+            + f"\n energy: {ke + bpe + fpe:.2f} (ke: {ke:.2f} + bpe {bpe:.2f} + fpe: {fpe:.2f})"
+            + f"\n pe = bpe + fpe = {bpe + fpe:.2f}"
         )
 
         return objs
