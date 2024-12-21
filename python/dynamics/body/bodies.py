@@ -22,11 +22,7 @@ class Bodies:
         self._bodies: list[BodyBase] = list(args)
         self._cur_time: float = 0.0
 
-    def attach_forces(self, forces: Forces) -> None:
-        for body in self._bodies:
-            body.attach_forces(forces)
-
-    def update(self, next_time: float) -> None:
+    def update(self, next_time: float, forces: Forces) -> None:
         assert next_time >= self._cur_time, (next_time, self._cur_time)
         if next_time == self._cur_time:
             return
@@ -38,16 +34,16 @@ class Bodies:
         t_step: float = min(
             self._SIM_TIME_STEP, self._SIM_TIME_STEP_CONST_VEL / (max_vel if max_vel > 0.0 else 1.0)
         )
-        self._update_bodies(next_time, t_step)
+        self._update_bodies(next_time, t_step, forces)
         self._cur_time = next_time
 
         self.update_objs()
 
-    def _update_bodies(self, next_time: float, t_step: float) -> None:
+    def _update_bodies(self, next_time: float, t_step: float, forces: Forces) -> None:
         t_stamps: np.ndarray = np.hstack((np.arange(self._cur_time, next_time, t_step), next_time))
         for idx, t_1 in enumerate(t_stamps[:-1]):
             for body in self._bodies:
-                body.update(t_1, t_stamps[idx + 1])
+                body.update(t_1, t_stamps[idx + 1], forces)
 
     def add_obj(self, ax: Axes) -> None:
         for body in self._bodies:

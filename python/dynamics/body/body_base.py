@@ -26,14 +26,9 @@ class BodyBase(ABC):
         )
         self._cur_time: float = 0.0
 
-        self._forces: Any = None
-
-    def attach_forces(self, forces: Any) -> None:
-        self._forces = forces
-
-    def update(self, t_1: float, t_2: float) -> None:
+    def update(self, t_1: float, t_2: float, forces: Any) -> None:
         next_loc: np.ndarray = (t_2 - t_1) * self._cur_vel + self._cur_loc
-        self._cur_vel += (t_2 - t_1) * self._forces.force((t_1 + t_2) / 2.0, self) / self.mass
+        self._cur_vel += (t_2 - t_1) * forces.force((t_1 + t_2) / 2.0, self) / self.mass
         self._cur_loc = next_loc
 
     @abstractmethod

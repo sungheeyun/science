@@ -30,8 +30,6 @@ if __name__ == "__main__":
 
     forces: Forces = Forces(spring, gravity, friction)
 
-    bodies.attach_forces(forces)
-
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
 
@@ -77,7 +75,7 @@ if __name__ == "__main__":
         """Animation function"""
         t = frame * 0.010  # Convert frame number to time (seconds)
 
-        bodies.update(t)
+        bodies.update(t, forces)
         forces.update_objs()
 
         # Update time display
