@@ -11,7 +11,7 @@ from matplotlib.artist import Artist
 
 from dynamics.body.rigid_ball import RigidBall
 from dynamics.body.bodies import Bodies
-from dynamics.body.vertical_wall import VerticalWall
+from dynamics.body.vertical_wall_1d import VerticalWall1D
 from dynamics.force.forces import Forces
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
@@ -19,8 +19,8 @@ from dynamics.force.spring import Spring
 if __name__ == "__main__":
 
     # bodies
-    wall_1: VerticalWall = VerticalWall(-3.0)
-    wall_2: VerticalWall = VerticalWall(3.0)
+    wall_1: VerticalWall1D = VerticalWall1D(-3.0)
+    wall_2: VerticalWall1D = VerticalWall1D(3.0)
     ball_1: RigidBall = RigidBall(1.0, (-2, 0), (0, 0))
     ball_2: RigidBall = RigidBall(1.0, (2, 0), (0, 0))
 

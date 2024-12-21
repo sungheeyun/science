@@ -13,7 +13,7 @@ from matplotlib.lines import Line2D
 
 from dynamics.force.force_base import ForceBase
 from dynamics.body.body_base import BodyBase
-from dynamics.body.vertical_wall import VerticalWall
+from dynamics.body.vertical_wall_1d import VerticalWall1D
 
 
 class Spring(ForceBase):
@@ -62,13 +62,13 @@ class Spring(ForceBase):
     # potential energy
 
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
-        if not isinstance(self._body_1, VerticalWall) and not isinstance(
-            self._body_2, VerticalWall
+        if not isinstance(self._body_1, VerticalWall1D) and not isinstance(
+            self._body_2, VerticalWall1D
         ):
             return np.zeros_like(x_1d)
 
         center_pnt: float = 0.0
-        if isinstance(self._body_1, VerticalWall):
+        if isinstance(self._body_1, VerticalWall1D):
             center_pnt = float(
                 self._body_1.loc[0]
                 + self._natural_length * (1.0 if body.loc[1] > self._body_1.loc[0] else -1.0)

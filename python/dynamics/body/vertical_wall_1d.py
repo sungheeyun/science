@@ -12,7 +12,7 @@ from matplotlib.artist import Artist
 from dynamics.body.body_base import BodyBase
 
 
-class VerticalWall(BodyBase):
+class VerticalWall1D(BodyBase):
     _WALL_HEIGHT: float = 1.0
     _WALL_WIDTH: float = 0.1
     _WALL_COLOR: str = "red"
