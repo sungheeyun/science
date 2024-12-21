@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # Add a line to represent the path of motion
     ax.axhline(y=0, color="black", linestyle="-", alpha=0.3)
 
-    # Add time display
+    # display
     info_text = ax.text(0.02, 0.90, "", transform=ax.transAxes, va="top")
 
     # draw potential energy
