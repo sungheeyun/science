@@ -40,7 +40,7 @@ if __name__ == "__main__":
     bodies.add_objs(ax)
     forces.add_objs(ax)
 
-    ax.set_xlim(-3.0, 3.0)
+    ax.set_xlim(-3.1, 3.1)
     ax.set_ylim(-1.0, 1.0)
     ax.set_aspect("equal")
     ax.grid(axis="x")
