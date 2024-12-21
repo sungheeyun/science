@@ -61,10 +61,10 @@ class NonStickyLeftHorizontalSpring(ForceBase):
             * np.power(x_1d - self._equilibrium_point, 2.0)
         )
 
-    def add_obj(self, ax: Axes) -> None:
+    def add_objs(self, ax: Axes) -> None:
         ax.add_artist(self._line2d)
 
-    def update_obj(self) -> None:
+    def update_objs(self) -> None:
         self._line2d.set_xdata(
             np.linspace(
                 self._equilibrium_point - self._x_stretch,

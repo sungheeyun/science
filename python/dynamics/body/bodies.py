@@ -45,9 +45,9 @@ class Bodies:
             for body in self._bodies:
                 body.update(t_1, t_stamps[idx + 1], forces)
 
-    def add_obj(self, ax: Axes) -> None:
+    def add_objs(self, ax: Axes) -> None:
         for body in self._bodies:
-            body.add_obj(ax)
+            body.add_objs(ax)
 
     def update_objs(self) -> None:
         for body in self._bodies:

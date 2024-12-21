@@ -14,6 +14,10 @@ from matplotlib.lines import Line2D
 
 
 class HorizontalFrictionalForce(ForceBase):
+    _X_STRETCH: float = 50.0
+    _NUM_STRIPES: int = int(10 * _X_STRETCH)
+    _height: float = 0.1
+
     def __init__(
         self,
         coef_friction: float,
@@ -33,11 +37,8 @@ class HorizontalFrictionalForce(ForceBase):
         self._coef_friction: float = coef_friction
         self._boundary: float = boundary
 
-        self._num_stripes: int = 50
-        self._x_stretch: float = 5.0
-        self._height: float = 0.1
         x_1d_p: np.ndarray = np.linspace(
-            self._boundary - self._x_stretch, self._boundary, self._num_stripes
+            self._boundary - self._X_STRETCH, self._boundary, self._NUM_STRIPES
         )
         self._line2d_list: list[Line2D] = [
             Line2D(
@@ -51,7 +52,7 @@ class HorizontalFrictionalForce(ForceBase):
             [0.0 if body.loc[0] >= self._boundary else (-self._coef_friction * body.vel[0]), 0.0]
         )
 
-    def add_obj(self, ax: Axes) -> None:
+    def add_objs(self, ax: Axes) -> None:
         for line2d in self._line2d_list:
             ax.add_artist(line2d)
 

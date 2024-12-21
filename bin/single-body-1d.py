@@ -33,8 +33,8 @@ if __name__ == "__main__":
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    bodies.add_obj(ax)
-    forces.add_obj(ax)
+    bodies.add_objs(ax)
+    forces.add_objs(ax)
 
     ax.set_xlim(-3.0, 3.0)
     ax.set_ylim(-1.0, 1.0)

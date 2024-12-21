@@ -32,7 +32,7 @@ class BodyBase(ABC):
         self._cur_loc = next_loc
 
     @abstractmethod
-    def add_obj(self, ax: Axes) -> None:
+    def add_objs(self, ax: Axes) -> None:
         pass
 
     @abstractmethod

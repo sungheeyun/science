@@ -29,7 +29,7 @@ class RigidBall(BodyBase):
     def update_obj(self) -> None:
         self._obj.center = (self._cur_loc[0], self._cur_loc[1])
 
-    def add_obj(self, ax: Axes) -> None:
+    def add_objs(self, ax: Axes) -> None:
         ax.add_patch(self._obj)
 
     @property

@@ -20,7 +20,10 @@ class ForceBase(ABC):
     def objs(self) -> Sequence[Artist]:
         return list()
 
-    def update_obj(self) -> None:
+    def update_objs(self) -> None:
+        pass
+
+    def add_objs(self, ax: Axes) -> None:
         pass
 
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
@@ -28,7 +31,4 @@ class ForceBase(ABC):
 
     @abstractmethod
     def force(self, time: float, boyd: BodyBase) -> np.ndarray:
-        pass
-
-    def add_obj(self, ax: Axes) -> None:
         pass

@@ -17,9 +17,9 @@ class Forces:
     def __init__(self, *forces: ForceBase):
         self._forces: tuple[ForceBase, ...] = forces
 
-    def add_obj(self, ax: Axes):
+    def add_objs(self, ax: Axes):
         for force in self._forces:
-            force.add_obj(ax)
+            force.add_objs(ax)
 
     @property
     def forces(self) -> tuple[ForceBase, ...]:
@@ -34,7 +34,7 @@ class Forces:
 
     def update_objs(self) -> None:
         for force in self._forces:
-            force.update_obj()
+            force.update_objs()
 
     def x_potential_energy(self, obj: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return np.vstack([force.x_potential_energy(obj, x_1d) for force in self._forces]).sum(
