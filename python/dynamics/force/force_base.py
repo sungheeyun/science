@@ -16,6 +16,11 @@ from dynamics.body.body_base import BodyBase
 class ForceBase(ABC):
     _DEFAULT_SPRING_OBJ_KWARGS: dict[str, Any] = dict(linestyle="-", color="blue", linewidth=1.5)
 
+    _NUM_COILS_PER_UNIT_LEN: int = 10
+    _SPRING_X_STRETCH: float = 5.0
+    _NUM_PLT_POINTS: int = 1000
+    _SPRING_WIDTH: float = 0.1
+
     @property
     def objs(self) -> Sequence[Artist]:
         return list()

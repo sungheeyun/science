@@ -16,8 +16,6 @@ from dynamics.body.body_base import BodyBase
 
 
 class Spring(ForceBase):
-    _NUM_COILS_PER_UNIT_LEN: int = 10
-
     def __init__(
         self,
         spring_constant: float,
@@ -38,14 +36,11 @@ class Spring(ForceBase):
         if obj_kwargs is not None:
             self._obj_kwargs.update(**obj_kwargs)
 
-        self._left_pos: float = 0.0
-        self._right_pos: float = 0.0
-
         self._num_coils: int = int(self._NUM_COILS_PER_UNIT_LEN * self._natural_length)
-        self._num_pnt_p: int = 1000
-        self._amplitude: float = 0.1
-        self._t_1d_p: np.ndarray = np.linspace(0.0, self._num_coils * 2.0 * np.pi, self._num_pnt_p)
-        self._ydata: np.ndarray = self._amplitude * np.sin(self._t_1d_p)
+        self._t_1d_p: np.ndarray = np.linspace(
+            0.0, self._num_coils * 2.0 * np.pi, self._NUM_PLT_POINTS
+        )
+        self._ydata: np.ndarray = self._SPRING_WIDTH * np.sin(self._t_1d_p)
 
         self._line2d: Line2D = self._create_obj()
 

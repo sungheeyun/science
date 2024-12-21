@@ -28,18 +28,18 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         if obj_kwargs is not None:
             self._obj_kwargs.update(**obj_kwargs)
 
-        self._num_coils: int = 25
-        self._num_pnt_p: int = 1000
-        self._amplitude: float = 0.1
-        self._x_stretch: float = 5.0
-        self._t_1d_p: np.ndarray = np.linspace(0.0, self._num_coils * 2.0 * np.pi, self._num_pnt_p)
-        self._ydata: np.ndarray = self._amplitude * np.sin(self._t_1d_p)
+        self._num_coils: int = int(self._NUM_COILS_PER_UNIT_LEN * self._SPRING_X_STRETCH)
+        self._t_1d_p: np.ndarray = np.linspace(
+            0.0, self._num_coils * 2.0 * np.pi, self._NUM_PLT_POINTS
+        )
+        self._ydata: np.ndarray = self._SPRING_WIDTH * np.sin(self._t_1d_p)
 
         self._line2d: Line2D = self._create_obj()
 
     def _create_obj(self) -> Line2D:
         return Line2D(
-            xdata=self._equilibrium_point - np.linspace(self._x_stretch, 0.0, self._t_1d_p.size),
+            xdata=self._equilibrium_point
+            - np.linspace(self._SPRING_X_STRETCH, 0.0, self._t_1d_p.size),
             ydata=self._ydata,
             **self._obj_kwargs,
         )
@@ -67,7 +67,7 @@ class NonStickyLeftHorizontalSpring(ForceBase):
     def update_objs(self) -> None:
         self._line2d.set_xdata(
             np.linspace(
-                self._equilibrium_point - self._x_stretch,
+                self._equilibrium_point - self._SPRING_X_STRETCH,
                 self._cur_x if self._cur_x <= self._equilibrium_point else self._equilibrium_point,
                 self._t_1d_p.size,
             )

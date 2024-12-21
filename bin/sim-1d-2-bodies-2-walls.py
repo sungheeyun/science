@@ -2,6 +2,8 @@
 1-d simulate dynamics of two balls with spring connecting thw two
 """
 
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: F401
@@ -45,7 +47,7 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title("one-dimensional two body motion with wall", pad=10)
+    ax.set_title(os.path.splitext(os.path.split(__file__)[1])[0], pad=10)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
