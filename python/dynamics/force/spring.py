@@ -22,16 +22,16 @@ from dynamics.body.vertical_wall_1d import VerticalWall1D
 class Spring(SpringBase):
     def __init__(
         self,
-        spring_constant: float,
-        natural_length: float,
+        spring_constant: float | int,
+        natural_length: float | int,
         body_1: BodyBase,
         body_2: BodyBase,
         **kwargs
     ) -> None:
-        assert natural_length >= 0.0, natural_length
         super().__init__(spring_constant)
 
-        self._natural_length: float = natural_length
+        assert natural_length >= 0.0, natural_length
+        self._natural_length: float = float(natural_length)
         self._body_1: BodyBase = body_1
         self._body_2: BodyBase = body_2
 
@@ -73,6 +73,7 @@ class Spring(SpringBase):
 
     def _second_body_force(self, time: float) -> np.ndarray:
         vec_2_1: np.ndarray = self._body_2.loc - self._body_1.loc
+        assert la.norm(vec_2_1) > 0.0, vec_2_1
         return (
             -self.spring_constant * (la.norm(vec_2_1) - self._natural_length) / la.norm(vec_2_1)
         ) * vec_2_1

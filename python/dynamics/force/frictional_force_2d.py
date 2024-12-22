@@ -18,22 +18,23 @@ class FrictionalForce2D(FrictionalForceBase):
 
     def __init__(
         self,
-        coef_friction: float,
-        upper_right_pnt: np.ndarray | tuple[float, ...] | list[float],
-        obj_kwargs: dict[str, Any] | None = None,
+        coef_friction: float | int,
+        upper_right_pnt: np.ndarray | tuple[float | int, ...] | list[float | int],
+        **kwargs
     ) -> None:
         assert coef_friction >= 0.0, coef_friction
+        self._coef_friction: float = float(coef_friction)
+        self._upper_right_pnt: np.ndarray = np.array(upper_right_pnt, float)
+
+        # visualization
+
         plt_kwargs: dict[str, Any] = dict(
             linewidth=1.5,
             color="black",
             linestyle="-",
             alpha=0.1,
         )
-        if obj_kwargs is not None:
-            plt_kwargs.update(**obj_kwargs)
-
-        self._coef_friction: float = coef_friction
-        self._upper_right_pnt: np.ndarray = np.array(upper_right_pnt, float)
+        plt_kwargs.update(**kwargs)
 
         xy_1d_p: np.ndarray = np.linspace(
             0.0, self._FRICTIONAL_FORCE_STRETCH, int(1.3 * self._FRICTIONAL_FORCE_STRETCH)

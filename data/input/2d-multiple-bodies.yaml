@@ -1,0 +1,111 @@
+name: "2d multiple bodies"
+
+simulation_setting:
+  minimize_energy: 0
+
+constants:
+  common_spring_natural_length: 10 ** (-.7)
+
+rigid_ball:
+- id: ball_ul
+  mass: 1
+  position: [-2, 2]
+  velocity: [0, 0]
+- id: ball_ur
+  mass: 3
+  position: [2, 2]
+- id: ball_ll
+  mass: 1
+  position: [-2, -2]
+- id: ball_lr
+  mass: 4
+  position: [2, -2]
+- id: ball_u
+  mass: 1
+  position: [0, 3]
+- id: ball_r
+  mass: 1
+  position: [3, 0]
+
+vertical_pin_2d:
+- id: pin_ul
+  position: [-4,4]
+- id: pin_ur
+  position: [4,4]
+- id: pin_ll
+  position: [-4,-4]
+- id: pin_lr
+  position: [4,-4]
+
+spring:
+- id: spring_ul
+  spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [pin_ul, ball_ul]
+- id: spring_ur
+  spring_constant: 5
+  natural_length: common_spring_natural_length
+  bodies: [pin_ur, ball_ur]
+- id: spring_ll
+  spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [pin_ll, ball_ll]
+- id: spring_lr
+  spring_constant: 7
+  natural_length: common_spring_natural_length
+  bodies: [pin_lr, ball_lr]
+
+- id: spring_u
+  spring_constant: 5
+  natural_length: common_spring_natural_length
+  bodies: [ball_ul, ball_ur]
+- id: spring_l
+  spring_constant: 7
+  natural_length: common_spring_natural_length
+  bodies: [ball_ll, ball_lr]
+- id: spring_r
+  spring_constant: 5
+  natural_length: common_spring_natural_length
+  bodies: [ball_lr, ball_ur]
+- id: spring_le
+  spring_constant: 5
+  natural_length: common_spring_natural_length
+  bodies: [ball_ll, ball_ul]
+
+- spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [pin_ul, ball_u]
+  color: red
+  alpha: 0.3
+- spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [ball_u, ball_ur]
+  color: red
+  alpha: 0.3
+- spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [ball_r, ball_ul]
+  color: red
+  alpha: 0.3
+- spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [ball_r, ball_ll]
+  color: red
+  alpha: 0.3
+- spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [ball_r, pin_lr]
+  color: red
+  alpha: 0.3
+- spring_constant: 10
+  natural_length: common_spring_natural_length
+  bodies: [ball_r, pin_ur]
+  color: red
+  alpha: 0.3
+
+gravity_like:
+- acceleration: [0, -5]
+
+frictional_force_2d:
+- coefficient_of_friction: 1e00
+  upper_right_point: [2, 2]

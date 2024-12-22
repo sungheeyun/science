@@ -20,8 +20,8 @@ class RigidBall(BodyBase):
     def __init__(
         self,
         mass: float = 1.0,
-        init_loc: np.ndarray | list[float] | tuple[float, ...] | None = None,
-        init_v: np.ndarray | list[float] | tuple[float, ...] | None = None,
+        init_loc: np.ndarray | list[float | int] | tuple[float | int, ...] | None = None,
+        init_v: np.ndarray | list[float | int] | tuple[float | int, ...] | None = None,
         **kwargs
     ) -> None:
         super().__init__(mass, init_loc, init_v)

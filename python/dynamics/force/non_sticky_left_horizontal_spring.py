@@ -17,9 +17,15 @@ from dynamics.body.body_base import BodyBase
 
 
 class NonStickyLeftHorizontalSpring(SpringBase):
-    def __init__(self, spring_constant: float, equilibrium_point: float, **kwargs) -> None:
+    def __init__(
+        self, spring_constant: float | int, equilibrium_point: float | int, **kwargs
+    ) -> None:
         super().__init__(spring_constant)
-        self._equilibrium_point: float = equilibrium_point
+        self._equilibrium_point: float = float(equilibrium_point)
+        self._cur_x: float = self._equilibrium_point
+
+        # visualization
+
         self._obj_kwargs: dict[str, Any] = dict(
             linestyle="-",
             color="blue",
@@ -27,7 +33,6 @@ class NonStickyLeftHorizontalSpring(SpringBase):
             linewidth=self._SPRING_UNIT_CONSTANT_LINE_WIDTH
             * math.pow(self.spring_constant, 1.0 / 3.0),
         )
-        self._cur_x: float = self._equilibrium_point
         self._obj_kwargs.update(**kwargs)
 
         self._num_coils: int = max(

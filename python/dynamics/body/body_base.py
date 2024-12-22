@@ -14,11 +14,11 @@ from matplotlib.axes import Axes
 class BodyBase(ABC):
     def __init__(
         self,
-        mass: float,
-        init_loc: np.ndarray | list[float] | tuple[float, ...] | None,
-        init_vel: np.ndarray | list[float] | tuple[float, ...] | None,
+        mass: float | int,
+        init_loc: np.ndarray | list[float | int] | tuple[float | int, ...] | None,
+        init_vel: np.ndarray | list[float | int] | tuple[float | int, ...] | None,
     ) -> None:
-        self._mass: float = mass
+        self._mass: float = float(mass)
         self._cur_loc: np.ndarray = (
             np.array([0, 0], float) if init_loc is None else np.array(init_loc, float)
         )

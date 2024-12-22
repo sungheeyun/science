@@ -10,7 +10,7 @@ from dynamics.body.body_base import BodyBase
 
 
 class ConstForce(ForceBase):
-    def __init__(self, force: np.ndarray | list[float] | tuple[float, ...]) -> None:
+    def __init__(self, force: np.ndarray | list[float | int] | tuple[float | int, ...]) -> None:
         self._force_vec: np.ndarray = np.array(force, float)
 
     def register_force(self, bodies: Bodies) -> None:

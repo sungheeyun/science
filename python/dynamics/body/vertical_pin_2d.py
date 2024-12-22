@@ -17,16 +17,13 @@ class VerticalPin2D(FixedBodyBase):
     _PIN_COLOR: str = "red"
 
     def __init__(
-        self,
-        loc: np.ndarray | list[float] | tuple[float, ...],
-        plt_kwargs: dict[str, Any] | None = None,
+        self, loc: np.ndarray | list[float | int] | tuple[float | int, ...], **kwargs
     ) -> None:
         super().__init__(0.0, loc, None)
         circ_kwargs: dict[str, Any] = dict(
             radius=self._PIN_RADIUS, color=self._PIN_COLOR, fill=True
         )
-        if plt_kwargs is not None:
-            circ_kwargs.update(**plt_kwargs)
+        circ_kwargs.update(**kwargs)
 
         self._circle: Circle = Circle(tuple(self.loc), **circ_kwargs)
 

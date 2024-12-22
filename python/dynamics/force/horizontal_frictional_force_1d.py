@@ -18,11 +18,16 @@ class HorizontalFrictionalForce1D(FrictionalForceBase):
 
     def __init__(
         self,
-        coef_friction: float,
-        boundary: float,
+        coef_friction: float | int,
+        boundary: float | int,
         obj_kwargs: dict[str, Any] | None = None,
     ) -> None:
         assert coef_friction >= 0.0, coef_friction
+        self._coef_friction: float = float(coef_friction)
+        self._boundary: float = float(boundary)
+
+        # visualization
+
         plt_kwargs: dict[str, Any] = dict(
             linewidth=1.5,
             color="black",
@@ -31,9 +36,6 @@ class HorizontalFrictionalForce1D(FrictionalForceBase):
         )
         if obj_kwargs is not None:
             plt_kwargs.update(**obj_kwargs)
-
-        self._coef_friction: float = coef_friction
-        self._boundary: float = boundary
 
         x_1d_p: np.ndarray = np.linspace(
             self._boundary - self._FRICTIONAL_FORCE_STRETCH,

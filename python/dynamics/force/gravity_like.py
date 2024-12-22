@@ -12,7 +12,9 @@ from dynamics.force.force_base import ForceBase
 
 
 class GravityLike(ForceBase):
-    def __init__(self, acceleration: np.ndarray | list[float] | tuple[float, ...]) -> None:
+    def __init__(
+        self, acceleration: np.ndarray | list[float | int] | tuple[float | int, ...]
+    ) -> None:
         self._acceleration: np.ndarray = np.array(acceleration, float)
 
     @property
