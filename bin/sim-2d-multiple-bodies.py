@@ -82,7 +82,7 @@ if __name__ == "__main__":
         *springs,
     )
 
-    # forces.approx_min_energy(bodies)
+    forces.approx_min_energy(bodies)
 
     forces.register_forces(bodies)
 
