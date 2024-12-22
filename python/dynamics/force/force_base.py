@@ -11,6 +11,7 @@ from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 
 from dynamics.body.body_base import BodyBase
+from dynamics.body.bodies import Bodies
 
 
 class ForceBase(ABC):
@@ -27,6 +28,10 @@ class ForceBase(ABC):
     @property
     def is_frictional_force(self) -> bool:
         return False
+
+    @abstractmethod
+    def attach_force(self, bodies: Bodies) -> None:
+        pass
 
     @abstractmethod
     def force(self, time: float, boyd: BodyBase) -> np.ndarray:

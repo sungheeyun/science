@@ -25,14 +25,29 @@ class BodyBase(ABC):
         self._cur_vel: np.ndarray = (
             np.array([0, 0], float) if init_vel is None else np.array(init_vel, float)
         )
-        self._cur_time: float = 0.0
 
+        self._forces: list[Any] = list()
         self._dissipated_energy: float = 0.0
+
+    def force(self, time: float) -> tuple[np.ndarray, np.ndarray]:
+        frictional_force: np.ndarray = np.vstack(
+            [force.force(time, self) for force in self._forces if force.is_frictional_force]
+        ).sum(axis=0)
+
+        non_frictional_force: np.ndarray = np.vstack(
+            [force.force(time, self) for force in self._forces if not force.is_frictional_force]
+        ).sum(axis=0)
+
+        return non_frictional_force + frictional_force, frictional_force
+
+    def attach_force(self, force: Any) -> None:
+        self._forces.append(force)
 
     def update(self, t_1: float, t_2: float, forces: Any) -> None:
         next_loc: np.ndarray = (t_2 - t_1) * self.vel + self.loc
 
-        force, frictional_force = forces.force((t_1 + t_2) / 2.0, self)
+        # force, frictional_force = forces.force((t_1 + t_2) / 2.0, self)
+        force, frictional_force = self.force((t_1 + t_2) / 2.0)
 
         self._cur_vel += (t_2 - t_1) * force / self.mass
         self._cur_loc = next_loc

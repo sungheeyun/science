@@ -10,6 +10,7 @@ from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 from matplotlib.axes import Axes
 
+from dynamics.body.bodies import Bodies
 from dynamics.force.force_base import ForceBase
 from dynamics.body.body_base import BodyBase
 
@@ -39,6 +40,10 @@ class NonStickyLeftHorizontalSpring(ForceBase):
         self._ydata: np.ndarray = self._SPRING_WIDTH * np.sin(self._t_1d_p)
 
         self._line2d: Line2D = self._create_obj()
+
+    def attach_force(self, bodies: Bodies) -> None:
+        for body in bodies.bodies:
+            body.attach_force(self)
 
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         self._cur_x = body.loc[0]

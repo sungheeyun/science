@@ -10,6 +10,7 @@ from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 
 from dynamics.body.body_base import BodyBase
+from dynamics.body.bodies import Bodies
 from dynamics.force.force_base import ForceBase
 
 
@@ -20,6 +21,10 @@ class Forces:
     def add_objs(self, ax: Axes):
         for force in self._forces:
             force.add_objs(ax)
+
+    def attach_forces(self, bodies: Bodies) -> None:
+        for force in self._forces:
+            force.attach_force(bodies)
 
     @property
     def forces(self) -> tuple[ForceBase, ...]:

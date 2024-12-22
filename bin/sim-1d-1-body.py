@@ -33,6 +33,8 @@ if __name__ == "__main__":
 
     forces: Forces = Forces(spring, gravity, friction)
 
+    forces.attach_forces(bodies)
+
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
 

@@ -28,10 +28,10 @@ if __name__ == "__main__":
     # forces
     spring: Spring = Spring(10.0, 3.0, ball_1, ball_2)
     friction: FrictionalForce2D = FrictionalForce2D(1, (3.0, 1.5))
-    gravity: GravityLike = GravityLike([-1.0, 0])
+    gravity: GravityLike = GravityLike([0.0, 0])
 
-    # forces: Forces = Forces(spring, friction, gravity)
-    forces: Forces = Forces(spring, friction)
+    forces: Forces = Forces(spring, friction, gravity)
+    forces.attach_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(10, 5))

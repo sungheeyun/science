@@ -11,13 +11,13 @@ from numpy import linalg as la
 from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 
+from dynamics.body.bodies import Bodies
 from dynamics.force.force_base import ForceBase
 from dynamics.body.body_base import BodyBase
 from dynamics.body.vertical_wall_1d import VerticalWall1D
 
 
 class Spring(ForceBase):
-
     def __init__(
         self,
         spring_constant: float,
@@ -33,6 +33,11 @@ class Spring(ForceBase):
         self._natural_length: float = natural_length
         self._body_1: BodyBase = body_1
         self._body_2: BodyBase = body_2
+
+        self._body_1.attach_force(self)
+        self._body_2.attach_force(self)
+
+        # visualization
 
         self._obj_kwargs: dict[str, Any] = dict(
             linestyle="-",
@@ -53,6 +58,9 @@ class Spring(ForceBase):
         self._ydata: np.ndarray = self._SPRING_WIDTH * np.sin(self._t_1d_p)
 
         self._line2d: Line2D = self._create_obj()
+
+    def attach_force(self, bodies: Bodies) -> None:
+        pass
 
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         if body is self._body_1:

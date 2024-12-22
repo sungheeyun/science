@@ -33,8 +33,7 @@ if __name__ == "__main__":
     # gravity: GravityLike = GravityLike([-1.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, friction)
-    # forces: Forces = Forces( spring_1, spring_2 )
-
+    forces.attach_forces(bodies)
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
 

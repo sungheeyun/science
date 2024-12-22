@@ -12,7 +12,6 @@ from matplotlib.artist import Artist
 from dynamics.body.rigid_ball import RigidBall
 from dynamics.body.bodies import Bodies
 from dynamics.force.forces import Forces
-from dynamics.force.gravity_like import GravityLike
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.force.spring import Spring
 from dynamics.utils import energy_info_text
@@ -28,10 +27,11 @@ if __name__ == "__main__":
     # forces
     spring: Spring = Spring(10.0, 1.0, ball_1, ball_2)
     friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1, 3)
-    gravity: GravityLike = GravityLike([-1.0, 0])
+    # gravity: GravityLike = GravityLike([-1.0, 0])
 
     # forces: Forces = Forces(spring, friction, gravity)
     forces: Forces = Forces(spring, friction)
+    forces.attach_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
