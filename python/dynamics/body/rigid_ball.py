@@ -43,3 +43,7 @@ class RigidBall(BodyBase):
     @property
     def objs(self) -> Sequence[Artist]:
         return [self._obj]
+
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
+        return self.objs

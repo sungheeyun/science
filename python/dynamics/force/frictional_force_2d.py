@@ -36,7 +36,7 @@ class FrictionalForce2D(FrictionalForceBase):
         self._upper_right_pnt: np.ndarray = np.array(upper_right_pnt, float)
 
         xy_1d_p: np.ndarray = np.linspace(
-            0.0, self._FRICTIONAL_FORCE_STRETCH, int(10 * self._FRICTIONAL_FORCE_STRETCH)
+            0.0, self._FRICTIONAL_FORCE_STRETCH, int(1.5 * self._FRICTIONAL_FORCE_STRETCH)
         )
         self._line2d_list: list[Line2D] = (
             list()

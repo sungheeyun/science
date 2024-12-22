@@ -19,6 +19,8 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
+    Bodies.set_time_step_lengths(1e-3, 1e-3)
+
     # objects
     ball: RigidBall = RigidBall(2.0, (1, 0), (0, 0))
     bodies: Bodies = Bodies(ball)
@@ -29,7 +31,7 @@ if __name__ == "__main__":
         0.0,
     )
     gravity: GravityLike = GravityLike((-3.0, 0))
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.3, 0)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.1, 0)
 
     forces: Forces = Forces(spring, gravity, friction)
 
@@ -47,7 +49,11 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title(os.path.splitext(os.path.split(__file__)[1])[0], pad=10)
+    ax.set_title(
+        f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
+        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        pad=10,
+    )
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -78,7 +84,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.050  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
@@ -103,17 +109,35 @@ if __name__ == "__main__":
                 [f"x_lim: ({x_min:.2f},{x_max:.2f})", f"v_x_lim: ({v_x_min:.2f},{v_x_max:.2f})"]
             )
             + "\n"
-            + "\n".join(energy_info_text(bodies, forces))
+            + "\n".join(energy_info_text(bodies, forces)[0])
         )
 
         return objs
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=5000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=100, interval=50, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)
     # anim.save("ball_motion.gif", writer=writer)
 
     plt.show()
+
+    # import cProfile
+    #
+    # profiler = cProfile.Profile()
+    # profiler.enable()
+    #
+    # # cProfile.run("plt.show()")
+    # plt.show()
+    #
+    # profiler.disable()
+    #
+    # profiler.dump_stats("aa.prof")
+    #
+    # import pstats
+    #
+    # stats = pstats.Stats("aa.prof")
+    # stats.sort_stats("cumulative").print_stats()
+    # # stats.sort_stats(1).print_stats()

@@ -45,7 +45,11 @@ if __name__ == "__main__":
     ax.grid(True)
 
     # Set title and labels
-    ax.set_title(os.path.splitext(os.path.split(__file__)[1])[0], pad=10)
+    ax.set_title(
+        f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
+        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        pad=10,
+    )
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -77,7 +81,7 @@ if __name__ == "__main__":
             + f", xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
             + f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
             + "\n"
-            + "\n".join(energy_info_text(bodies, forces))
+            + "\n".join(energy_info_text(bodies, forces)[0])
         )
 
         return objs

@@ -44,13 +44,19 @@ class BodyBase(ABC):
         self._forces.append(force)
 
     def update(self, t_1: float, t_2: float, forces: Any) -> None:
-        next_loc: np.ndarray = (t_2 - t_1) * self.vel + self.loc
+        ori_loc: np.ndarray = self.loc.copy()
+        ori_vel: np.ndarray = self.vel.copy()
 
-        # force, frictional_force = forces.force((t_1 + t_2) / 2.0, self)
-        force, frictional_force = self.force((t_1 + t_2) / 2.0)
+        force_1, frictional_force_1 = self.force((t_1 + t_2) / 2.0)
+        self._cur_loc += (t_2 - t_1) * self.vel
+        force_2, frictional_force_2 = self.force((t_1 + t_2) / 2.0)
 
+        force: np.ndarray = (force_1 + force_2) / 2.0
+        frictional_force: np.ndarray = (frictional_force_1 + frictional_force_2) / 2.0
         self._cur_vel += (t_2 - t_1) * force / self.mass
-        self._cur_loc = next_loc
+
+        avg_vel: np.ndarray = (ori_vel + self.vel) / 2.0
+        self._cur_loc = ori_loc + (t_2 - t_1) * avg_vel
 
         self._dissipated_energy += -np.dot(frictional_force, self.vel) * (t_2 - t_1)
 
@@ -91,6 +97,10 @@ class BodyBase(ABC):
     @abstractmethod
     def objs(self) -> Sequence[Artist]:
         pass
+
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
+        return list()
 
     @abstractmethod
     def add_objs(self, ax: Axes) -> None:

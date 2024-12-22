@@ -20,7 +20,7 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
-    Bodies.set_time_step_lengths(1e-2, 1e-2)
+    Bodies.set_time_step_lengths(1e-3, 1e-3)
 
     # bodies
     ball_ul: RigidBall = RigidBall(1.0, (-2.0, 2.0))
@@ -37,6 +37,7 @@ if __name__ == "__main__":
     pin_ll: VerticalPin2D = VerticalPin2D((-4.0, -4.0))
     pin_lr: VerticalPin2D = VerticalPin2D((4.0, -4.0))
 
+    # bodies: Bodies = Bodies(ball_ul, ball_ur, ball_ll, ball_lr, pin_ul, pin_ur, pin_ll, pin_lr)
     bodies: Bodies = Bodies(
         ball_ul, ball_ur, ball_ll, ball_lr, pin_ul, pin_ur, pin_ll, pin_lr, ball_u, ball_r
     )
@@ -52,6 +53,7 @@ if __name__ == "__main__":
     spring_r: Spring = Spring(5.0, 1.0, ball_lr, ball_ur)
     spring_le: Spring = Spring(5.0, 1.0, ball_ll, ball_ul)
 
+    # springs: list[Spring] = list()
     springs: list[Spring] = [
         Spring(10.0, 1.0, pin_ul, ball_u, color="r"),
         Spring(10.0, 1.0, ball_u, ball_ur, color="r"),
@@ -62,7 +64,7 @@ if __name__ == "__main__":
     ]
 
     friction: FrictionalForce2D = FrictionalForce2D(1.0, (2.0, 2.0))
-    gravity: GravityLike = GravityLike([0.0, -10.0])
+    gravity: GravityLike = GravityLike([0.0, -5.0])
 
     forces: Forces = Forces(
         spring_ul,
@@ -92,7 +94,11 @@ if __name__ == "__main__":
     ax.grid(True)
 
     # Set title and labels
-    ax.set_title(os.path.splitext(os.path.split(__file__)[1])[0], pad=10)
+    ax.set_title(
+        f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
+        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        pad=10,
+    )
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -104,6 +110,7 @@ if __name__ == "__main__":
     )
 
     objs: list[Artist] = list(forces.objs) + list(bodies.objs) + [info_text]
+    updated_objs: list[Artist] = list(forces.updated_objs) + list(bodies.updated_objs) + [info_text]
 
     def init():
         """Initialize animation"""
@@ -114,23 +121,41 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.005  # Convert frame number to time in sec
+        t = frame * 0.040  # Convert frame number to time in sec
 
         bodies.update(t, forces)
         forces.update_objs()
 
         info_text.set_text(
-            f"{t:.2f} sec. - frame: {frame}" + "\n" + "\n".join(energy_info_text(bodies, forces))
+            f"{t:.2f} sec. - frame: {frame}" + "\n" + "\n".join(energy_info_text(bodies, forces)[0])
         )
 
         return objs
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=10000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=250, interval=40, blit=True, repeat=False
     )
 
-    # writer = PillowWriter(fps=20)
+    # writer = PillowWriter(fps=25)
     # anim.save("ball_motion.gif", writer=writer)
 
     plt.show()
+
+    # import cProfile
+    #
+    # profiler = cProfile.Profile()
+    # profiler.enable()
+    #
+    # # cProfile.run("plt.show()")
+    # plt.show()
+    #
+    # profiler.disable()
+    #
+    # profiler.dump_stats("aa.prof")
+    #
+    # import pstats
+    #
+    # stats = pstats.Stats("aa.prof")
+    # # stats.sort_stats("cumulative").print_stats()
+    # stats.sort_stats(1).print_stats()

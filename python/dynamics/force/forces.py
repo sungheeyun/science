@@ -51,6 +51,12 @@ class Forces:
     def objs(self) -> Sequence[Artist]:
         return reduce(list.__add__, [list(force.objs) for force in self._forces])  # type:ignore
 
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
+        return reduce(
+            list.__add__, [list(force.updated_objs) for force in self._forces]  # type:ignore
+        )
+
     def update_objs(self) -> None:
         for force in self._forces:
             force.update_objs()

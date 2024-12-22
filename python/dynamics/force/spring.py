@@ -113,6 +113,10 @@ class Spring(ForceBase):
     def objs(self) -> Sequence[Artist]:
         return [self._line2d]
 
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
+        return self.objs
+
     def add_objs(self, ax: Axes) -> None:
         ax.add_artist(self._line2d)
 

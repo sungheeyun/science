@@ -15,7 +15,7 @@ from dynamics.body.bodies import Bodies
 
 
 class ForceBase(ABC):
-    _FRICTIONAL_FORCE_STRETCH: float = 100.0
+    _FRICTIONAL_FORCE_STRETCH: float = 10.0
 
     _SPRING_UNIT_CONSTANT_LINE_WIDTH: float = 1.0
     _SPRING_NUM_COILS_PER_UNIT_LEN: int = 15
@@ -53,6 +53,10 @@ class ForceBase(ABC):
 
     @property
     def objs(self) -> Sequence[Artist]:
+        return list()
+
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
         return list()
 
     def update_objs(self) -> None:

@@ -14,8 +14,8 @@ from dynamics.body.body_base import BodyBase
 
 
 class Bodies:
-    _SIM_TIME_STEP: float = 1e-4
-    _SIM_TIME_STEP_CONST_VEL: float = 1e-4
+    _SIM_TIME_STEP: float = 1e-3
+    _SIM_TIME_STEP_CONST_VEL: float = 1e-3
 
     @classmethod
     def set_time_step_lengths(cls, sim_time_step: float, sim_time_step_const_vel: float) -> None:
@@ -80,3 +80,9 @@ class Bodies:
     @property
     def objs(self) -> Sequence[Artist]:
         return reduce(list.__add__, [list(body.objs) for body in self.bodies])  # type:ignore
+
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
+        return reduce(
+            list.__add__, [list(body.updated_objs) for body in self.bodies]  # type:ignore
+        )

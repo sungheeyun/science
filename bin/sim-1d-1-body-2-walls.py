@@ -19,6 +19,8 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
+    Bodies.set_time_step_lengths(1e-3, 1e-3)
+
     # bodies
     wall_1: VerticalWall1D = VerticalWall1D(-3.0)
     wall_2: VerticalWall1D = VerticalWall1D(3.0)
@@ -29,7 +31,7 @@ if __name__ == "__main__":
     # forces
     spring_1: Spring = Spring(2.0, 1.0, wall_1, ball)
     spring_2: Spring = Spring(5.0, 1.0, ball, wall_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.5, 3)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.0, 3)
     # gravity: GravityLike = GravityLike([-1.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, friction)
@@ -46,7 +48,11 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title(os.path.splitext(os.path.split(__file__)[1])[0], pad=10)
+    ax.set_title(
+        f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
+        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        pad=10,
+    )
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -86,14 +92,14 @@ if __name__ == "__main__":
             f"{t:.2f} sec. - frame: {frame}"
             f", x: {ball.loc[0]:.2f}, v_x: {ball.vel[0]:.2f}"
             + "\n"
-            + "\n".join(energy_info_text(bodies, forces))
+            + "\n".join(energy_info_text(bodies, forces)[0])
         )
 
         return objs
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=10000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=1000, interval=1, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

@@ -38,7 +38,7 @@ class HorizontalFrictionalForce1D(FrictionalForceBase):
         x_1d_p: np.ndarray = np.linspace(
             self._boundary - self._FRICTIONAL_FORCE_STRETCH,
             self._boundary,
-            int(10 * self._FRICTIONAL_FORCE_STRETCH),
+            int(3 * self._FRICTIONAL_FORCE_STRETCH),
         )
         self._line2d_list: list[Line2D] = (
             list()

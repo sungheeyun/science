@@ -45,7 +45,11 @@ if __name__ == "__main__":
     ax.grid(axis="x")
 
     # Set title and labels
-    ax.set_title(os.path.splitext(os.path.split(__file__)[1])[0], pad=10)
+    ax.set_title(
+        f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
+        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        pad=10,
+    )
     ax.set_xlabel("x (m)")
     ax.set_ylabel("potential energy (J)")
 
@@ -55,7 +59,7 @@ if __name__ == "__main__":
     ax.axhline(y=0, color="black", linestyle="-", alpha=0.3)
 
     # Add time display
-    info_text = ax.text(0.02, 0.90, "", transform=ax.transAxes, va="top")
+    info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
 
     lim_info: dict[str, tuple[float, float]] = dict(
         x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
@@ -78,7 +82,9 @@ if __name__ == "__main__":
         forces.update_objs()
 
         info_text.set_text(
-            f"@ {t:.2f} sec. - frame: {frame}" + "\n" + "\n".join(energy_info_text(bodies, forces))
+            f"@ {t:.2f} sec. - frame: {frame}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces)[0])
         )
 
         return objs

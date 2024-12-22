@@ -98,3 +98,7 @@ class NonStickyLeftHorizontalSpring(ForceBase):
     @property
     def objs(self) -> Sequence[Artist]:
         return [self._line2d]
+
+    @property
+    def updated_objs(self) -> Sequence[Artist]:
+        return self.objs
