@@ -59,7 +59,7 @@ if __name__ == "__main__":
     ax.set_ylabel("potential energy (J)")
 
     # Add time display
-    info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
+    info_text = ax.text(0.02, 0.9875, "", transform=ax.transAxes, va="top")
 
     lim_info: dict[str, tuple[float, float]] = dict(
         x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
