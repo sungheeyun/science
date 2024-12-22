@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=2000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=10000, interval=1, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

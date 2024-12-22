@@ -15,26 +15,24 @@ from dynamics.body.body_base import BodyBase
 
 
 class NonStickyLeftHorizontalSpring(ForceBase):
-    def __init__(
-        self,
-        spring_constant: float,
-        equilibrium_point: float,
-        obj_kwargs: dict[str, Any] | None = None,
-    ) -> None:
+    def __init__(self, spring_constant: float, equilibrium_point: float, **kwargs) -> None:
         assert spring_constant > 0.0, spring_constant
         self._spring_constant: float = spring_constant
         self._equilibrium_point: float = equilibrium_point
         self._obj_kwargs: dict[str, Any] = dict(
             linestyle="-",
             color="blue",
-            linewidth=self._UNIT_SPRINT_CONSTANT_LINE_WIDTH
+            alpha=0.5,
+            linewidth=self._SPRING_UNIT_CONSTANT_LINE_WIDTH
             * math.pow(self._spring_constant, 1.0 / 3.0),
         )
         self._cur_x: float = self._equilibrium_point
-        if obj_kwargs is not None:
-            self._obj_kwargs.update(**obj_kwargs)
+        self._obj_kwargs.update(**kwargs)
 
-        self._num_coils: int = int(self._NUM_COILS_PER_UNIT_LEN * self._SPRING_X_STRETCH)
+        self._num_coils: int = max(
+            int(self._SPRING_NUM_COILS_PER_UNIT_LEN * self._SPRING_X_STRETCH),
+            self._SPRING_MIN_NUM_COILS,
+        )
         self._t_1d_p: np.ndarray = np.linspace(
             0.0, self._num_coils * 2.0 * np.pi, self._NUM_PLT_POINTS
         )

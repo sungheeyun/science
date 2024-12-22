@@ -24,10 +24,10 @@ class Spring(ForceBase):
         natural_length: float,
         body_1: BodyBase,
         body_2: BodyBase,
-        obj_kwargs: dict[str, Any] | None = None,
+        **kwargs
     ) -> None:
         assert spring_constant > 0.0, spring_constant
-        assert natural_length > 0.0, natural_length
+        assert natural_length >= 0.0, natural_length
 
         self._spring_constant: float = spring_constant
         self._natural_length: float = natural_length
@@ -37,13 +37,16 @@ class Spring(ForceBase):
         self._obj_kwargs: dict[str, Any] = dict(
             linestyle="-",
             color="blue",
-            linewidth=self._UNIT_SPRINT_CONSTANT_LINE_WIDTH
+            alpha=0.5,
+            linewidth=self._SPRING_UNIT_CONSTANT_LINE_WIDTH
             * math.pow(self._spring_constant, 1.0 / 3.0),
         )
-        if obj_kwargs is not None:
-            self._obj_kwargs.update(**obj_kwargs)
+        self._obj_kwargs.update(**kwargs)
 
-        self._num_coils: int = int(self._NUM_COILS_PER_UNIT_LEN * self._natural_length)
+        self._num_coils: int = max(
+            int(self._SPRING_NUM_COILS_PER_UNIT_LEN * self._natural_length),
+            self._SPRING_MIN_NUM_COILS,
+        )
         self._t_1d_p: np.ndarray = np.linspace(
             0.0, self._num_coils * 2.0 * np.pi, self._NUM_PLT_POINTS
         )
@@ -107,9 +110,6 @@ class Spring(ForceBase):
 
     def _create_obj(self) -> Line2D:
         coordinate_2d: np.ndarray = self._coordinate_2d
-        # print(coordinate_2d.shape)
-        # print(coordinate_2d[0].shape)
-        # print(coordinate_2d[1].shape)
         return Line2D(xdata=coordinate_2d[0], ydata=coordinate_2d[1], **self._obj_kwargs)
 
     def update_objs(self) -> None:
