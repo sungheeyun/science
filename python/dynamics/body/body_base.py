@@ -40,7 +40,7 @@ class BodyBase(ABC):
 
         return non_frictional_force + frictional_force, frictional_force
 
-    def attach_force(self, force: Any) -> None:
+    def register_force(self, force: Any) -> None:
         self._forces.append(force)
 
     def update(self, t_1: float, t_2: float, forces: Any) -> None:
@@ -67,6 +67,11 @@ class BodyBase(ABC):
     @property
     def loc(self) -> np.ndarray:
         return self._cur_loc
+
+    @loc.setter
+    def loc(self, value: np.ndarray) -> None:
+        assert self.loc.shape == value.shape, (self.loc.shape, value.shape)
+        self._cur_loc = value
 
     @property
     def vel(self) -> np.ndarray:

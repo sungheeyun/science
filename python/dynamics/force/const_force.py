@@ -13,9 +13,9 @@ class ConstForce(ForceBase):
     def __init__(self, force: np.ndarray | list[float] | tuple[float, ...]) -> None:
         self._force_vec: np.ndarray = np.array(force, float)
 
-    def attach_force(self, bodies: Bodies) -> None:
+    def register_force(self, bodies: Bodies) -> None:
         for body in bodies.bodies:
-            body.attach_force(self)
+            body.register_force(self)
 
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         return self._force_vec

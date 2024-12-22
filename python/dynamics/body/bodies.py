@@ -11,6 +11,7 @@ from matplotlib.axes import Axes
 from matplotlib.artist import Artist
 
 from dynamics.body.body_base import BodyBase
+from dynamics.body.fixed_body_base import FixedBodyBase
 
 
 class Bodies:
@@ -29,9 +30,32 @@ class Bodies:
         self._bodies: list[BodyBase] = list(args)
         self._cur_time: float = 0.0
 
+        self._body_start_coordinate_map: dict[int, int | None] = dict()
+
+        self._num_coordinates: int = 0
+        for body in self.bodies:
+            if isinstance(body, FixedBodyBase):
+                self._body_start_coordinate_map[id(body)] = None
+            else:
+                self._body_start_coordinate_map[id(body)] = self._num_coordinates
+                self._num_coordinates += body.loc.size
+
+    # getters
+
     @property
     def bodies(self) -> list[BodyBase]:
         return self._bodies
+
+    # setters
+
+    def set_body_locs(self, locs: np.ndarray) -> None:
+        for body in self.bodies:
+            if isinstance(body, FixedBodyBase):
+                continue
+            body.loc = locs[list(self.coordinate_indices(body))]
+            body.update_obj()
+
+    # simulation
 
     def update(self, next_time: float, forces: Any) -> None:
         assert next_time >= self._cur_time, (next_time, self._cur_time)
@@ -56,6 +80,8 @@ class Bodies:
             for body in self.bodies:
                 body.update(t_1, t_stamps[idx + 1], forces)
 
+    # energy
+
     @property
     def kinetic_energy(self) -> float:
         return sum([body.kinetic_energy for body in self.bodies])
@@ -66,6 +92,21 @@ class Bodies:
     @property
     def dissipated_energy(self) -> float:
         return sum([body.dissipated_energy for body in self.bodies])
+
+    # potential energy solving
+    @property
+    def num_coordinates(self) -> int:
+        return self._num_coordinates
+
+    def coordinate_indices(self, body: BodyBase) -> tuple[int, ...]:
+        assert id(body) in self._body_start_coordinate_map, (
+            list(self._body_start_coordinate_map.keys()),
+            id(body),
+        )
+        start_idx: int | None = self._body_start_coordinate_map[id(body)]
+        assert start_idx is not None, body
+
+        return tuple(range(start_idx, start_idx + body.loc.size))
 
     # visualization
 

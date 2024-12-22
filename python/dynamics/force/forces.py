@@ -6,6 +6,7 @@ from functools import reduce
 from typing import Sequence
 
 import numpy as np
+from numpy.linalg import solve
 from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 
@@ -22,9 +23,9 @@ class Forces:
         for force in self._forces:
             force.add_objs(ax)
 
-    def attach_forces(self, bodies: Bodies) -> None:
+    def register_forces(self, bodies: Bodies) -> None:
         for force in self._forces:
-            force.attach_force(bodies)
+            force.register_force(bodies)
 
     @property
     def forces(self) -> tuple[ForceBase, ...]:
@@ -41,9 +42,23 @@ class Forces:
 
         return non_frictional_force + frictional_force, frictional_force
 
+    # energy
+
     @property
     def potential_energy(self) -> float:
         return sum([force.potential_energy for force in self._forces])
+
+    def approx_min_energy(self, bodies: Bodies) -> None:
+        """
+        move bodies to (approximate) min energy locations
+        """
+        a_2d, b_1d = self._min_energy_matrices(bodies)
+        equilibrium_loc: np.ndarray = solve(a_2d, b_1d)
+        bodies.set_body_locs(equilibrium_loc)
+
+    def _min_energy_matrices(self, bodies: Bodies) -> tuple[np.ndarray, np.ndarray]:
+        a_list, b_list = zip(*[force.min_energy_matrices(bodies) for force in self.forces])
+        return np.array(a_list, float).sum(axis=0), np.array(b_list, float).sum(axis=0)
 
     # visualization
 

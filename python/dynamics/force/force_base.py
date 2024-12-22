@@ -30,12 +30,18 @@ class ForceBase(ABC):
         return False
 
     @abstractmethod
-    def attach_force(self, bodies: Bodies) -> None:
+    def register_force(self, bodies: Bodies) -> None:
         pass
 
     @abstractmethod
     def force(self, time: float, boyd: BodyBase) -> np.ndarray:
         pass
+
+    # potential energy
+
+    @abstractmethod
+    def min_energy_matrices(self, bodies: Bodies) -> tuple[np.ndarray, np.ndarray]:
+        raise NotImplementedError()
 
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return np.zeros_like(x_1d)

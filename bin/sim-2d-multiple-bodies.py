@@ -20,7 +20,7 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
-    Bodies.set_time_step_lengths(1e-3, 1e-3)
+    Bodies.set_time_step_lengths(5e-3, 5e-3)
 
     # bodies
     ball_ul: RigidBall = RigidBall(1.0, (-2.0, 2.0))
@@ -42,28 +42,30 @@ if __name__ == "__main__":
         ball_ul, ball_ur, ball_ll, ball_lr, pin_ul, pin_ur, pin_ll, pin_lr, ball_u, ball_r
     )
 
-    # forces
-    spring_ul: Spring = Spring(10.0, 1.0, pin_ul, ball_ul)
-    spring_ur: Spring = Spring(5.0, 1.0, pin_ur, ball_ur)
-    spring_ll: Spring = Spring(10.0, 1.0, pin_ll, ball_ll)
-    spring_lr: Spring = Spring(7.0, 1.0, pin_lr, ball_lr)
+    common_spring_natural_length: float = 10.0 ** (-0.7)
 
-    spring_u: Spring = Spring(5.0, 1.0, ball_ul, ball_ur)
-    spring_l: Spring = Spring(7.0, 1.0, ball_ll, ball_lr)
-    spring_r: Spring = Spring(5.0, 1.0, ball_lr, ball_ur)
-    spring_le: Spring = Spring(5.0, 1.0, ball_ll, ball_ul)
+    # forces
+    spring_ul: Spring = Spring(10.0, common_spring_natural_length, pin_ul, ball_ul)
+    spring_ur: Spring = Spring(5.0, common_spring_natural_length, pin_ur, ball_ur)
+    spring_ll: Spring = Spring(10.0, common_spring_natural_length, pin_ll, ball_ll)
+    spring_lr: Spring = Spring(7.0, common_spring_natural_length, pin_lr, ball_lr)
+
+    spring_u: Spring = Spring(5.0, common_spring_natural_length, ball_ul, ball_ur)
+    spring_l: Spring = Spring(7.0, common_spring_natural_length, ball_ll, ball_lr)
+    spring_r: Spring = Spring(5.0, common_spring_natural_length, ball_lr, ball_ur)
+    spring_le: Spring = Spring(5.0, common_spring_natural_length, ball_ll, ball_ul)
 
     # springs: list[Spring] = list()
     springs: list[Spring] = [
-        Spring(10.0, 1.0, pin_ul, ball_u, color="r"),
-        Spring(10.0, 1.0, ball_u, ball_ur, color="r"),
-        Spring(10.0, 1.0, ball_r, ball_ul, color="r"),
-        Spring(10.0, 1.0, ball_r, ball_ll, color="r"),
-        Spring(10.0, 1.0, ball_r, pin_lr, color="r"),
-        Spring(10.0, 1.0, ball_r, pin_ur, color="r"),
+        Spring(10.0, common_spring_natural_length, pin_ul, ball_u, color="r", alpha=0.3),
+        Spring(10.0, common_spring_natural_length, ball_u, ball_ur, color="r", alpha=0.3),
+        Spring(10.0, common_spring_natural_length, ball_r, ball_ul, color="r", alpha=0.3),
+        Spring(10.0, common_spring_natural_length, ball_r, ball_ll, color="r", alpha=0.3),
+        Spring(10.0, common_spring_natural_length, ball_r, pin_lr, color="r", alpha=0.3),
+        Spring(10.0, common_spring_natural_length, ball_r, pin_ur, color="r", alpha=0.3),
     ]
 
-    friction: FrictionalForce2D = FrictionalForce2D(1.0, (2.0, 2.0))
+    friction: FrictionalForce2D = FrictionalForce2D(1e00, (2.0, 2.0))
     gravity: GravityLike = GravityLike([0.0, -5.0])
 
     forces: Forces = Forces(
@@ -80,7 +82,9 @@ if __name__ == "__main__":
         *springs,
     )
 
-    forces.attach_forces(bodies)
+    # forces.approx_min_energy(bodies)
+
+    forces.register_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(10, 10))
@@ -96,11 +100,11 @@ if __name__ == "__main__":
     # Set title and labels
     ax.set_title(
         f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
-        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        + f" - initial total energy: {energy_info_text(bodies,forces)[1]:.4f}",
         pad=10,
     )
     ax.set_xlabel("x (m)")
-    ax.set_ylabel("potential energy (J)")
+    ax.set_xlabel("y (m)")
 
     # Add time display
     info_text = ax.text(0.02, 0.9875, "", transform=ax.transAxes, va="top")
@@ -134,7 +138,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=250, interval=40, blit=True, repeat=False
+        fig, animate, init_func=init, frames=2000, interval=1, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=25)

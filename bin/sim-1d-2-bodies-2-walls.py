@@ -28,14 +28,17 @@ if __name__ == "__main__":
     bodies: Bodies = Bodies(ball_1, ball_2, wall_1, wall_2)
 
     # forces
-    spring_1: Spring = Spring(5.0, 1.5, wall_1, ball_1)
+    spring_1: Spring = Spring(3.5, 1.5, wall_1, ball_1)
     spring_2: Spring = Spring(5.0, 2.5, ball_1, ball_2)
-    spring_3: Spring = Spring(5.0, 1.5, ball_2, wall_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.1, 3)
+    spring_3: Spring = Spring(4.5, 1.5, ball_2, wall_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(10.0 ** (0.1), 3)
     # gravity: GravityLike = GravityLike([-1.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction)
-    forces.attach_forces(bodies)
+
+    # forces.approx_min_energy(bodies)
+
+    forces.register_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -80,7 +83,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.050  # Convert frame number to time (seconds)
+        t = frame * 0.040  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
@@ -97,7 +100,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=200, interval=10, blit=True, repeat=False
+        fig, animate, init_func=init, frames=3000, interval=1, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

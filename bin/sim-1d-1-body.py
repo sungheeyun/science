@@ -35,10 +35,12 @@ if __name__ == "__main__":
 
     forces: Forces = Forces(spring, gravity, friction)
 
-    forces.attach_forces(bodies)
+    forces.approx_min_energy(bodies)
+
+    forces.register_forces(bodies)
 
     # Set up the figure and axis
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(9, 4.5))
 
     bodies.add_objs(ax)
     forces.add_objs(ax)
@@ -116,7 +118,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=100, interval=50, blit=True, repeat=False
+        fig, animate, init_func=init, frames=1000, interval=50, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

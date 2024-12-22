@@ -2,17 +2,24 @@
 base class for frictional force classes
 """
 
-from abc import ABC
+import numpy as np
 
 from dynamics.body.bodies import Bodies
 from dynamics.force.force_base import ForceBase
 
 
-class FrictionalForceBase(ForceBase, ABC):
+class FrictionalForceBase(ForceBase):
     @property
     def is_frictional_force(self) -> bool:
         return True
 
-    def attach_force(self, bodies: Bodies) -> None:
+    def register_force(self, bodies: Bodies) -> None:
         for body in bodies.bodies:
-            body.attach_force(self)
+            body.register_force(self)
+
+    # potential energy solving
+
+    def min_energy_matrices(self, bodies: Bodies) -> tuple[np.ndarray, np.ndarray]:
+        return np.zeros((bodies.num_coordinates, bodies.num_coordinates)), np.zeros(
+            bodies.num_coordinates
+        )

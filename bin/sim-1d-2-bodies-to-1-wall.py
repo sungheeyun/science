@@ -28,13 +28,16 @@ if __name__ == "__main__":
     bodies: Bodies = Bodies(ball_1, ball_2, wall)
 
     # forces
-    spring_1: Spring = Spring(10, 1.5, wall, ball_1)
-    spring_2: Spring = Spring(10, 2.5, ball_1, ball_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1.0, 3)
-    gravity: GravityLike = GravityLike([-1.0, 0])
+    spring_1: Spring = Spring(10, 1.0, wall, ball_1)
+    spring_2: Spring = Spring(10, 1.0, ball_1, ball_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1, 3)
+    gravity: GravityLike = GravityLike([5.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, friction, gravity)
-    forces.attach_forces(bodies)
+
+    forces.approx_min_energy(bodies)
+
+    forces.register_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))

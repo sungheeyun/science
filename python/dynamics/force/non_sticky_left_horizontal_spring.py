@@ -11,21 +11,21 @@ from matplotlib.lines import Line2D
 from matplotlib.axes import Axes
 
 from dynamics.body.bodies import Bodies
-from dynamics.force.force_base import ForceBase
+from dynamics.body.fixed_body_base import FixedBodyBase
+from dynamics.force.spring_base import SpringBase
 from dynamics.body.body_base import BodyBase
 
 
-class NonStickyLeftHorizontalSpring(ForceBase):
+class NonStickyLeftHorizontalSpring(SpringBase):
     def __init__(self, spring_constant: float, equilibrium_point: float, **kwargs) -> None:
-        assert spring_constant > 0.0, spring_constant
-        self._spring_constant: float = spring_constant
+        super().__init__(spring_constant)
         self._equilibrium_point: float = equilibrium_point
         self._obj_kwargs: dict[str, Any] = dict(
             linestyle="-",
             color="blue",
             alpha=0.5,
             linewidth=self._SPRING_UNIT_CONSTANT_LINE_WIDTH
-            * math.pow(self._spring_constant, 1.0 / 3.0),
+            * math.pow(self.spring_constant, 1.0 / 3.0),
         )
         self._cur_x: float = self._equilibrium_point
         self._obj_kwargs.update(**kwargs)
@@ -41,18 +41,27 @@ class NonStickyLeftHorizontalSpring(ForceBase):
 
         self._line2d: Line2D = self._create_obj()
 
-    def attach_force(self, bodies: Bodies) -> None:
+    # getters
+    @property
+    def equilibrium_point(self) -> float:
+        return self._equilibrium_point
+
+    # simulation
+
+    def register_force(self, bodies: Bodies) -> None:
         for body in bodies.bodies:
-            body.attach_force(self)
+            body.register_force(self)
 
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         self._cur_x = body.loc[0]
         force_x: float = (
             0.0
             if self._cur_x >= self._equilibrium_point
-            else self._spring_constant * (self._equilibrium_point - self._cur_x)
+            else self.spring_constant * (self._equilibrium_point - self._cur_x)
         )
         return np.array([force_x, 0.0])
+
+    # potential energy
 
     def body_potential_energy(self, body: BodyBase) -> float:
         return 0.0
@@ -60,7 +69,7 @@ class NonStickyLeftHorizontalSpring(ForceBase):
     @property
     def potential_energy(self) -> float:
         return (
-            0.5 * self._spring_constant * (self._cur_x - self._equilibrium_point) ** 2.0
+            0.5 * self.spring_constant * (self._cur_x - self._equilibrium_point) ** 2.0
             if self._cur_x < self._equilibrium_point
             else 0.0
         )
@@ -68,10 +77,27 @@ class NonStickyLeftHorizontalSpring(ForceBase):
     def x_potential_energy(self, obj: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return (
             0.5
-            * self._spring_constant
+            * self.spring_constant
             * (x_1d < self._equilibrium_point)
             * np.power(x_1d - self._equilibrium_point, 2.0)
         )
+
+    # potential energy
+
+    def min_energy_matrices(self, bodies: Bodies) -> tuple[np.ndarray, np.ndarray]:
+        num_coordinates: int = bodies.num_coordinates
+        a_2d: np.ndarray = np.zeros((num_coordinates, num_coordinates))
+        b_1d: np.ndarray = np.zeros(num_coordinates)
+
+        for body in bodies.bodies:
+            if isinstance(body, FixedBodyBase):
+                continue
+
+            for idx in bodies.coordinate_indices(body):
+                a_2d[idx, idx] = self.spring_constant
+                b_1d[idx] = self.spring_constant * self.equilibrium_point
+
+        return a_2d, b_1d
 
     # visualization
 

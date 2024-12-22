@@ -31,7 +31,10 @@ if __name__ == "__main__":
     gravity: GravityLike = GravityLike([0.0, 0])
 
     forces: Forces = Forces(spring, friction, gravity)
-    forces.attach_forces(bodies)
+
+    # forces.approx_min_energy(bodies)
+
+    forces.register_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -51,7 +54,7 @@ if __name__ == "__main__":
         pad=10,
     )
     ax.set_xlabel("x (m)")
-    ax.set_ylabel("potential energy (J)")
+    ax.set_ylabel("y (m)")
 
     # Add time display
     info_text = ax.text(0.02, 0.975, "", transform=ax.transAxes, va="top")

@@ -9,10 +9,10 @@ from matplotlib.axes import Axes
 from matplotlib.patches import Circle
 from matplotlib.artist import Artist
 
-from dynamics.body.body_base import BodyBase
+from dynamics.body.fixed_body_base import FixedBodyBase
 
 
-class VerticalPin2D(BodyBase):
+class VerticalPin2D(FixedBodyBase):
     _PIN_RADIUS: float = 0.05
     _PIN_COLOR: str = "red"
 

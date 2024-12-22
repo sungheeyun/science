@@ -31,15 +31,18 @@ if __name__ == "__main__":
     bodies: Bodies = Bodies(ball_1, ball_2, pin_2, pin_1)
 
     # forces
-    spring_1: Spring = Spring(1.0, 1.0, pin_1, ball_1)
-    spring_2: Spring = Spring(10.0, 3.0, ball_1, ball_2)
-    spring_3: Spring = Spring(5.0, 1.0, ball_2, pin_2)
+    spring_1: Spring = Spring(1.0, 1.0e-1, pin_1, ball_1)
+    spring_2: Spring = Spring(10.0, 3.0e-1, ball_1, ball_2)
+    spring_3: Spring = Spring(5.0, 1.0e-1, ball_2, pin_2)
 
     friction: FrictionalForce2D = FrictionalForce2D(1e-1, (2.0, 2.0))
     gravity: GravityLike = GravityLike([-5.0, 5.0])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction, gravity)
-    forces.attach_forces(bodies)
+
+    # forces.approx_min_energy(bodies)
+
+    forces.register_forces(bodies)
 
     # Set up the figure and axis
     fig, ax = plt.subplots(figsize=(10, 10))
@@ -59,7 +62,7 @@ if __name__ == "__main__":
         pad=10,
     )
     ax.set_xlabel("x (m)")
-    ax.set_ylabel("potential energy (J)")
+    ax.set_ylabel("y (m)")
 
     # Add time display
     info_text = ax.text(0.02, 0.9875, "", transform=ax.transAxes, va="top")

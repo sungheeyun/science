@@ -8,10 +8,10 @@ from matplotlib.axes import Axes
 from matplotlib.patches import Polygon
 from matplotlib.artist import Artist
 
-from dynamics.body.body_base import BodyBase
+from dynamics.body.fixed_body_base import FixedBodyBase
 
 
-class VerticalWall1D(BodyBase):
+class VerticalWall1D(FixedBodyBase):
     _WALL_HEIGHT: float = 1.0
     _WALL_WIDTH: float = 0.1
     _WALL_COLOR: str = "red"

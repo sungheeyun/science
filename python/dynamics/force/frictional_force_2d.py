@@ -36,7 +36,7 @@ class FrictionalForce2D(FrictionalForceBase):
         self._upper_right_pnt: np.ndarray = np.array(upper_right_pnt, float)
 
         xy_1d_p: np.ndarray = np.linspace(
-            0.0, self._FRICTIONAL_FORCE_STRETCH, int(1.5 * self._FRICTIONAL_FORCE_STRETCH)
+            0.0, self._FRICTIONAL_FORCE_STRETCH, int(1.3 * self._FRICTIONAL_FORCE_STRETCH)
         )
         self._line2d_list: list[Line2D] = (
             list()
@@ -74,6 +74,8 @@ class FrictionalForce2D(FrictionalForceBase):
             if np.all(body.loc < self._upper_right_pnt)
             else np.zeros_like(body.loc)
         )
+
+    # potential energy
 
     def body_potential_energy(self, body: BodyBase) -> float:
         return 0.0
