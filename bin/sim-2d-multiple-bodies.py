@@ -61,7 +61,7 @@ if __name__ == "__main__":
         Spring(10.0, 1.0, ball_r, pin_ur, color="r"),
     ]
 
-    friction: FrictionalForce2D = FrictionalForce2D(100.1, (2.0, 2.0))
+    friction: FrictionalForce2D = FrictionalForce2D(1.0, (2.0, 2.0))
     gravity: GravityLike = GravityLike([0.0, -10.0])
 
     forces: Forces = Forces(
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.005  # Convert frame number to time in sec
 
         bodies.update(t, forces)
         forces.update_objs()
