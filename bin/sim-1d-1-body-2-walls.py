@@ -71,10 +71,6 @@ if __name__ == "__main__":
     # display
     info_text = ax.text(0.02, 0.95, "", transform=ax.transAxes, va="top")
 
-    lim_info: dict[str, tuple[float, float]] = dict(
-        x_lim=(np.inf, -np.inf), v_x_lim=(np.inf, -np.inf)
-    )
-
     objs: list[Artist] = list(forces.objs) + list(bodies.objs) + [info_text]
 
     def init():

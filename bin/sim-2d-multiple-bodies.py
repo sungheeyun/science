@@ -114,7 +114,6 @@ if __name__ == "__main__":
     )
 
     objs: list[Artist] = list(forces.objs) + list(bodies.objs) + [info_text]
-    updated_objs: list[Artist] = list(forces.updated_objs) + list(bodies.updated_objs) + [info_text]
 
     def init():
         """Initialize animation"""
