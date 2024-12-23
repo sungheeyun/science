@@ -22,20 +22,20 @@ if __name__ == "__main__":
     Bodies.set_time_step_lengths(1e-3, 1e-3)
 
     # objects
-    ball: RigidBall = RigidBall(2.0, (1, 0), (0, 0))
+    ball: RigidBall = RigidBall(2.0, (1, 0), (-2, 0))
     bodies: Bodies = Bodies(ball)
 
     # force sources
     spring: NonStickyLeftHorizontalSpring = NonStickyLeftHorizontalSpring(
-        10.0,
+        20.0,
         0.0,
     )
     gravity: GravityLike = GravityLike((-3.0, 0))
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.1, 0)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1.0, 1)
 
     forces: Forces = Forces(spring, gravity, friction)
 
-    forces.approx_min_energy(bodies)
+    # forces.approx_min_energy(bodies)
 
     forces.register_forces(bodies)
 
@@ -116,30 +116,8 @@ if __name__ == "__main__":
 
         return objs
 
-    # Create animation
     anim = FuncAnimation(
         fig, animate, init_func=init, frames=1000, interval=50, blit=True, repeat=False
     )
 
-    # writer = PillowWriter(fps=20)
-    # anim.save("ball_motion.gif", writer=writer)
-
     plt.show()
-
-    # import cProfile
-    #
-    # profiler = cProfile.Profile()
-    # profiler.enable()
-    #
-    # # cProfile.run("plt.show()")
-    # plt.show()
-    #
-    # profiler.disable()
-    #
-    # profiler.dump_stats("aa.prof")
-    #
-    # import pstats
-    #
-    # stats = pstats.Stats("aa.prof")
-    # stats.sort_stats("cumulative").print_stats()
-    # # stats.sort_stats(1).print_stats()
