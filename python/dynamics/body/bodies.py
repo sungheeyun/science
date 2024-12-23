@@ -15,16 +15,16 @@ from dynamics.body.fixed_body_base import FixedBodyBase
 
 
 class Bodies:
-    _SIM_TIME_STEP: float = 1e-3
-    _SIM_TIME_STEP_CONST_VEL: float = 1e-3
+    SIM_TIME_STEP: float = 1e-3
+    SIM_TIME_STEP_CONST_VEL: float = 1e-3
 
     @classmethod
     def set_time_step_lengths(cls, sim_time_step: float, sim_time_step_const_vel: float) -> None:
         assert sim_time_step > 0.0, sim_time_step
         assert sim_time_step_const_vel > 0.0, sim_time_step_const_vel
 
-        cls._SIM_TIME_STEP = sim_time_step
-        cls._SIM_TIME_STEP_CONST_VEL = sim_time_step_const_vel
+        cls.SIM_TIME_STEP = sim_time_step
+        cls.SIM_TIME_STEP_CONST_VEL = sim_time_step_const_vel
 
     def __init__(self, *args) -> None:
         self._bodies: list[BodyBase] = list(args)
@@ -67,7 +67,7 @@ class Bodies:
         )
 
         t_step: float = min(
-            self._SIM_TIME_STEP, self._SIM_TIME_STEP_CONST_VEL / (max_vel if max_vel > 0.0 else 1.0)
+            self.SIM_TIME_STEP, self.SIM_TIME_STEP_CONST_VEL / (max_vel if max_vel > 0.0 else 1.0)
         )
         self._update_bodies(next_time, t_step, forces)
         self._cur_time = next_time

@@ -1,10 +1,24 @@
 name: "2d multiple bodies"
 
-simulation_setting:
-  minimize_energy: 0
-
 constants:
-  common_spring_natural_length: 10 ** (-.7)
+  common_spring_natural_length: 10 ** (.2)
+
+simulation_setting:
+  minimize_energy: false
+  sim_time_step: 1e-2
+  sim_time_step_const_vel: 1e-2
+
+  fig_size: [8, 8]
+  xlim: [-5, 5]
+  ylim: [-5, 5]
+  grid: true
+  real_world_time_interval: 0.100
+  num_frames: 100
+  frame_interval: 100
+
+  save_to_gif: false
+  num_frames_saved: 100
+  num_frames_per_sec: 20
 
 rigid_ball:
 - id: ball_ul
@@ -107,5 +121,5 @@ gravity_like:
 - acceleration: [0, -5]
 
 frictional_force_2d:
-- coefficient_of_friction: 1e00
+- coefficient_of_friction: 1.
   upper_right_point: [2, 2]

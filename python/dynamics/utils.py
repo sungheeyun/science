@@ -30,7 +30,7 @@ def energy_info_text(bodies: Bodies, forces: Forces) -> tuple[list[str], float]:
 
 def load_dynamic_system_simulation_setting(
     data: dict[str, Any]
-) -> tuple[str, Bodies, Forces, bool]:
+) -> tuple[dict[str, str | float | int | bool | list[int | float]], Bodies, Forces]:
     # data hierarchy check
     assert "name" in data
     assert "constants" in data
@@ -48,21 +48,44 @@ def load_dynamic_system_simulation_setting(
 
     _data: dict[str, Any] = data.copy()
 
-    name: str = _data.pop("name")
-    min_energy: bool = (
-        bool(_data.pop("simulation_setting")["minimize_energy"])
-        if "simulation_setting" in _data and "minimize_energy" in _data["simulation_setting"]
-        else False
-    )
-
     # parse constants
     constants: Constants = Constants()
 
     for key, value in _data.pop("constants").items():
         constants.assign(key, value)
 
-    print("")
-    print("CONSTANTS", "\n\t", constants)
+    # parse simulation setting
+
+    simulation_setting: dict[str, str | float | int | bool | list[int | float]] = (
+        _data.pop("simulation_setting").copy()
+        if "simulation_setting" in _data
+        else dict(minimize_energy=False)
+    )
+    simulation_setting["minimize_energy"] = bool(simulation_setting["minimize_energy"])
+    assert "name" not in simulation_setting
+    simulation_setting["name"] = _data.pop("name")
+    simulation_setting["grid"] = simulation_setting.get("grid", False)
+    simulation_setting["grid"] = bool(simulation_setting["grid"])
+    simulation_setting["save_to_gif"] = simulation_setting.get("save_to_gif", False)
+
+    if "sim_time_step" in simulation_setting:
+        simulation_setting["sim_time_step"] = constants.value(
+            simulation_setting["sim_time_step"]  # type:ignore
+        )
+    if "sim_time_step_const_vel" in simulation_setting:
+        simulation_setting["sim_time_step_const_vel"] = constants.value(
+            simulation_setting["sim_time_step_const_vel"]  # type:ignore
+        )
+
+    if simulation_setting["save_to_gif"]:
+        simulation_setting["gif_filepath"] = simulation_setting.get(
+            "gif_filepath", "dynamics-simulation.gif"
+        )
+        simulation_setting["num_frames_per_sec"] = simulation_setting.get(
+            "num_frames_per_sec",
+            int(1.0 / simulation_setting["real_world_time_interval"]),  # type:ignore
+        )
+        simulation_setting["num_frames_saved"] = simulation_setting.get("num_frames_saved", 100)
 
     # parse body information
 
@@ -78,12 +101,6 @@ def load_dynamic_system_simulation_setting(
             _id, vertical_pin_2d = VerticalPin2DCreator.create(vertical_pin_2d_data)
             assert _id not in id_body_map, (list(id_body_map.keys()), _id)
             id_body_map[_id] = vertical_pin_2d
-
-    print("")
-    print("BODYs")
-
-    for _id, body in id_body_map.items():
-        print("\t", _id, body)
 
     # parse force information
 
@@ -113,12 +130,6 @@ def load_dynamic_system_simulation_setting(
             ]
         )
 
-    print("")
-    print("FORCEs")
-
-    for force in forces:
-        print("\t", force)
-
     assert len(_data) == 0, (_data, list(_data.keys()))
 
-    return name, Bodies(*id_body_map.values()), Forces(*forces), min_energy
+    return simulation_setting, Bodies(*id_body_map.values()), Forces(*forces)
