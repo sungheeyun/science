@@ -22,16 +22,16 @@ if __name__ == "__main__":
     Bodies.set_time_step_lengths(1e-3, 1e-3)
 
     # objects
-    ball: RigidBall = RigidBall(2.0, (1, 0), (-2, 0))
+    ball: RigidBall = RigidBall(2, (1, 0), (-2, 0))
     bodies: Bodies = Bodies(ball)
 
     # force sources
     spring: NonStickyLeftHorizontalSpring = NonStickyLeftHorizontalSpring(
-        20.0,
-        0.0,
+        20,
+        0,
     )
-    gravity: GravityLike = GravityLike((-3.0, 0))
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1.0, 1)
+    gravity: GravityLike = GravityLike((-3, 0))
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1, 1)
 
     forces: Forces = Forces(spring, gravity, friction)
 
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     bodies.add_objs(ax)
     forces.add_objs(ax)
 
-    ax.set_xlim(-3.0, 3.0)
-    ax.set_ylim(-1.0, 1.0)
+    ax.set_xlim(-3, 3)
+    ax.set_ylim(-1, 1)
     ax.set_aspect("equal")
     ax.grid(axis="x")
 
