@@ -77,6 +77,11 @@ class BodyBase(ABC):
     def vel(self) -> np.ndarray:
         return self._cur_vel
 
+    @vel.setter
+    def vel(self, value: np.ndarray) -> None:
+        assert self.vel.shape == value.shape, (self.vel.shape, value.shape)
+        self._cur_vel = value
+
     @property
     def loc_text(self):
         return "(" + ", ".join(f"{loc:.2f}" for loc in self.loc) + ")"

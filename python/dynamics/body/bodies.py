@@ -53,6 +53,7 @@ class Bodies:
             if isinstance(body, FixedBodyBase):
                 continue
             body.loc = locs[list(self.coordinate_indices(body))]
+            body.vel = np.zeros_like(body.vel)
             body.update_obj()
 
     # simulation
