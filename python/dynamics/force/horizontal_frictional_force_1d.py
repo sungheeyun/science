@@ -16,12 +16,7 @@ from dynamics.force.frictional_force_base import FrictionalForceBase
 class HorizontalFrictionalForce1D(FrictionalForceBase):
     _FRICTIONAL_FORCE_HEIGHT: float = 0.1
 
-    def __init__(
-        self,
-        coef_friction: float | int,
-        boundary: float | int,
-        obj_kwargs: dict[str, Any] | None = None,
-    ) -> None:
+    def __init__(self, coef_friction: float | int, boundary: float | int, **kwargs) -> None:
         assert coef_friction >= 0.0, coef_friction
         self._coef_friction: float = float(coef_friction)
         self._boundary: float = float(boundary)
@@ -34,8 +29,7 @@ class HorizontalFrictionalForce1D(FrictionalForceBase):
             linestyle="-",
             alpha=0.5,
         )
-        if obj_kwargs is not None:
-            plt_kwargs.update(**obj_kwargs)
+        plt_kwargs.update(**kwargs)
 
         x_1d_p: np.ndarray = np.linspace(
             self._boundary - self._FRICTIONAL_FORCE_STRETCH,

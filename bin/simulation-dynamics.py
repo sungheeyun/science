@@ -12,7 +12,7 @@ from matplotlib.artist import Artist
 from freq_used.logging_utils import set_logging_basic_config
 
 from dynamics.utils import load_dynamic_system_simulation_setting
-from dynamics.utils import energy_info_text
+from dynamics.utils import energy_info_text, kinematics_info_text
 from dynamics.body.bodies import Bodies
 
 logger: Logger = getLogger()
@@ -60,15 +60,8 @@ def main(input_file: str) -> None:
 
     ax.set_xlim(*simulation_setting["xlim"])  # type:ignore
     ax.set_ylim(*simulation_setting["ylim"])  # type:ignore
-    ax.set_aspect("equal")
     ax.grid(simulation_setting["grid"])  # type:ignore
-
-    # Set title and labels
-    ax.set_title(
-        simulation_setting["name"]  # type:ignore
-        + f" - initial total energy: {energy_info_text(bodies,forces)[1]:.4f}",  # type:ignore
-        pad=10,
-    )
+    ax.set_aspect("equal")
 
     info_text = ax.text(0.02, 0.9875, "", transform=ax.transAxes, va="top")
 
@@ -89,7 +82,11 @@ def main(input_file: str) -> None:
         forces.update_objs()
 
         info_text.set_text(
-            f"{t:.2f} sec. - frame: {frame}" + "\n" + "\n".join(energy_info_text(bodies, forces)[0])
+            f"{t:.2f} sec. - frame: {frame}"
+            + "\n"
+            + "\n".join(energy_info_text(bodies, forces)[0])
+            + "\n"
+            + "\n".join(kinematics_info_text(bodies))
         )
 
         return objs
@@ -139,16 +136,32 @@ def main(input_file: str) -> None:
             + f" {num_frames_per_sec * real_world_time_interval} times faster than real world"
         )
 
+        ax.set_title(
+            str(simulation_setting["name"])
+            + f" ({real_world_time_interval * num_frames:.1f} sec."
+            + f", up to {num_frames_per_sec * real_world_time_interval:g}x)"
+            + f" - initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
+            pad=10,
+        )
+
         writer = PillowWriter(fps=num_frames_per_sec)
         anim.save(gif_filepath, writer=writer)
         logger.info("saving COMPLETED")
     else:
         logger.info("Start animation")
-        logger.info(f"\t(try to) update visualization every {frame_interval / 1000.:.3f} sec")
-        logger.info(f"\tthat is, (try to) show {1000./frame_interval:.1f} frames per sec")
+        logger.info(f"\t(try to) update visualization every {frame_interval / 1000.0:.3f} sec")
+        logger.info(f"\tthat is, (try to) show {1000.0/frame_interval:.1f} frames per sec")
         logger.info(
             "\tthus the animation is (up to) "
-            + f"{real_world_time_interval / frame_interval * 1000.} times faster than real world"
+            + f"{real_world_time_interval / frame_interval * 1000.0} times faster than real world"
+        )
+
+        ax.set_title(
+            str(simulation_setting["name"])
+            + f" ({real_world_time_interval * num_frames:.1f} sec."
+            + f", up to {real_world_time_interval * 1000.0 / frame_interval:g}x)"
+            + f" - initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
+            pad=10,
         )
 
         plt.show()

@@ -15,8 +15,8 @@ from dynamics.body.fixed_body_base import FixedBodyBase
 
 
 class Bodies:
-    SIM_TIME_STEP: float = 1e-3
-    SIM_TIME_STEP_CONST_VEL: float = 1e-3
+    SIM_TIME_STEP: float = 1e-2
+    SIM_TIME_STEP_CONST_VEL: float = 1e-2
 
     @classmethod
     def set_time_step_lengths(cls, sim_time_step: float, sim_time_step_const_vel: float) -> None:

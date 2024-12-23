@@ -3,6 +3,10 @@ utils
 """
 
 from typing import Any
+from logging import Logger, getLogger
+import sys
+
+from numpy.linalg import norm
 
 from dynamics.body.body_base import BodyBase
 from dynamics.body.bodies import Bodies
@@ -14,6 +18,14 @@ from dynamics.instant_creators.vertical_pin_2d_creator import VerticalPin2DCreat
 from dynamics.instant_creators.spring_creator import SpringCreator
 from dynamics.instant_creators.gtavity_like_creator import GravityLikeCreator
 from dynamics.instant_creators.frictional_force_2d_creator import FrictionalForce2DCreator
+from dynamics.instant_creators.non_sticky_left_horizontal_spring_creator import (
+    NonStickyLeftHorizontalSpringCreator,
+)
+from dynamics.instant_creators.horizontal_frictional_force_1d_creator import (
+    HorizontalFrictionalForce1DCreator,
+)
+
+logger: Logger = getLogger()
 
 
 def energy_info_text(bodies: Bodies, forces: Forces) -> tuple[list[str], float]:
@@ -23,9 +35,24 @@ def energy_info_text(bodies: Bodies, forces: Forces) -> tuple[list[str], float]:
     pe: float = bpe + fpe
     de: float = bodies.dissipated_energy
     return [
+        f"ke + pe + de: {ke+pe+de:.2f}, ke + pe: {ke+pe:.2f}",
         f"ke: {ke:.2f}, pe: {pe:.2f} (= bpe: {bpe:.2f} + fpe: {fpe:.2f}), de: {de:.2f}",
-        f"ke + pe + de: {ke+pe+de:.4f}, ke + pe: {ke+pe:.2f}, pe: {pe:.2f}",
     ], ke + pe + de
+
+
+def kinematics_info_text(bodies: Bodies) -> list[str]:
+    return [
+        ", ".join(
+            [
+                "$l$ = ("
+                + ", ".join([f"{x:.2f}" for x in body.loc])
+                + ") & $v$ = ("
+                + ", ".join([f"{x:.2f}" for x in body.vel])
+                + f") & $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
+                for body in bodies.bodies
+            ]
+        )
+    ]
 
 
 def load_dynamic_system_simulation_setting(
@@ -130,6 +157,31 @@ def load_dynamic_system_simulation_setting(
             ]
         )
 
-    assert len(_data) == 0, (_data, list(_data.keys()))
+    if "non_sticky_left_horizontal_spring" in _data:
+        forces.extend(
+            [
+                NonStickyLeftHorizontalSpringCreator.create(
+                    non_sticky_left_horizontal_spring, constants
+                )
+                for non_sticky_left_horizontal_spring in _data.pop(
+                    "non_sticky_left_horizontal_spring"
+                )
+            ]
+        )
+
+    if "horizontal_frictional_force_1d" in _data:
+        forces.extend(
+            [
+                HorizontalFrictionalForce1DCreator.create(horizontal_frictional_force_1d, constants)
+                for horizontal_frictional_force_1d in _data.pop("horizontal_frictional_force_1d")
+            ]
+        )
+
+    if len(_data) > 0:
+        logger.error(
+            f"These field{'s are' if len(_data) > 1 else ' is'} not recognized:"
+            + ", ".join(_data.keys())
+        )
+        sys.exit(1)
 
     return simulation_setting, Bodies(*id_body_map.values()), Forces(*forces)

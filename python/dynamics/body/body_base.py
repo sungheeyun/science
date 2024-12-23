@@ -30,13 +30,24 @@ class BodyBase(ABC):
         self._dissipated_energy: float = 0.0
 
     def force(self, time: float) -> tuple[np.ndarray, np.ndarray]:
-        frictional_force: np.ndarray = np.vstack(
-            [force.force(time, self) for force in self._forces if force.is_frictional_force]
-        ).sum(axis=0)
+        frictional_force_list: list[np.ndarray] = [
+            force.force(time, self) for force in self._forces if force.is_frictional_force
+        ]
+        frictional_force: np.ndarray = (
+            np.vstack(frictional_force_list).sum(axis=0)
+            if frictional_force_list
+            else np.zeros_like(self.loc)
+        )
 
-        non_frictional_force: np.ndarray = np.vstack(
-            [force.force(time, self) for force in self._forces if not force.is_frictional_force]
-        ).sum(axis=0)
+        non_frictional_force_list: list[np.ndarray] = [
+            force.force(time, self) for force in self._forces if not force.is_frictional_force
+        ]
+
+        non_frictional_force: np.ndarray = (
+            np.vstack(non_frictional_force_list).sum(axis=0)
+            if non_frictional_force_list
+            else np.zeros(self.loc)
+        )
 
         return non_frictional_force + frictional_force, frictional_force
 
