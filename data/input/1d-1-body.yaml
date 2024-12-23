@@ -1,0 +1,39 @@
+name: "1d 1-body movement"
+
+constants:
+  common_spring_natural_length: 10 ** (.2)
+
+simulation_setting:
+  minimize_energy: false
+  sim_time_step: 1e-2
+  sim_time_step_const_vel: 1e-2
+
+  fig_size: [9, 4.5]
+  xlim: [-3, 3]
+  ylim: [-1, 1]
+  grid: true
+  real_world_time_interval: 0.040
+  num_frames: 1000
+  frame_interval: 40
+
+  save_to_gif: false
+  gif_filepath: 1d-1-body.gif
+  num_frames_saved: 200
+  num_frames_per_sec: 25
+
+rigid_ball:
+  - id: ball
+    mass: 2
+    position: [1, 0]
+    velocity: [-2, 0]
+
+non_sticky_left_horizontal_spring:
+  - spring_constant: 20
+    equilibrium_point: 0
+
+gravity_like:
+  - acceleration: [-3, 0]
+
+horizontal_frictional_force_1d:
+  - coefficient_of_friction: 5
+    boundary: -.5

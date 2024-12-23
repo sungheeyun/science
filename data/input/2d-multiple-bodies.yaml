@@ -42,14 +42,14 @@ rigid_ball:
   position: [3, 0]
 
 vertical_pin_2d:
-- id: pin_ul
-  position: [-4,4]
-- id: pin_ur
-  position: [4,4]
-- id: pin_ll
-  position: [-4,-4]
-- id: pin_lr
-  position: [4,-4]
+  - id: pin_ul
+    position: [-4,4]
+  - id: pin_ur
+    position: [4,4]
+  - id: pin_ll
+    position: [-4,-4]
+  - id: pin_lr
+    position: [4,-4]
 
 spring:
 - id: spring_ul
