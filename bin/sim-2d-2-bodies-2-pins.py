@@ -20,22 +20,22 @@ from dynamics.utils import energy_info_text
 if __name__ == "__main__":
 
     # bodies
-    ball_1: RigidBall = RigidBall(1.0, (-2, -1), (0, 0))
-    ball_2: RigidBall = RigidBall(1.0, (2, 1), (0, 0))
+    ball_1: RigidBall = RigidBall(1, (-2, -1), (0, 0))
+    ball_2: RigidBall = RigidBall(1, (2, 1), (0, 0))
 
     # pins
-    pin_2: VerticalPin2D = VerticalPin2D((2.0, 2.0))
-    pin_1: VerticalPin2D = VerticalPin2D((-2.0, -4.0))
+    pin_1: VerticalPin2D = VerticalPin2D((-2, -4))
+    pin_2: VerticalPin2D = VerticalPin2D((2, 2))
 
     bodies: Bodies = Bodies(ball_1, ball_2, pin_2, pin_1)
 
     # forces
-    spring_1: Spring = Spring(10.0, 10**0.2, pin_1, ball_1)
-    spring_2: Spring = Spring(10.0, 10**0.2, ball_1, ball_2)
-    spring_3: Spring = Spring(10.0, 10**0.2, ball_2, pin_2)
+    spring_1: Spring = Spring(10, 10**0.2, pin_1, ball_1)
+    spring_2: Spring = Spring(10, 10**0.2, ball_1, ball_2)
+    spring_3: Spring = Spring(10, 10**0.2, ball_2, pin_2)
 
-    friction: FrictionalForce2D = FrictionalForce2D(10**0.0, (2.0, 2.0))
-    gravity: GravityLike = GravityLike([-5.0, 5.0])
+    friction: FrictionalForce2D = FrictionalForce2D(10**0.0, (2, 2))
+    gravity: GravityLike = GravityLike([-5, 5])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction, gravity)
 
@@ -49,8 +49,8 @@ if __name__ == "__main__":
     bodies.add_objs(ax)
     forces.add_objs(ax)
 
-    ax.set_xlim(-5.0, 5.0)
-    ax.set_ylim(-5.0, 5.0)
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
     ax.set_aspect("equal")
     ax.grid(True)
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.040  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=1000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=250, interval=40, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)
