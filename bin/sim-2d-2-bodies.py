@@ -19,15 +19,15 @@ from dynamics.utils import energy_info_text
 if __name__ == "__main__":
 
     # bodies
-    ball_1: RigidBall = RigidBall(1.0, (-2, -1), (-2, -1))
-    ball_2: RigidBall = RigidBall(1.0, (2, 1), (1, 1))
+    ball_1: RigidBall = RigidBall(1, (-2, -1), (-2, -2))
+    ball_2: RigidBall = RigidBall(1.5, (2, 1), (1, 2))
 
     bodies: Bodies = Bodies(ball_1, ball_2)
 
     # forces
-    spring: Spring = Spring(10.0, 3.0, ball_1, ball_2)
-    friction: FrictionalForce2D = FrictionalForce2D(0.1, (3.0, 1.5))
-    gravity: GravityLike = GravityLike([0.0, 0])
+    spring: Spring = Spring(10, 3, ball_1, ball_2)
+    friction: FrictionalForce2D = FrictionalForce2D(0.5, (3, 1.5))
+    gravity: GravityLike = GravityLike([0.1, -0.2])
 
     forces: Forces = Forces(spring, friction, gravity)
 
@@ -41,8 +41,8 @@ if __name__ == "__main__":
     bodies.add_objs(ax)
     forces.add_objs(ax)
 
-    ax.set_xlim(-3.0, 3.0)
-    ax.set_ylim(-1.0, 2.0)
+    ax.set_xlim(-3, 3)
+    ax.set_ylim(-1, 2)
     ax.set_aspect("equal")
     ax.grid(True)
 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.080  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=1000, interval=10, blit=True, repeat=False
+        fig, animate, init_func=init, frames=1000, interval=40, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)
