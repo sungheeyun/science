@@ -1,10 +1,10 @@
 name: "1d 1-body movement"
 
 constants:
-  common_spring_natural_length: 10 ** (.2)
+  common_spring_natural_length: 10 ** (.0)
 
 simulation_setting:
-  minimize_energy: true
+  minimize_energy: false
 #  sim_time_step: 1e-2
 #  sim_time_step_const_vel: 1e-2
 
@@ -35,10 +35,10 @@ vertical_wall_1d:
 
 spring:
   - spring_constant: 2
-    natural_length: 2
+    natural_length: common_spring_natural_length
     bodies: [wall_1, ball]
   - spring_constant: 5
-    natural_length: 2
+    natural_length: common_spring_natural_length
     bodies: [ball, wall_2]
 
 horizontal_frictional_force_1d:

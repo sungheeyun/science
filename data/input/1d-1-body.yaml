@@ -5,8 +5,8 @@ constants:
 
 simulation_setting:
   minimize_energy: false
-  sim_time_step: 1e-2
-  sim_time_step_const_vel: 1e-2
+#  sim_time_step: 1e-2
+#  sim_time_step_const_vel: 1e-2
 
   window_width_inch: 9
   xlim: [-3, 3]
@@ -28,12 +28,12 @@ rigid_ball:
     velocity: [-2, 0]
 
 non_sticky_left_horizontal_spring:
-  - spring_constant: 20
+  - spring_constant: 5
     equilibrium_point: 0
 
 gravity_like:
-  - acceleration: [-3, 0]
+  - acceleration: [-1, 0]
 
 horizontal_frictional_force_1d:
-  - coefficient_of_friction: 5
+  - coefficient_of_friction: 1
     boundary: -.5
