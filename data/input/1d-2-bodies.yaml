@@ -1,0 +1,40 @@
+name: "1d 1-body movement"
+
+simulation_setting:
+  minimize_energy: false
+#  sim_time_step: 1e-2
+#  sim_time_step_const_vel: 1e-2
+
+  1d: true
+
+  window_width_inch: 9
+  xlim: [-3.1, 3.1]
+  ylim: [-1, 1]
+  grid: false
+  real_world_time_interval: 0.040
+  num_frames: 1000
+  frame_interval: 40
+
+  save_to_gif: false
+  gif_filepath: 1d-1-body-2-walls.gif
+  num_frames_saved: 250
+  num_frames_per_sec: 25
+
+rigid_ball:
+  - id: ball_1
+    mass: 1
+    position: [-1, 0]
+    velocity: [2, 0]
+  - id: ball_2
+    mass: 1.5
+    position: [1, 0]
+    velocity: [-2, 0]
+
+spring:
+  - spring_constant: 10
+    natural_length: 3
+    bodies: [ball_1, ball_2]
+
+horizontal_frictional_force_1d:
+  - coefficient_of_friction: .1
+    boundary: 3

@@ -18,14 +18,14 @@ from dynamics.utils import energy_info_text
 if __name__ == "__main__":
 
     # bodies
-    ball_1: RigidBall = RigidBall(1.0, (-2, 0), (0, 0))
-    ball_2: RigidBall = RigidBall(1.0, (2, 0), (0, 0))
+    ball_1: RigidBall = RigidBall(1, (-1, 0), (2, 0))
+    ball_2: RigidBall = RigidBall(1.5, (1, 0), (-2, 0))
 
     bodies: Bodies = Bodies(ball_1, ball_2)
 
     # forces
-    spring: Spring = Spring(10.0, 1.0, ball_1, ball_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(1, 3)
+    spring: Spring = Spring(10, 3, ball_1, ball_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.1, 3)
     # gravity: GravityLike = GravityLike([-1.0, 0])
 
     # forces: Forces = Forces(spring, friction, gravity)
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.040  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=5000, interval=10, blit=True, repeat=False
+        fig, animate, init_func=init, frames=5000, interval=40, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)
