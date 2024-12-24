@@ -37,8 +37,20 @@ def energy_info_text(bodies: Bodies, forces: Forces) -> tuple[list[str], float]:
     pe: float = bpe + fpe
     de: float = bodies.dissipated_energy
     return [
-        f"ke + pe + de: {ke+pe+de:.2f}, ke + pe: {ke+pe:.2f}",
-        f"ke: {ke:.2f}, pe: {pe:.2f} (= bpe: {bpe:.2f} + fpe: {fpe:.2f}), de: {de:.2f}",
+        r"$E_\mathrm{k} + E_\mathrm{p} + E_\mathrm{d}$ = "
+        + f"{ke+pe+de:.2f}"
+        + r", $E_\mathrm{k} + E_\mathrm{p}$ = "
+        + f"{ke+pe:.2f}",
+        r"$E_\mathrm{k}$ = "
+        + f"{ke:.2f}, "
+        + r"$E_\mathrm{p}$ = "
+        + f"{pe:.2f}"
+        + r" (= $E_\mathrm{p,gravity}$ "
+        + f"({bpe:.2f})"
+        + r" + $E_\mathrm{p,spring}$ "
+        + f"({fpe:.2f})"
+        + r"), $E_\mathrm{d}$ = "
+        + f"{de:.2f}",
     ], ke + pe + de
 
 
