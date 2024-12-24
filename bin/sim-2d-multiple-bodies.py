@@ -20,8 +20,6 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
-    Bodies.set_time_step_lengths(5e-3, 5e-3)
-
     # bodies
     ball_ul: RigidBall = RigidBall(1.0, (-2.0, 2.0))
     ball_ur: RigidBall = RigidBall(3.0, (2.0, 2.0))
@@ -42,7 +40,7 @@ if __name__ == "__main__":
         ball_ul, ball_ur, ball_ll, ball_lr, pin_ul, pin_ur, pin_ll, pin_lr, ball_u, ball_r
     )
 
-    common_spring_natural_length: float = 10.0 ** (-0.7)
+    common_spring_natural_length: float = 10.0 ** (0.2)
 
     # forces
     spring_ul: Spring = Spring(10.0, common_spring_natural_length, pin_ul, ball_ul)
@@ -82,7 +80,7 @@ if __name__ == "__main__":
         *springs,
     )
 
-    forces.approx_min_energy(bodies)
+    # forces.approx_min_energy(bodies)
 
     forces.register_forces(bodies)
 

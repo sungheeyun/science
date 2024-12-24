@@ -30,11 +30,11 @@ if __name__ == "__main__":
     bodies: Bodies = Bodies(ball_1, ball_2, pin_2, pin_1)
 
     # forces
-    spring_1: Spring = Spring(1.0, 1.0e-1, pin_1, ball_1)
-    spring_2: Spring = Spring(10.0, 3.0e-1, ball_1, ball_2)
-    spring_3: Spring = Spring(5.0, 1.0e-1, ball_2, pin_2)
+    spring_1: Spring = Spring(10.0, 10**0.2, pin_1, ball_1)
+    spring_2: Spring = Spring(10.0, 10**0.2, ball_1, ball_2)
+    spring_3: Spring = Spring(10.0, 10**0.2, ball_2, pin_2)
 
-    friction: FrictionalForce2D = FrictionalForce2D(1e-1, (2.0, 2.0))
+    friction: FrictionalForce2D = FrictionalForce2D(10**0.0, (2.0, 2.0))
     gravity: GravityLike = GravityLike([-5.0, 5.0])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction, gravity)

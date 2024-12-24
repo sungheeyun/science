@@ -27,10 +27,10 @@ if __name__ == "__main__":
     bodies: Bodies = Bodies(ball_1, ball_2, wall_1, wall_2)
 
     # forces
-    spring_1: Spring = Spring(3.5, 1.5, wall_1, ball_1)
-    spring_2: Spring = Spring(5.0, 2.5, ball_1, ball_2)
-    spring_3: Spring = Spring(4.5, 1.5, ball_2, wall_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(10.0 ** (0.1), 3)
+    spring_1: Spring = Spring(3.5, 1.0, wall_1, ball_1)
+    spring_2: Spring = Spring(10.0, 1.0, ball_1, ball_2)
+    spring_3: Spring = Spring(4.5, 1.0, ball_2, wall_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(10.0 ** (0.0), 3)
     # gravity: GravityLike = GravityLike([-1.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=3000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=3000, interval=40, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

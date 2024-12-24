@@ -19,14 +19,14 @@ from dynamics.utils import energy_info_text
 if __name__ == "__main__":
 
     # bodies
-    ball_1: RigidBall = RigidBall(1.0, (-2, -1), (0, 0))
-    ball_2: RigidBall = RigidBall(1.0, (2, 1), (0, 0))
+    ball_1: RigidBall = RigidBall(1.0, (-2, -1), (-2, -1))
+    ball_2: RigidBall = RigidBall(1.0, (2, 1), (1, 1))
 
     bodies: Bodies = Bodies(ball_1, ball_2)
 
     # forces
     spring: Spring = Spring(10.0, 3.0, ball_1, ball_2)
-    friction: FrictionalForce2D = FrictionalForce2D(1, (3.0, 1.5))
+    friction: FrictionalForce2D = FrictionalForce2D(0.1, (3.0, 1.5))
     gravity: GravityLike = GravityLike([0.0, 0])
 
     forces: Forces = Forces(spring, friction, gravity)
