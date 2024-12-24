@@ -9,6 +9,8 @@ from dynamics.force.force_base import ForceBase
 
 
 class FrictionalForceBase(ForceBase):
+    _FRICTIONAL_FORCE_STRETCH: float = 10.0
+
     @property
     def is_frictional_force(self) -> bool:
         return True

@@ -17,6 +17,8 @@ from dynamics.body.body_base import BodyBase
 
 
 class NonStickyLeftHorizontalSpring(SpringBase):
+    _SPRING_X_STRETCH: float = 5.0
+
     def __init__(
         self, spring_constant: float | int, equilibrium_point: float | int, **kwargs
     ) -> None:
@@ -40,9 +42,9 @@ class NonStickyLeftHorizontalSpring(SpringBase):
             self._SPRING_MIN_NUM_COILS,
         )
         self._t_1d_p: np.ndarray = np.linspace(
-            0.0, self._num_coils * 2.0 * np.pi, self._NUM_PLT_POINTS
+            0.0, self._num_coils * 2.0 * np.pi, self._NUM_PLT_POINTS_PER_COIL * self._num_coils
         )
-        self._ydata: np.ndarray = self._SPRING_WIDTH * np.sin(self._t_1d_p)
+        self._ydata: np.ndarray = 0.5 * self._SPRING_WIDTH * np.sin(self._t_1d_p)
 
         self._line2d: Line2D = self._create_obj()
 

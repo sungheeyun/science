@@ -15,15 +15,8 @@ from dynamics.body.bodies import Bodies
 
 
 class ForceBase(ABC):
-    _FRICTIONAL_FORCE_STRETCH: float = 10.0
 
-    _SPRING_UNIT_CONSTANT_LINE_WIDTH: float = 1.0
-    _SPRING_NUM_COILS_PER_UNIT_LEN: int = 15
-    _SPRING_MIN_NUM_COILS: int = 10
-    _SPRING_X_STRETCH: float = 5.0
-    _SPRING_WIDTH: float = 0.1
-
-    _NUM_PLT_POINTS: int = 1000
+    _NUM_PLT_POINTS_PER_COIL: int = 10
 
     @property
     def is_frictional_force(self) -> bool:
