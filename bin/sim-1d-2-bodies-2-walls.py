@@ -19,19 +19,18 @@ from dynamics.utils import energy_info_text
 if __name__ == "__main__":
 
     # bodies
-    wall_1: VerticalWall1D = VerticalWall1D(-3.0)
-    wall_2: VerticalWall1D = VerticalWall1D(3.0)
-    ball_1: RigidBall = RigidBall(1.0, (-2, 0), (0, 0))
-    ball_2: RigidBall = RigidBall(1.0, (2, 0), (0, 0))
+    wall_1: VerticalWall1D = VerticalWall1D(-3)
+    wall_2: VerticalWall1D = VerticalWall1D(3)
+    ball_1: RigidBall = RigidBall(1, (-2, 0), (0, 0))
+    ball_2: RigidBall = RigidBall(1, (2, 0), (0, 0))
 
     bodies: Bodies = Bodies(ball_1, ball_2, wall_1, wall_2)
 
     # forces
-    spring_1: Spring = Spring(3.5, 1.0, wall_1, ball_1)
-    spring_2: Spring = Spring(10.0, 1.0, ball_1, ball_2)
-    spring_3: Spring = Spring(4.5, 1.0, ball_2, wall_2)
+    spring_1: Spring = Spring(3.5, 1, wall_1, ball_1)
+    spring_2: Spring = Spring(10, 1, ball_1, ball_2)
+    spring_3: Spring = Spring(4.5, 1, ball_2, wall_2)
     friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(10.0 ** (0.0), 3)
-    # gravity: GravityLike = GravityLike([-1.0, 0])
 
     forces: Forces = Forces(spring_1, spring_2, spring_3, friction)
 
@@ -45,8 +44,8 @@ if __name__ == "__main__":
     bodies.add_objs(ax)
     forces.add_objs(ax)
 
-    ax.set_xlim(-3.0, 3.0)
-    ax.set_ylim(-1.0, 1.0)
+    ax.set_xlim(-3, 3)
+    ax.set_ylim(-1, 1)
     ax.set_aspect("equal")
     ax.grid(axis="x")
 
