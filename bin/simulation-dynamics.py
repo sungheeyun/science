@@ -87,7 +87,10 @@ def main(input_file: str) -> None:
 
     ax.set_xlim(*xlim)  # type:ignore
     ax.set_ylim(*ylim)
-    ax.grid(simulation_setting["grid"])  # type:ignore
+    if isinstance(simulation_setting["grid"], str):
+        ax.grid(axis=simulation_setting["grid"])  # type:ignore
+    else:
+        ax.grid(simulation_setting["grid"])  # type:ignore
     ax.set_aspect("equal")
 
     if simulation_setting["1d"]:
@@ -174,13 +177,12 @@ def main(input_file: str) -> None:
 
         ax.set_title(
             str(simulation_setting["name"])
-            + f" ({real_world_time_interval * num_frames:.1f} sec."
+            + f" - {real_world_time_interval * num_frames:.1f} sec."
             + ", (up to) "
             + f"{num_frames_per_sec * real_world_time_interval:g}x"
             + " & "
             + f"{num_frames_per_sec:g} fps"
-            + ")"
-            + f"\n- initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
+            + f"\ninitial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
             pad=padding,
         )
 
@@ -198,13 +200,12 @@ def main(input_file: str) -> None:
 
         ax.set_title(
             str(simulation_setting["name"])
-            + f" ({real_world_time_interval * num_frames:.1f} sec."
+            + f" - {real_world_time_interval * num_frames:.1f} sec."
             + ", (up to) "
             + f"{real_world_time_interval * 1000.0 / frame_interval:g}x"
             + " & "
             + f"{1./real_world_time_interval:g} fps"
-            + ")"
-            + f"\n- initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
+            + f"\ninitial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
             pad=padding,
         )
 

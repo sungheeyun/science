@@ -92,7 +92,6 @@ def load_dynamic_system_simulation_setting(
     assert "name" not in simulation_setting
     simulation_setting["name"] = _data.pop("name")
     simulation_setting["grid"] = simulation_setting.get("grid", False)
-    simulation_setting["grid"] = bool(simulation_setting["grid"])
     simulation_setting["1d"] = simulation_setting.get("1d", False)
     simulation_setting["save_to_gif"] = simulation_setting.get("save_to_gif", False)
 
