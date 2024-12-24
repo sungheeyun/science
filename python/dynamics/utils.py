@@ -10,10 +10,12 @@ from numpy.linalg import norm
 
 from dynamics.body.body_base import BodyBase
 from dynamics.body.bodies import Bodies
+from dynamics.body.fixed_body_base import FixedBodyBase
 from dynamics.force.force_base import ForceBase
 from dynamics.force.forces import Forces
 from dynamics.instant_creators.constants import Constants
 from dynamics.instant_creators.rigid_ball_creator import RigidBallCreator
+from dynamics.instant_creators.vertical_wall_1d_creator import VerticalWall1DCreator
 from dynamics.instant_creators.vertical_pin_2d_creator import VerticalPin2DCreator
 from dynamics.instant_creators.spring_creator import SpringCreator
 from dynamics.instant_creators.gtavity_like_creator import GravityLikeCreator
@@ -50,6 +52,7 @@ def kinematics_info_text(bodies: Bodies) -> list[str]:
                 + ", ".join([f"{x:.2f}" for x in body.vel])
                 + f") & $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
                 for body in bodies.bodies
+                if not isinstance(body, FixedBodyBase)
             ]
         )
     ]
@@ -128,6 +131,12 @@ def load_dynamic_system_simulation_setting(
             _id, vertical_pin_2d = VerticalPin2DCreator.create(vertical_pin_2d_data)
             assert _id not in id_body_map, (list(id_body_map.keys()), _id)
             id_body_map[_id] = vertical_pin_2d
+
+    if "vertical_wall_1d" in _data:
+        for vertical_wall_1d_data in _data.pop("vertical_wall_1d"):
+            _id, vertical_wall_1d = VerticalWall1DCreator.create(vertical_wall_1d_data, constants)
+            assert _id not in id_body_map, (list(id_body_map.keys()), _id)
+            id_body_map[_id] = vertical_wall_1d
 
     # parse force information
 

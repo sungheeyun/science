@@ -139,8 +139,9 @@ def main(input_file: str) -> None:
         ax.set_title(
             str(simulation_setting["name"])
             + f" ({real_world_time_interval * num_frames:.1f} sec."
-            + f", up to {num_frames_per_sec * real_world_time_interval:g}x)"
-            + f" - initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
+            + f", up to {num_frames_per_sec:g} fps"
+            + f" & {num_frames_per_sec * real_world_time_interval:g}x)"
+            + f"\n- initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
             pad=10,
         )
 
@@ -159,8 +160,9 @@ def main(input_file: str) -> None:
         ax.set_title(
             str(simulation_setting["name"])
             + f" ({real_world_time_interval * num_frames:.1f} sec."
-            + f", up to {real_world_time_interval * 1000.0 / frame_interval:g}x)"
-            + f" - initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
+            + f", up to {1./real_world_time_interval:g} fps"
+            + f" & {real_world_time_interval * 1000.0 / frame_interval:g}x)"
+            + f"\n- initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
             pad=10,
         )
 

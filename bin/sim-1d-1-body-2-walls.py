@@ -19,20 +19,17 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
-    Bodies.set_time_step_lengths(1e-3, 1e-3)
-
     # bodies
-    wall_1: VerticalWall1D = VerticalWall1D(-3.0)
-    wall_2: VerticalWall1D = VerticalWall1D(3.0)
-    ball: RigidBall = RigidBall(1.0, (-1, 0), (0, 0))
+    ball: RigidBall = RigidBall(1, (-1, 0), (0, 0))
+    wall_1: VerticalWall1D = VerticalWall1D(-3)
+    wall_2: VerticalWall1D = VerticalWall1D(3)
 
     bodies: Bodies = Bodies(ball, wall_1, wall_2)
 
     # forces
-    spring_1: Spring = Spring(2.0, 2.0, wall_1, ball)
-    spring_2: Spring = Spring(5.0, 2.0, ball, wall_2)
-    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0.0, 3)
-    # gravity: GravityLike = GravityLike([-1.0, 0])
+    spring_1: Spring = Spring(2, 2, wall_1, ball)
+    spring_2: Spring = Spring(5, 2, ball, wall_2)
+    friction: HorizontalFrictionalForce1D = HorizontalFrictionalForce1D(0, 3)
 
     forces: Forces = Forces(spring_1, spring_2, friction)
 
@@ -40,20 +37,20 @@ if __name__ == "__main__":
 
     forces.register_forces(bodies)
     # Set up the figure and axis
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(9, 4.5))
 
     bodies.add_objs(ax)
     forces.add_objs(ax)
 
     ax.set_xlim(-3.1, 3.1)
-    ax.set_ylim(-1.0, 1.0)
+    ax.set_ylim(-1, 1)
     ax.set_aspect("equal")
     ax.grid(axis="x")
 
     # Set title and labels
     ax.set_title(
         f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
-        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        + f" - initial total energy: {energy_info_text(bodies,forces)[1]:.2f}",
         pad=10,
     )
     ax.set_xlabel("x (m)")
@@ -82,7 +79,7 @@ if __name__ == "__main__":
 
     def animate(frame):
         """Animation function"""
-        t = frame * 0.010  # Convert frame number to time (seconds)
+        t = frame * 0.040  # Convert frame number to time (seconds)
 
         bodies.update(t, forces)
         forces.update_objs()
@@ -98,7 +95,7 @@ if __name__ == "__main__":
 
     # Create animation
     anim = FuncAnimation(
-        fig, animate, init_func=init, frames=1000, interval=1, blit=True, repeat=False
+        fig, animate, init_func=init, frames=1000, interval=40, blit=True, repeat=False
     )
 
     # writer = PillowWriter(fps=20)

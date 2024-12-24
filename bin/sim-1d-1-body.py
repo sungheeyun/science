@@ -19,8 +19,6 @@ from dynamics.utils import energy_info_text
 
 if __name__ == "__main__":
 
-    Bodies.set_time_step_lengths(1e-3, 1e-3)
-
     # objects
     ball: RigidBall = RigidBall(2, (1, 0), (-2, 0))
     bodies: Bodies = Bodies(ball)
@@ -53,7 +51,7 @@ if __name__ == "__main__":
     # Set title and labels
     ax.set_title(
         f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
-        + f" - initial total energe: {energy_info_text(bodies,forces)[1]:.4f}",
+        + f" - initial total energy: {energy_info_text(bodies,forces)[1]:.2f}",
         pad=10,
     )
     ax.set_xlabel("x (m)")
