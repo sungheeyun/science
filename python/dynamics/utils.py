@@ -100,7 +100,7 @@ def load_dynamic_system_simulation_setting(
         if "simulation_setting" in _data
         else dict(minimize_energy=False)
     )
-    simulation_setting["minimize_energy"] = bool(simulation_setting["minimize_energy"])
+    simulation_setting["minimize_energy"] = simulation_setting.get("minimize_energy", False)
     assert "name" not in simulation_setting
     simulation_setting["name"] = _data.pop("name")
     simulation_setting["grid"] = simulation_setting.get("grid", False)
