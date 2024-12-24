@@ -1,4 +1,4 @@
-name: "2d multiple bodies"
+name: "2d - multiple bodies"
 
 constants:
   common_spring_natural_length: 10 ** (0)
@@ -12,12 +12,13 @@ simulation_setting:
   xlim: [-5, 5]
   ylim: [-5, 5]
   grid: true
-  real_world_time_interval: 0.040
-  num_frames: 2500
-  frame_interval: 40
+  real_world_time_interval: 0.050
+  num_frames: 200
+  frame_interval: 50
 
-  save_to_gif: false
-  num_frames_saved: 100
+  save_to_gif: true
+  gif_filepath: 2d-multiple-bodies.gif
+  num_frames_saved: 200
   num_frames_per_sec: 20
 
 rigid_ball:
