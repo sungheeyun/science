@@ -59,7 +59,7 @@ def load_dynamic_system_simulation_setting(
 ) -> tuple[dict[str, str | float | int | bool | list[int | float]], Bodies, Forces]:
     # data hierarchy check
     assert "name" in data
-    assert "constants" in data
+    # assert "constants" in data
     assert "rigid_ball" in data
 
     for key, value in data.items():
@@ -77,8 +77,9 @@ def load_dynamic_system_simulation_setting(
     # parse constants
     constants: Constants = Constants()
 
-    for key, value in _data.pop("constants").items():
-        constants.assign(key, value)
+    if "constants" in _data:
+        for key, value in _data.pop("constants").items():
+            constants.assign(key, value)
 
     # parse simulation setting
 
@@ -92,6 +93,7 @@ def load_dynamic_system_simulation_setting(
     simulation_setting["name"] = _data.pop("name")
     simulation_setting["grid"] = simulation_setting.get("grid", False)
     simulation_setting["grid"] = bool(simulation_setting["grid"])
+    simulation_setting["1d"] = simulation_setting.get("1d", False)
     simulation_setting["save_to_gif"] = simulation_setting.get("save_to_gif", False)
 
     if "sim_time_step" in simulation_setting:

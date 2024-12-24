@@ -90,7 +90,8 @@ def main(input_file: str) -> None:
     ax.grid(simulation_setting["grid"])  # type:ignore
     ax.set_aspect("equal")
 
-    ax.axhline(y=ylim[1], color="black", linestyle="-", alpha=0.3)
+    if simulation_setting["1d"]:
+        ax.axhline(y=0.0, color="black", linestyle="-", alpha=0.5)
 
     info_text = ax.text(
         0.02,
