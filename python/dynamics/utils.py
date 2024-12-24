@@ -44,17 +44,13 @@ def energy_info_text(bodies: Bodies, forces: Forces) -> tuple[list[str], float]:
 
 def kinematics_info_text(bodies: Bodies) -> list[str]:
     return [
-        ", ".join(
-            [
-                "$l$ = ("
-                + ", ".join([f"{x:.2f}" for x in body.loc])
-                + ") & $v$ = ("
-                + ", ".join([f"{x:.2f}" for x in body.vel])
-                + f") & $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
-                for body in bodies.bodies
-                if not isinstance(body, FixedBodyBase)
-            ]
-        )
+        "$l$ = ("
+        + ", ".join([f"{x:.2f}" for x in body.loc])
+        + ") & $v$ = ("
+        + ", ".join([f"{x:.2f}" for x in body.vel])
+        + f") & $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
+        for body in bodies.bodies
+        if not isinstance(body, FixedBodyBase)
     ]
 
 

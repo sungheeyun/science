@@ -9,7 +9,10 @@ from logging import Logger, getLogger
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 from matplotlib.artist import Artist
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from freq_used.logging_utils import set_logging_basic_config
+from freq_used.plotting import get_figure
 
 from dynamics.utils import load_dynamic_system_simulation_setting
 from dynamics.utils import energy_info_text, kinematics_info_text
@@ -53,17 +56,49 @@ def main(input_file: str) -> None:
     )
 
     # Set up the figure and axis
-    fig, ax = plt.subplots(figsize=simulation_setting["fig_size"])
+    # fig, ax = plt.subplots(figsize=simulation_setting["fig_size"])
+    xlim: list[float | int] = simulation_setting["xlim"]  # type:ignore
+    ylim: list[float | int] = simulation_setting["ylim"]  # type:ignore
+    x_range: float | int = xlim[1] - xlim[0]
+    y_range: float | int = ylim[1] - ylim[0]
+    window_width_inch: float | int = simulation_setting["window_width_inch"]  # type:ignore
+
+    title_height_inch: float = 0.5
+    info_text_head_height_cm: float = 1.5
+    kinematics_info_height_cm: float = (2.8 / 5) * len(kinematics_info_text(bodies))
+    info_text_box_height_inch: float = 0.393701 * (
+        info_text_head_height_cm + kinematics_info_height_cm
+    )
+    padding: float = (info_text_box_height_inch + 0.1) * 72
+    fig: Figure = get_figure(
+        1,
+        1,
+        axis_width=window_width_inch,
+        axis_height=window_width_inch * float(y_range) / float(x_range),
+        left_margin=1.0,
+        right_margin=1.0,
+        bottom_margin=1.0,
+        top_margin=padding / 72 + title_height_inch,
+    )
+    ax: Axes = fig.get_axes()[0]
 
     forces.add_objs(ax)
     bodies.add_objs(ax)
 
-    ax.set_xlim(*simulation_setting["xlim"])  # type:ignore
-    ax.set_ylim(*simulation_setting["ylim"])  # type:ignore
+    ax.set_xlim(*xlim)  # type:ignore
+    ax.set_ylim(*ylim)
     ax.grid(simulation_setting["grid"])  # type:ignore
     ax.set_aspect("equal")
 
-    info_text = ax.text(0.02, 0.9875, "", transform=ax.transAxes, va="top")
+    ax.axhline(y=ylim[1], color="black", linestyle="-", alpha=0.3)
+
+    info_text = ax.text(
+        0.02,
+        1.01,
+        "",
+        transform=ax.transAxes,
+        va="bottom",
+    )
 
     objs: list[Artist] = list(forces.objs) + list(bodies.objs) + [info_text]
 
@@ -118,7 +153,7 @@ def main(input_file: str) -> None:
         init_func=init,
         frames=num_frames,
         interval=frame_interval,
-        blit=True,
+        blit=False,
         repeat=False,
     )
 
@@ -142,7 +177,7 @@ def main(input_file: str) -> None:
             + f", up to {num_frames_per_sec:g} fps"
             + f" & {num_frames_per_sec * real_world_time_interval:g}x)"
             + f"\n- initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
-            pad=10,
+            pad=padding,
         )
 
         writer = PillowWriter(fps=num_frames_per_sec)
@@ -163,7 +198,7 @@ def main(input_file: str) -> None:
             + f", up to {1./real_world_time_interval:g} fps"
             + f" & {real_world_time_interval * 1000.0 / frame_interval:g}x)"
             + f"\n- initial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
-            pad=10,
+            pad=padding,
         )
 
         plt.show()

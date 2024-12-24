@@ -1,20 +1,20 @@
 name: "2d multiple bodies"
 
 constants:
-  common_spring_natural_length: 10 ** (.2)
+  common_spring_natural_length: 10 ** (0)
 
 simulation_setting:
   minimize_energy: false
   sim_time_step: 1e-2
   sim_time_step_const_vel: 1e-2
 
-  fig_size: [8, 8]
+  window_width_inch: 6
   xlim: [-5, 5]
   ylim: [-5, 5]
   grid: true
-  real_world_time_interval: 0.100
-  num_frames: 100
-  frame_interval: 100
+  real_world_time_interval: 0.040
+  num_frames: 2500
+  frame_interval: 40
 
   save_to_gif: false
   num_frames_saved: 100
