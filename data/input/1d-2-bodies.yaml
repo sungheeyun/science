@@ -16,7 +16,7 @@ simulation_setting:
   frame_interval: 40
 
   save_to_gif: false
-  gif_filepath: 1d-1-body-2-walls.gif
+  gif_filepath: 1d-2-bodies.gif
   num_frames_saved: 250
   num_frames_per_sec: 25
 
