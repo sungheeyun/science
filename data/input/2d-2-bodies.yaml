@@ -5,6 +5,7 @@ simulation_setting:
 #  sim_time_step: 1e-2
 #  sim_time_step_const_vel: 1e-2
 
+  upper_left_window_corner_coordinate: [10, 200]
   window_width_inch: 8
   xlim: [-3, 3]
   ylim: [-1, 2]

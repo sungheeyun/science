@@ -7,6 +7,7 @@ simulation_setting:
 
   1d: true
 
+  upper_left_window_corner_coordinate: [10, 200]
   window_width_inch: 12
   xlim: [-3, 3]
   ylim: [-1, 1]
@@ -15,7 +16,7 @@ simulation_setting:
   num_frames: 3000
   frame_interval: 40
 
-  save_to_gif: false
+#  save_to_gif: true
   gif_filepath: 1d-2-bodies-2-walls.gif
   num_frames_saved: 250
   num_frames_per_sec: 25

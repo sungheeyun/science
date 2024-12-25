@@ -8,19 +8,20 @@ simulation_setting:
 #  sim_time_step: 1e-2
 #  sim_time_step_const_vel: 1e-2
 
+  upper_left_window_corner_coordinate: [10, 200]
   window_width_inch: 9
   xlim: [-3, 3]
   ylim: [-1, 1]
   grid: true
 #  energy_bar_padding: .3
 
-  real_world_time_interval: 0.080
+  real_world_time_interval: 0.040
   num_frames: 10000
   frame_interval: 40
 
-  save_to_gif: false
+#  save_to_gif: true
   gif_filepath: 1d-1-body.gif
-  num_frames_saved: 200
+  num_frames_saved: 250
   num_frames_per_sec: 25
 
 point_mass:
