@@ -8,6 +8,7 @@ import sys
 
 import numpy as np
 from numpy.linalg import norm
+from matplotlib.axes import Axes
 
 from dynamics.body.body_base import BodyBase
 from dynamics.body.bodies import Bodies
@@ -31,7 +32,7 @@ from dynamics.instant_creators.horizontal_frictional_force_1d_creator import (
 logger: Logger = getLogger()
 
 _SQUARE_X_COORDINATES: np.ndarray = np.array([0, 1, 1, 0], float)
-_SQUARE_Y_COORDINAETS: np.ndarray = np.array([0, 0, 1, 1], float)
+_SQUARE_Y_COORDINATES: np.ndarray = np.array([0, 0, 1, 1], float)
 
 
 def energy_info(
@@ -44,13 +45,13 @@ def energy_info(
     de: float = bodies.dissipated_energy
 
     force_potential_energy_bar_vertices: np.ndarray = np.vstack(
-        (_SQUARE_X_COORDINATES, bpe + fpe * _SQUARE_Y_COORDINAETS)
+        (_SQUARE_X_COORDINATES, bpe + fpe * _SQUARE_Y_COORDINATES)
     )
     kinetic_energy_bar_vertices: np.ndarray = np.vstack(
-        (_SQUARE_X_COORDINATES, (bpe + fpe) + ke * _SQUARE_Y_COORDINAETS)
+        (_SQUARE_X_COORDINATES, (bpe + fpe) + ke * _SQUARE_Y_COORDINATES)
     )
     dissipated_energy_bar_vertices: np.ndarray = np.vstack(
-        (_SQUARE_X_COORDINATES, (bpe + fpe + ke) + de * _SQUARE_Y_COORDINAETS)
+        (_SQUARE_X_COORDINATES, (bpe + fpe + ke) + de * _SQUARE_Y_COORDINATES)
     )
 
     return (
@@ -231,3 +232,11 @@ def load_dynamic_system_simulation_setting(
         sys.exit(1)
 
     return simulation_setting, Bodies(*id_body_map.values()), Forces(*forces)
+
+
+# visualization
+
+
+def remove_axes_boundary(ax: Axes) -> None:
+    for spine in ax.spines.values():
+        spine.set_visible(False)

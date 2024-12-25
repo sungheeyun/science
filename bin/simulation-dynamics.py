@@ -6,9 +6,9 @@ from click import command, argument, Path
 import yaml
 from logging import Logger, getLogger
 
+import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
-from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 from matplotlib.patches import Polygon, Arrow
@@ -16,9 +16,10 @@ from matplotlib.text import Text
 from freq_used.logging_utils import set_logging_basic_config
 from freq_used.plotting import get_figure
 
+from dynamics.body.bodies import Bodies
 from dynamics.utils import load_dynamic_system_simulation_setting
 from dynamics.utils import energy_info
-from dynamics.body.bodies import Bodies
+from dynamics.utils import remove_axes_boundary
 
 logger: Logger = getLogger()
 
@@ -73,7 +74,8 @@ def main(input_file: str) -> None:
     )
     energy_bar_width: float = 1.0
     energy_bar_padding: float | int = simulation_setting["energy_bar_padding"]  # type:ignore
-    below_title_padding: float = (info_text_box_height_inch + 0.1) * 72
+    below_title_padding: float = (info_text_box_height_inch + 0.3) * 72
+
     fig: Figure = get_figure(
         1,
         2,
@@ -110,8 +112,7 @@ def main(input_file: str) -> None:
         va="bottom",
     )
 
-    for spine in animation_axis.spines.values():
-        spine.set_visible(False)
+    remove_axes_boundary(animation_axis)
 
     (
         _,
@@ -141,7 +142,7 @@ def main(input_file: str) -> None:
         dy=0,  # Direction and length
         color="black",
         alpha=0.5,
-        width=initial_energies[[0, 2, 3]].sum() * arrow_width_ratio,
+        width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
     )
 
     potential_energy_arrow = Arrow(
@@ -150,7 +151,7 @@ def main(input_file: str) -> None:
         dx=-0.4,
         dy=0,  # Direction and length
         color="#cc9933",
-        width=initial_energies[[0, 2, 3]].sum() * arrow_width_ratio,
+        width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
     )
 
     energy_bar_axis.add_patch(force_potential_energy_bar)
@@ -199,29 +200,15 @@ def main(input_file: str) -> None:
     energy_bar_axis.set_xlim(0, 1.5)
     energy_bar_axis.set_xticks([])
     energy_bar_axis.set_ylim(*energy_bar_y_lim)
-    for spine in energy_bar_axis.spines.values():
-        spine.set_visible(False)
 
-    objs: list[Artist] = (
-        []
-        # [info_text]
-        + list(forces.objs)
-        + list(bodies.objs)
-        + [
-            kinetic_energy_bar,
-            force_potential_energy_bar,
-            dissipated_energy_bar,
-            body_potential_energy_arrow,
-        ]
-        # + [body_potential_energy_text, kinetic_energy_text]
-    )
+    remove_axes_boundary(energy_bar_axis)
 
     def init():
         """Initialize animation"""
         # ball.center = (0, 0)
         info_text.set_text("")
 
-        return objs
+        return []
 
     def animate(frame):
         """Animation function"""
@@ -249,12 +236,14 @@ def main(input_file: str) -> None:
         dissipated_energy_bar.set_xy(dissipated_energy_bar_vertices.T)
 
         body_potential_energy_arrow.set_data(
-            y=energies[1], width=energies[[0, 2, 3]].sum() * arrow_width_ratio
+            y=energies[1],
+            width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
         )
         body_potential_energy_text.set_y(energies[1])
 
         potential_energy_arrow.set_data(
-            y=energies[1:3].sum(), width=energies[[0, 2, 3]].sum() * arrow_width_ratio
+            y=energies[1:3].sum(),
+            width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
         )
         potential_energy_text.set_y(energies[1:3].sum())
 
@@ -270,7 +259,7 @@ def main(input_file: str) -> None:
             # + "\n".join(kinematics_info_text(bodies))
         )
 
-        return objs
+        return []
 
     num_frames: int = (
         simulation_setting["num_frames_saved"]  # type:ignore
@@ -299,7 +288,7 @@ def main(input_file: str) -> None:
         init_func=init,
         frames=num_frames,
         interval=frame_interval,
-        blit=False,
+        blit=True,
         repeat=False,
     )
 
