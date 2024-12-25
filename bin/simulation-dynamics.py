@@ -6,6 +6,13 @@ from click import command, argument, Path
 import yaml
 from logging import Logger, getLogger
 
+from dynamics.utils import is_mac_os
+
+if is_mac_os():
+    import matplotlib as mpl
+
+    mpl.use("Qt5Agg")
+
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
@@ -17,9 +24,11 @@ from freq_used.logging_utils import set_logging_basic_config
 from freq_used.plotting import get_figure
 
 from dynamics.bodies.bodies import Bodies
-from dynamics.utils import load_dynamic_system_simulation_setting
-from dynamics.utils import energy_info
-from dynamics.utils import remove_axes_boundary
+from dynamics.utils import (
+    energy_info,
+    load_dynamic_system_simulation_setting,
+    remove_axes_boundary,
+)
 
 logger: Logger = getLogger()
 
@@ -339,6 +348,19 @@ def main(input_file: str) -> None:
             + f"\ninitial total energy: {initial_total_energy:.2f}",
             pad=below_title_padding,
         )
+
+        if simulation_setting["upper_left_window_corner_coordinate"] is not None:
+            x_coordinate: int
+            y_coordinate: int
+            x_coordinate, y_coordinate = simulation_setting[  # type:ignore
+                "upper_left_window_corner_coordinate"
+            ]
+            if is_mac_os():
+                plt.get_current_fig_manager().window.move(x_coordinate, y_coordinate)  # type:ignore
+            else:
+                plt.get_current_fig_manager().window.geometry(  # type:ignore
+                    f"+{x_coordinate}+{y_coordinate}"
+                )
 
         plt.show()
         logger.info("animation COMPLETED")

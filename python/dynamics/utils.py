@@ -35,6 +35,10 @@ _SQUARE_X_COORDINATES: np.ndarray = np.array([0, 1, 1, 0], float)
 _SQUARE_Y_COORDINATES: np.ndarray = np.array([0, 0, 1, 1], float)
 
 
+def is_mac_os() -> bool:
+    return sys.platform == "darwin"
+
+
 def energy_info(
     bodies: Bodies, forces: Forces
 ) -> tuple[list[str], np.ndarray, tuple[np.ndarray, ...]]:
@@ -96,7 +100,7 @@ def kinematics_info_text(bodies: Bodies) -> list[str]:
 
 def load_dynamic_system_simulation_setting(
     data: dict[str, Any]
-) -> tuple[dict[str, str | float | int | bool | list[int | float]], Bodies, Forces]:
+) -> tuple[dict[str, str | float | int | bool | list[int | float] | None], Bodies, Forces]:
     # data hierarchy check
     assert "name" in data
     # assert "constants" in data
@@ -123,7 +127,7 @@ def load_dynamic_system_simulation_setting(
 
     # parse simulation setting
 
-    simulation_setting: dict[str, str | float | int | bool | list[int | float]] = (
+    simulation_setting: dict[str, str | float | int | bool | list[int | float] | None] = (
         _data.pop("simulation_setting").copy()
         if "simulation_setting" in _data
         else dict(minimize_energy=False)
@@ -135,6 +139,9 @@ def load_dynamic_system_simulation_setting(
     simulation_setting["1d"] = simulation_setting.get("1d", False)
     simulation_setting["energy_bar_padding"] = simulation_setting.get("energy_bar_padding", 0.6)
     simulation_setting["save_to_gif"] = simulation_setting.get("save_to_gif", False)
+    simulation_setting["upper_left_window_corner_coordinate"] = simulation_setting.get(
+        "upper_left_window_corner_coordinate", None
+    )
 
     if "sim_time_step" in simulation_setting:
         simulation_setting["sim_time_step"] = constants.value(
