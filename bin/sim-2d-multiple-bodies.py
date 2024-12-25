@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: F401
 from matplotlib.artist import Artist
 
-from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.point_mass import PointMass
 from dynamics.body.bodies import Bodies
 from dynamics.body.vertical_pin_2d import VerticalPin2D
 from dynamics.force.forces import Forces
@@ -21,13 +21,13 @@ from dynamics.utils import energy_info
 if __name__ == "__main__":
 
     # bodies
-    ball_ul: RigidBall = RigidBall(1.0, (-2.0, 2.0))
-    ball_ur: RigidBall = RigidBall(3.0, (2.0, 2.0))
-    ball_ll: RigidBall = RigidBall(1.0, (-2.0, -2.0))
-    ball_lr: RigidBall = RigidBall(4.0, (2.0, -2.0))
+    ball_ul: PointMass = PointMass(1.0, (-2.0, 2.0))
+    ball_ur: PointMass = PointMass(3.0, (2.0, 2.0))
+    ball_ll: PointMass = PointMass(1.0, (-2.0, -2.0))
+    ball_lr: PointMass = PointMass(4.0, (2.0, -2.0))
 
-    ball_u: RigidBall = RigidBall(1.0, (0.0, 3.0))
-    ball_r: RigidBall = RigidBall(1.0, (3.0, 0.0))
+    ball_u: PointMass = PointMass(1.0, (0.0, 3.0))
+    ball_r: PointMass = PointMass(1.0, (3.0, 0.0))
 
     # pins
     pin_ul: VerticalPin2D = VerticalPin2D((-4.0, 4.0))

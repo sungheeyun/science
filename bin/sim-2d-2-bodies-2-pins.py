@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: F401
 from matplotlib.artist import Artist
 
-from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.point_mass import PointMass
 from dynamics.body.bodies import Bodies
 from dynamics.body.vertical_pin_2d import VerticalPin2D
 from dynamics.force.forces import Forces
@@ -20,8 +20,8 @@ from dynamics.utils import energy_info
 if __name__ == "__main__":
 
     # bodies
-    ball_1: RigidBall = RigidBall(1, (-2, -1), (0, 0))
-    ball_2: RigidBall = RigidBall(1, (2, 1), (0, 0))
+    ball_1: PointMass = PointMass(1, (-2, -1), (0, 0))
+    ball_2: PointMass = PointMass(1, (2, 1), (0, 0))
 
     # pins
     pin_1: VerticalPin2D = VerticalPin2D((-2, -4))

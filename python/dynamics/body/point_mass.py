@@ -13,7 +13,7 @@ from matplotlib.patches import Circle
 from dynamics.body.body_base import BodyBase
 
 
-class RigidBall(BodyBase):
+class PointMass(BodyBase):
     _UNIT_MASS_BALL_RADIUS: float = 0.1
     _BALL_COLOR: str = "blue"
 

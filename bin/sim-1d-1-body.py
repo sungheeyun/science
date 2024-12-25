@@ -10,7 +10,7 @@ from matplotlib.animation import FuncAnimation, PillowWriter  # noqa:F401
 from matplotlib.artist import Artist
 
 from dynamics.force.forces import Forces
-from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.point_mass import PointMass
 from dynamics.body.bodies import Bodies
 from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.force.gravity_like import GravityLike
@@ -20,7 +20,7 @@ from dynamics.utils import energy_info
 if __name__ == "__main__":
 
     # objects
-    ball: RigidBall = RigidBall(2, (1, 0), (-2, 0))
+    ball: PointMass = PointMass(2, (1, 0), (-2, 0))
     bodies: Bodies = Bodies(ball)
 
     # force sources

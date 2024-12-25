@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: F401
 from matplotlib.artist import Artist
 
-from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.point_mass import PointMass
 from dynamics.body.bodies import Bodies
 from dynamics.force.forces import Forces
 from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
@@ -18,8 +18,8 @@ from dynamics.utils import energy_info
 if __name__ == "__main__":
 
     # bodies
-    ball_1: RigidBall = RigidBall(1, (-1, 0), (2, 0))
-    ball_2: RigidBall = RigidBall(1.5, (1, 0), (-2, 0))
+    ball_1: PointMass = PointMass(1, (-1, 0), (2, 0))
+    ball_2: PointMass = PointMass(1.5, (1, 0), (-2, 0))
 
     bodies: Bodies = Bodies(ball_1, ball_2)
 

@@ -14,7 +14,7 @@ from matplotlib.patches import Polygon
 
 from dynamics.body.bodies import Bodies
 from dynamics.body.fixed_body_base import FixedBodyBase
-from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.point_mass import PointMass
 from dynamics.force.spring_base import SpringBase
 from dynamics.body.body_base import BodyBase
 from dynamics.body.vertical_wall_1d import VerticalWall1D
@@ -103,9 +103,9 @@ class Spring(SpringBase):
         a_2d: np.ndarray = np.zeros((num_coordinates, num_coordinates))
         b_1d: np.ndarray = np.zeros(num_coordinates)
 
-        if isinstance(body_1, RigidBall):
+        if isinstance(body_1, PointMass):
             indices_1: tuple[int, ...] = bodies.coordinate_indices(body_1)
-            if isinstance(body_2, RigidBall):
+            if isinstance(body_2, PointMass):
                 indices_2: tuple[int, ...] = bodies.coordinate_indices(body_2)
                 for _idx, idx_1 in enumerate(indices_1):
                     idx_2: int = indices_2[_idx]
@@ -117,7 +117,7 @@ class Spring(SpringBase):
                     a_2d[idx_1, idx_1] = self.spring_constant
                     b_1d[idx_1] = self.spring_constant * body_2.loc[_idx]
         else:
-            assert isinstance(body_1, FixedBodyBase) and isinstance(body_2, RigidBall), (
+            assert isinstance(body_1, FixedBodyBase) and isinstance(body_2, PointMass), (
                 body_1.__class__,
                 body_2.__class__,
             )

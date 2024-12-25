@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: F401
 from matplotlib.artist import Artist
 
-from dynamics.body.rigid_ball import RigidBall
+from dynamics.body.point_mass import PointMass
 from dynamics.body.bodies import Bodies
 from dynamics.body.vertical_wall_1d import VerticalWall1D
 from dynamics.force.forces import Forces
@@ -21,8 +21,8 @@ if __name__ == "__main__":
     # bodies
     wall_1: VerticalWall1D = VerticalWall1D(-3)
     wall_2: VerticalWall1D = VerticalWall1D(3)
-    ball_1: RigidBall = RigidBall(1, (-2, 0), (0, 0))
-    ball_2: RigidBall = RigidBall(1, (2, 0), (0, 0))
+    ball_1: PointMass = PointMass(1, (-2, 0), (0, 0))
+    ball_2: PointMass = PointMass(1, (2, 0), (0, 0))
 
     bodies: Bodies = Bodies(ball_1, ball_2, wall_1, wall_2)
 
