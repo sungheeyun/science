@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: F401
 from matplotlib.artist import Artist
 
-from dynamics.body.point_mass import PointMass
-from dynamics.body.bodies import Bodies
-from dynamics.body.vertical_pin_2d import VerticalPin2D
-from dynamics.force.forces import Forces
-from dynamics.force.gravity_like import GravityLike
-from dynamics.force.frictional_force_2d import FrictionalForce2D
-from dynamics.force.spring import Spring
+from dynamics.bodies.point_mass import PointMass
+from dynamics.bodies.bodies import Bodies
+from dynamics.bodies.vertical_pin_2d import VerticalPin2D
+from dynamics.forces.forces import Forces
+from dynamics.forces.gravity_like import GravityLike
+from dynamics.forces.frictional_force_2d import FrictionalForce2D
+from dynamics.forces.spring import Spring
 from dynamics.utils import energy_info
 
 if __name__ == "__main__":

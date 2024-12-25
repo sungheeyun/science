@@ -9,8 +9,8 @@ from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 from matplotlib.lines import Line2D
 
-from dynamics.body.body_base import BodyBase
-from dynamics.force.frictional_force_base import FrictionalForceBase
+from dynamics.bodies.body_base import BodyBase
+from dynamics.forces.frictional_force_base import FrictionalForceBase
 
 
 class HorizontalFrictionalForce1D(FrictionalForceBase):

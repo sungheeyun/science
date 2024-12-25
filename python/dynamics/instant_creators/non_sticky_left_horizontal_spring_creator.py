@@ -3,7 +3,7 @@ non-sticky left horizontal spring creator
 instantiating NonStickyLeftHorizontalSpring from user-entered input data
 """
 
-from dynamics.force.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
+from dynamics.forces.non_sticky_left_horizontal_spring import NonStickyLeftHorizontalSpring
 from dynamics.instant_creators.constants import Constants
 
 

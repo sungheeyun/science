@@ -3,7 +3,7 @@
 
 """
 
-from dynamics.body.vertical_pin_2d import VerticalPin2D
+from dynamics.bodies.vertical_pin_2d import VerticalPin2D
 
 
 class VerticalPin2DCreator:

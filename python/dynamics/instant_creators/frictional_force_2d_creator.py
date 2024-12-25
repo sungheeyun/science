@@ -3,7 +3,7 @@
 
 """
 
-from dynamics.force.frictional_force_2d import FrictionalForce2D
+from dynamics.forces.frictional_force_2d import FrictionalForce2D
 from dynamics.instant_creators.constants import Constants
 
 

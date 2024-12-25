@@ -2,7 +2,7 @@
 base class for all types of springs
 """
 
-from dynamics.force.force_base import ForceBase
+from dynamics.forces.force_base import ForceBase
 
 
 class SpringBase(ForceBase):

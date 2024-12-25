@@ -10,7 +10,7 @@ from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 from matplotlib.patches import Circle
 
-from dynamics.body.body_base import BodyBase
+from dynamics.bodies.body_base import BodyBase
 
 
 class PointMass(BodyBase):

@@ -5,10 +5,10 @@ to the mass of an object
 
 import numpy as np
 
-from dynamics.body.bodies import Bodies
-from dynamics.body.body_base import BodyBase
-from dynamics.body.fixed_body_base import FixedBodyBase
-from dynamics.force.force_base import ForceBase
+from dynamics.bodies.bodies import Bodies
+from dynamics.bodies.body_base import BodyBase
+from dynamics.bodies.fixed_body_base import FixedBodyBase
+from dynamics.forces.force_base import ForceBase
 
 
 class GravityLike(ForceBase):

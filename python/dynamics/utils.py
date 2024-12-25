@@ -10,11 +10,11 @@ import numpy as np
 from numpy.linalg import norm
 from matplotlib.axes import Axes
 
-from dynamics.body.body_base import BodyBase
-from dynamics.body.bodies import Bodies
-from dynamics.body.fixed_body_base import FixedBodyBase
-from dynamics.force.force_base import ForceBase
-from dynamics.force.forces import Forces
+from dynamics.bodies.body_base import BodyBase
+from dynamics.bodies.bodies import Bodies
+from dynamics.bodies.fixed_body_base import FixedBodyBase
+from dynamics.forces.force_base import ForceBase
+from dynamics.forces.forces import Forces
 from dynamics.instant_creators.constants import Constants
 from dynamics.instant_creators.point_mass_creator import PointMassCreator
 from dynamics.instant_creators.vertical_wall_1d_creator import VerticalWall1DCreator

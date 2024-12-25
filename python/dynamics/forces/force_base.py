@@ -10,8 +10,8 @@ import numpy as np
 from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 
-from dynamics.body.body_base import BodyBase
-from dynamics.body.bodies import Bodies
+from dynamics.bodies.body_base import BodyBase
+from dynamics.bodies.bodies import Bodies
 
 
 class ForceBase(ABC):

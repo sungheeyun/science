@@ -3,8 +3,8 @@ Spring creator instantiating Spring from user-entered input data
 
 """
 
-from dynamics.body.body_base import BodyBase
-from dynamics.force.spring import Spring
+from dynamics.bodies.body_base import BodyBase
+from dynamics.forces.spring import Spring
 from dynamics.instant_creators.constants import Constants
 
 

@@ -10,10 +10,10 @@ from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 from matplotlib.axes import Axes
 
-from dynamics.body.bodies import Bodies
-from dynamics.body.fixed_body_base import FixedBodyBase
-from dynamics.force.spring_base import SpringBase
-from dynamics.body.body_base import BodyBase
+from dynamics.bodies.bodies import Bodies
+from dynamics.bodies.fixed_body_base import FixedBodyBase
+from dynamics.forces.spring_base import SpringBase
+from dynamics.bodies.body_base import BodyBase
 
 
 class NonStickyLeftHorizontalSpring(SpringBase):

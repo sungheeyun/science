@@ -12,12 +12,12 @@ from matplotlib.artist import Artist
 from matplotlib.lines import Line2D
 from matplotlib.patches import Polygon
 
-from dynamics.body.bodies import Bodies
-from dynamics.body.fixed_body_base import FixedBodyBase
-from dynamics.body.point_mass import PointMass
-from dynamics.force.spring_base import SpringBase
-from dynamics.body.body_base import BodyBase
-from dynamics.body.vertical_wall_1d import VerticalWall1D
+from dynamics.bodies.bodies import Bodies
+from dynamics.bodies.fixed_body_base import FixedBodyBase
+from dynamics.bodies.point_mass import PointMass
+from dynamics.forces.spring_base import SpringBase
+from dynamics.bodies.body_base import BodyBase
+from dynamics.bodies.vertical_wall_1d import VerticalWall1D
 
 
 class Spring(SpringBase):

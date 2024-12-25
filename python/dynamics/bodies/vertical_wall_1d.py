@@ -8,7 +8,7 @@ from matplotlib.axes import Axes
 from matplotlib.patches import Polygon
 from matplotlib.artist import Artist
 
-from dynamics.body.fixed_body_base import FixedBodyBase
+from dynamics.bodies.fixed_body_base import FixedBodyBase
 
 
 class VerticalWall1D(FixedBodyBase):

@@ -3,7 +3,7 @@
 
 """
 
-from dynamics.force.gravity_like import GravityLike
+from dynamics.forces.gravity_like import GravityLike
 
 
 class GravityLikeCreator:

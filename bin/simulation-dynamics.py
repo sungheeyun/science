@@ -16,7 +16,7 @@ from matplotlib.text import Text
 from freq_used.logging_utils import set_logging_basic_config
 from freq_used.plotting import get_figure
 
-from dynamics.body.bodies import Bodies
+from dynamics.bodies.bodies import Bodies
 from dynamics.utils import load_dynamic_system_simulation_setting
 from dynamics.utils import energy_info
 from dynamics.utils import remove_axes_boundary

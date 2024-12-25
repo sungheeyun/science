@@ -3,7 +3,7 @@
 
 """
 
-from dynamics.body.vertical_wall_1d import VerticalWall1D
+from dynamics.bodies.vertical_wall_1d import VerticalWall1D
 from dynamics.instant_creators.constants import Constants
 
 

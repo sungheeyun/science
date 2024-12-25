@@ -10,9 +10,9 @@ from numpy.linalg import solve
 from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 
-from dynamics.body.body_base import BodyBase
-from dynamics.body.bodies import Bodies
-from dynamics.force.force_base import ForceBase
+from dynamics.bodies.body_base import BodyBase
+from dynamics.bodies.bodies import Bodies
+from dynamics.forces.force_base import ForceBase
 
 
 class Forces:

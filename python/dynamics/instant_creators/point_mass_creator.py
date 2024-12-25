@@ -3,7 +3,7 @@ rigid ball creator instantiating RigidBall from user-entered input data
 
 """
 
-from dynamics.body.point_mass import PointMass
+from dynamics.bodies.point_mass import PointMass
 from dynamics.instant_creators.constants import Constants
 
 

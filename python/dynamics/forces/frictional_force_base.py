@@ -4,8 +4,8 @@ base class for frictional force classes
 
 import numpy as np
 
-from dynamics.body.bodies import Bodies
-from dynamics.force.force_base import ForceBase
+from dynamics.bodies.bodies import Bodies
+from dynamics.forces.force_base import ForceBase
 
 
 class FrictionalForceBase(ForceBase):

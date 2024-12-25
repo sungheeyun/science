@@ -4,7 +4,7 @@ instantiating HorizontalFrictionalForce1D from user-entered input data
 
 """
 
-from dynamics.force.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
+from dynamics.forces.horizontal_frictional_force_1d import HorizontalFrictionalForce1D
 from dynamics.instant_creators.constants import Constants
 
 
