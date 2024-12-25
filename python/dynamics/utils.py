@@ -58,9 +58,11 @@ def kinematics_info_text(bodies: Bodies) -> list[str]:
     return [
         "$l$ = ("
         + ", ".join([f"{x:.2f}" for x in body.loc])
-        + ") & $v$ = ("
+        + "), $v$ = ("
         + ", ".join([f"{x:.2f}" for x in body.vel])
-        + f") & $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
+        + f"), $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
+        + r"& $E_\mathrm{d}$ = "
+        + f"{body.dissipated_energy:.2f}"
         for body in bodies.bodies
         if not isinstance(body, FixedBodyBase)
     ]
