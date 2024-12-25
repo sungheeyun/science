@@ -6,6 +6,7 @@ from typing import Any
 from logging import Logger, getLogger
 import sys
 
+import numpy as np
 from numpy.linalg import norm
 
 from dynamics.body.body_base import BodyBase
@@ -29,29 +30,53 @@ from dynamics.instant_creators.horizontal_frictional_force_1d_creator import (
 
 logger: Logger = getLogger()
 
+_SQUARE_X_COORDINATES: np.ndarray = np.array([0, 1, 1, 0], float)
+_SQUARE_Y_COORDINAETS: np.ndarray = np.array([0, 0, 1, 1], float)
 
-def energy_info_text(bodies: Bodies, forces: Forces) -> tuple[list[str], float]:
+
+def energy_info(
+    bodies: Bodies, forces: Forces
+) -> tuple[list[str], np.ndarray, tuple[np.ndarray, ...]]:
     ke: float = bodies.kinetic_energy
     bpe: float = bodies.potential_energy(forces)
     fpe: float = forces.potential_energy
     pe: float = bpe + fpe
     de: float = bodies.dissipated_energy
-    return [
-        r"$E_\mathrm{k} + E_\mathrm{p} + E_\mathrm{d}$ = "
-        + f"{ke+pe+de:.2f}"
-        + r", $E_\mathrm{k} + E_\mathrm{p}$ = "
-        + f"{ke+pe:.2f}",
-        r"$E_\mathrm{k}$ = "
-        + f"{ke:.2f}, "
-        + r"$E_\mathrm{p}$ = "
-        + f"{pe:.2f}"
-        + r" (= $E_\mathrm{p,gravity}$ "
-        + f"({bpe:.2f})"
-        + r" + $E_\mathrm{p,spring}$ "
-        + f"({fpe:.2f})"
-        + r"), $E_\mathrm{d}$ = "
-        + f"{de:.2f}",
-    ], ke + pe + de
+
+    force_potential_energy_bar_vertices: np.ndarray = np.vstack(
+        (_SQUARE_X_COORDINATES, bpe + fpe * _SQUARE_Y_COORDINAETS)
+    )
+    kinetic_energy_bar_vertices: np.ndarray = np.vstack(
+        (_SQUARE_X_COORDINATES, (bpe + fpe) + ke * _SQUARE_Y_COORDINAETS)
+    )
+    dissipated_energy_bar_vertices: np.ndarray = np.vstack(
+        (_SQUARE_X_COORDINATES, (bpe + fpe + ke) + de * _SQUARE_Y_COORDINAETS)
+    )
+
+    return (
+        [
+            r"$E_\mathrm{k} + E_\mathrm{p} + E_\mathrm{d}$ = "
+            + f"{ke+pe+de:.2f}"
+            + r", $E_\mathrm{k} + E_\mathrm{p}$ = "
+            + f"{ke+pe:.2f}",
+            r"$E_\mathrm{k}$ = "
+            + f"{ke:.2f}, "
+            + r"$E_\mathrm{p}$ = "
+            + f"{pe:.2f}"
+            + r" (= $E_\mathrm{p,gravity}$ "
+            + f"({bpe:.2f})"
+            + r" + $E_\mathrm{p,spring}$ "
+            + f"({fpe:.2f})"
+            + r"), $E_\mathrm{d}$ = "
+            + f"{de:.2f}",
+        ],
+        np.array([ke, bpe, fpe, de], float),
+        (
+            force_potential_energy_bar_vertices,
+            kinetic_energy_bar_vertices,
+            dissipated_energy_bar_vertices,
+        ),
+    )
 
 
 def kinematics_info_text(bodies: Bodies) -> list[str]:
@@ -107,6 +132,7 @@ def load_dynamic_system_simulation_setting(
     simulation_setting["name"] = _data.pop("name")
     simulation_setting["grid"] = simulation_setting.get("grid", False)
     simulation_setting["1d"] = simulation_setting.get("1d", False)
+    simulation_setting["energy_bar_padding"] = simulation_setting.get("energy_bar_padding", 0.6)
     simulation_setting["save_to_gif"] = simulation_setting.get("save_to_gif", False)
 
     if "sim_time_step" in simulation_setting:
@@ -126,7 +152,7 @@ def load_dynamic_system_simulation_setting(
             "num_frames_per_sec",
             int(1.0 / simulation_setting["real_world_time_interval"]),  # type:ignore
         )
-        simulation_setting["num_frames_saved"] = simulation_setting.get("num_frames_saved", 100)
+        simulation_setting["num_frames_saved"] = simulation_setting.get("num_frames_saved", 250)
 
     # parse body information
 

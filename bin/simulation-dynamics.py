@@ -11,11 +11,13 @@ from matplotlib.animation import FuncAnimation, PillowWriter
 from matplotlib.artist import Artist
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
+from matplotlib.patches import Polygon, Arrow
+from matplotlib.text import Text
 from freq_used.logging_utils import set_logging_basic_config
 from freq_used.plotting import get_figure
 
 from dynamics.utils import load_dynamic_system_simulation_setting
-from dynamics.utils import energy_info_text, kinematics_info_text
+from dynamics.utils import energy_info
 from dynamics.body.bodies import Bodies
 
 logger: Logger = getLogger()
@@ -65,46 +67,154 @@ def main(input_file: str) -> None:
 
     title_height_inch: float = 0.5
     info_text_head_height_cm: float = 1.5
-    kinematics_info_height_cm: float = (2.8 / 5) * len(kinematics_info_text(bodies))
+    kinematics_info_height_cm: float = 0.0  # (2.8 / 5) * len(kinematics_info_text(bodies))
     info_text_box_height_inch: float = 0.393701 * (
         info_text_head_height_cm + kinematics_info_height_cm
     )
-    padding: float = (info_text_box_height_inch + 0.1) * 72
+    energy_bar_width: float = 1.0
+    energy_bar_padding: float | int = simulation_setting["energy_bar_padding"]  # type:ignore
+    below_title_padding: float = (info_text_box_height_inch + 0.1) * 72
     fig: Figure = get_figure(
         1,
-        1,
-        axis_width=window_width_inch,
+        2,
+        axis_width=[window_width_inch, energy_bar_width],
         axis_height=window_width_inch * float(y_range) / float(x_range),
         left_margin=1.0,
-        right_margin=1.0,
+        right_margin=1.5,
         bottom_margin=1.0,
-        top_margin=padding / 72 + title_height_inch,
+        top_margin=below_title_padding / 72 + title_height_inch,
+        horizontal_padding=energy_bar_padding,
     )
-    ax: Axes = fig.get_axes()[0]
+    animation_axis: Axes = fig.get_axes()[0]
+    energy_bar_axis: Axes = fig.get_axes()[1]
 
-    forces.add_objs(ax)
-    bodies.add_objs(ax)
+    forces.add_objs(animation_axis)
+    bodies.add_objs(animation_axis)
 
-    ax.set_xlim(*xlim)  # type:ignore
-    ax.set_ylim(*ylim)
+    animation_axis.set_xlim(*xlim)  # type:ignore
+    animation_axis.set_ylim(*ylim)
     if isinstance(simulation_setting["grid"], str):
-        ax.grid(axis=simulation_setting["grid"])  # type:ignore
+        animation_axis.grid(axis=simulation_setting["grid"])  # type:ignore
     else:
-        ax.grid(simulation_setting["grid"])  # type:ignore
-    ax.set_aspect("equal")
+        animation_axis.grid(simulation_setting["grid"])  # type:ignore
+    animation_axis.set_aspect("equal")
 
     if simulation_setting["1d"]:
-        ax.axhline(y=0.0, color="black", linestyle="-", alpha=0.5)
+        animation_axis.axhline(y=0.0, color="black", linestyle="-", alpha=0.5)
 
-    info_text = ax.text(
-        0.02,
+    info_text: Text = animation_axis.text(
+        0.01,
         1.01,
         "",
-        transform=ax.transAxes,
+        transform=animation_axis.transAxes,
         va="bottom",
     )
 
-    objs: list[Artist] = list(forces.objs) + list(bodies.objs) + [info_text]
+    for spine in animation_axis.spines.values():
+        spine.set_visible(False)
+
+    (
+        _,
+        initial_energies,
+        (
+            force_potential_energy_bar_vertices,
+            kinetic_energy_bar_vertices,
+            dissipated_energy_bar_vertices,
+        ),
+    ) = energy_info(bodies, forces)
+    initial_total_energy: float = initial_energies.sum()
+
+    force_potential_energy_bar: Polygon = Polygon(
+        force_potential_energy_bar_vertices.T, color="#cc9933", alpha=0.5
+    )
+    kinetic_energy_bar: Polygon = Polygon(kinetic_energy_bar_vertices.T, color="blue", alpha=0.5)
+    dissipated_energy_bar: Polygon = Polygon(
+        dissipated_energy_bar_vertices.T, color="red", alpha=0.5
+    )
+
+    arrow_width_ratio: float = 0.1
+
+    body_potential_energy_arrow = Arrow(
+        x=1.5,
+        y=initial_energies[1],  # Start point
+        dx=-0.4,
+        dy=0,  # Direction and length
+        color="black",
+        alpha=0.5,
+        width=initial_energies[[0, 2, 3]].sum() * arrow_width_ratio,
+    )
+
+    potential_energy_arrow = Arrow(
+        x=1.5,
+        y=initial_energies[1:3].sum(),  # Start point
+        dx=-0.4,
+        dy=0,  # Direction and length
+        color="#cc9933",
+        width=initial_energies[[0, 2, 3]].sum() * arrow_width_ratio,
+    )
+
+    energy_bar_axis.add_patch(force_potential_energy_bar)
+    energy_bar_axis.add_patch(kinetic_energy_bar)
+    energy_bar_axis.add_patch(dissipated_energy_bar)
+    energy_bar_axis.add_patch(body_potential_energy_arrow)
+    energy_bar_axis.add_patch(potential_energy_arrow)
+
+    body_potential_energy_text: Text = energy_bar_axis.text(
+        1.6, initial_energies[1], r"$E_\mathrm{p, gravity}$", ha="left", va="top"
+    )
+    potential_energy_text: Text = energy_bar_axis.text(
+        1.6,
+        initial_energies[1:3].sum(),
+        r"$E_\mathrm{p, gravity}+E_\mathrm{p,spring}$",
+        ha="left",
+        va="top",
+    )
+    force_potential_energy_text: Text = energy_bar_axis.text(
+        0.5,
+        force_potential_energy_bar_vertices[1].mean(),
+        r"$E_\mathrm{p,spring}$",
+        ha="center",
+        va="center",
+    )
+    kinetic_energy_text: Text = energy_bar_axis.text(
+        0.5,
+        kinetic_energy_bar_vertices[1].mean(),
+        r"$E_\mathrm{k}$",
+        ha="center",
+        va="center",
+    )
+    dissipated_energy_text: Text = energy_bar_axis.text(
+        0.5,
+        dissipated_energy_bar_vertices[1].mean(),
+        r"$E_\mathrm{d}$",
+        ha="center",
+        va="center",
+    )
+
+    energy_bar_y_lim: list[float] = [
+        1.1 * initial_energies[1] - 0.1 * initial_total_energy,
+        1.1 * initial_total_energy - 0.1 * initial_energies[1],
+    ]
+
+    energy_bar_axis.set_xlim(0, 1.5)
+    energy_bar_axis.set_xticks([])
+    energy_bar_axis.set_ylim(*energy_bar_y_lim)
+    for spine in energy_bar_axis.spines.values():
+        spine.set_visible(False)
+
+    objs: list[Artist] = (
+        []
+        # [info_text]
+        + list(forces.objs)
+        + list(bodies.objs)
+        + [
+            kinetic_energy_bar,
+            force_potential_energy_bar,
+            dissipated_energy_bar,
+            body_potential_energy_arrow,
+        ]
+        # + [body_potential_energy_text, kinetic_energy_text]
+    )
 
     def init():
         """Initialize animation"""
@@ -120,12 +230,44 @@ def main(input_file: str) -> None:
         bodies.update(t, forces)
         forces.update_objs()
 
+        (
+            energy_info_texts,
+            energies,
+            (
+                force_potential_energy_bar_vertices,
+                kinetic_energy_bar_vertices,
+                dissipated_energy_bar_vertices,
+            ),
+        ) = energy_info(bodies, forces)
+
+        if 1.1 * energies[1] - 0.1 * initial_total_energy < energy_bar_y_lim[0]:
+            energy_bar_y_lim[0] = 1.1 * energies[1] - 0.1 * initial_total_energy
+            energy_bar_axis.set_ylim(*energy_bar_y_lim)
+
+        force_potential_energy_bar.set_xy(force_potential_energy_bar_vertices.T)
+        kinetic_energy_bar.set_xy(kinetic_energy_bar_vertices.T)
+        dissipated_energy_bar.set_xy(dissipated_energy_bar_vertices.T)
+
+        body_potential_energy_arrow.set_data(
+            y=energies[1], width=energies[[0, 2, 3]].sum() * arrow_width_ratio
+        )
+        body_potential_energy_text.set_y(energies[1])
+
+        potential_energy_arrow.set_data(
+            y=energies[1:3].sum(), width=energies[[0, 2, 3]].sum() * arrow_width_ratio
+        )
+        potential_energy_text.set_y(energies[1:3].sum())
+
+        force_potential_energy_text.set_y(force_potential_energy_bar_vertices[1].mean())
+        kinetic_energy_text.set_y(kinetic_energy_bar_vertices[1].mean())
+        dissipated_energy_text.set_y(dissipated_energy_bar_vertices[1].mean())
+
         info_text.set_text(
             f"{t:.2f} sec. - frame: {frame}"
             + "\n"
-            + "\n".join(energy_info_text(bodies, forces)[0])
-            + "\n"
-            + "\n".join(kinematics_info_text(bodies))
+            + "\n".join(energy_info_texts)
+            # + "\n"
+            # + "\n".join(kinematics_info_text(bodies))
         )
 
         return objs
@@ -175,15 +317,15 @@ def main(input_file: str) -> None:
             + f" {num_frames_per_sec * real_world_time_interval} times faster than real world"
         )
 
-        ax.set_title(
+        animation_axis.set_title(
             str(simulation_setting["name"])
             + f" - {real_world_time_interval * num_frames:.1f} sec."
             + ", (up to) "
             + f"{num_frames_per_sec * real_world_time_interval:g}x"
             + " & "
             + f"{num_frames_per_sec:g} fps"
-            + f"\ninitial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
-            pad=padding,
+            + f"\ninitial total energy: {initial_total_energy:.2f}",
+            pad=below_title_padding,
         )
 
         writer = PillowWriter(fps=num_frames_per_sec)
@@ -198,15 +340,15 @@ def main(input_file: str) -> None:
             + f"{real_world_time_interval / frame_interval * 1000.0} times faster than real world"
         )
 
-        ax.set_title(
+        animation_axis.set_title(
             str(simulation_setting["name"])
             + f" - {real_world_time_interval * num_frames:.1f} sec."
             + ", (up to) "
             + f"{real_world_time_interval * 1000.0 / frame_interval:g}x"
             + " & "
             + f"{1./real_world_time_interval:g} fps"
-            + f"\ninitial total energy: {energy_info_text(bodies, forces)[1]:.2f}",
-            pad=padding,
+            + f"\ninitial total energy: {initial_total_energy:.2f}",
+            pad=below_title_padding,
         )
 
         plt.show()
