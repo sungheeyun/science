@@ -18,7 +18,7 @@ simulation_setting:
   num_frames_saved: 250
   num_frames_per_sec: 25
 
-rigid_ball:
+point_mass:
 - id: ball_1
   mass: 1
   position: [-2, -1]

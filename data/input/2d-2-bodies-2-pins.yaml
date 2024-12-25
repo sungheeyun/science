@@ -13,12 +13,12 @@ simulation_setting:
   num_frames: 250
   frame_interval: 40
 
-  save_to_gif: true
+#  save_to_gif: true
   gif_filepath: 2d-2-bodies-2-pins.gif
   num_frames_saved: 250
   num_frames_per_sec: 20
 
-rigid_ball:
+point_mass:
   - id: ball_1
     mass: 1
     position: [-2, -1]

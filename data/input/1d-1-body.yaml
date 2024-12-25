@@ -12,8 +12,10 @@ simulation_setting:
   xlim: [-3, 3]
   ylim: [-1, 1]
   grid: true
-  real_world_time_interval: 0.040
-  num_frames: 1000
+#  energy_bar_padding: .3
+
+  real_world_time_interval: 0.080
+  num_frames: 10000
   frame_interval: 40
 
   save_to_gif: false
@@ -21,19 +23,19 @@ simulation_setting:
   num_frames_saved: 200
   num_frames_per_sec: 25
 
-rigid_ball:
+point_mass:
   - id: ball
     mass: 2
-    position: [1, 0]
-    velocity: [-2, 0]
+    position: [2, 0]
+    velocity: [0, 0]
 
 non_sticky_left_horizontal_spring:
-  - spring_constant: 5
+  - spring_constant: 10
     equilibrium_point: 0
 
 gravity_like:
-  - acceleration: [-1, 0]
+  - acceleration: [-2, 0]
 
 horizontal_frictional_force_1d:
-  - coefficient_of_friction: 1
-    boundary: -.5
+  - coefficient_of_friction: .1
+    boundary: .5

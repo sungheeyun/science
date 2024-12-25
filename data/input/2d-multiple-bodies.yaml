@@ -12,20 +12,20 @@ simulation_setting:
   xlim: [-5, 5]
   ylim: [-5, 5]
   grid: true
-  real_world_time_interval: 0.050
-  num_frames: 2000
-  frame_interval: 50
+  real_world_time_interval: 0.080
+  num_frames: 2500
+  frame_interval: 40
 
 #  save_to_gif: true
   gif_filepath: 2d-multiple-bodies.gif
-  num_frames_saved: 200
-  num_frames_per_sec: 20
+  num_frames_saved: 250
+  num_frames_per_sec: 25
 
-rigid_ball:
+point_mass:
 - id: ball_ul
   mass: 1
   position: [-2, 2]
-  velocity: [0, 0]
+  velocity: [10, 10]
 - id: ball_ur
   mass: 3
   position: [2, 2]
@@ -122,5 +122,5 @@ gravity_like:
 - acceleration: [0, -5]
 
 frictional_force_2d:
-- coefficient_of_friction: 1.
+- coefficient_of_friction: 1.0
   upper_right_point: [2, 2]

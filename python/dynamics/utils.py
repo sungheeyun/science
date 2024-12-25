@@ -15,7 +15,7 @@ from dynamics.body.fixed_body_base import FixedBodyBase
 from dynamics.force.force_base import ForceBase
 from dynamics.force.forces import Forces
 from dynamics.instant_creators.constants import Constants
-from dynamics.instant_creators.rigid_ball_creator import RigidBallCreator
+from dynamics.instant_creators.point_mass_creator import PointMassCreator
 from dynamics.instant_creators.vertical_wall_1d_creator import VerticalWall1DCreator
 from dynamics.instant_creators.vertical_pin_2d_creator import VerticalPin2DCreator
 from dynamics.instant_creators.spring_creator import SpringCreator
@@ -99,7 +99,7 @@ def load_dynamic_system_simulation_setting(
     # data hierarchy check
     assert "name" in data
     # assert "constants" in data
-    assert "rigid_ball" in data
+    assert "point_mass" in data
 
     for key, value in data.items():
         if key == "name":
@@ -158,10 +158,10 @@ def load_dynamic_system_simulation_setting(
 
     id_body_map: dict[str, BodyBase] = dict()
 
-    for rigid_ball_data in _data.pop("rigid_ball"):
-        _id, rigid_ball = RigidBallCreator.create(rigid_ball_data, constants)
+    for point_mass_data in _data.pop("point_mass"):
+        _id, point_mass = PointMassCreator.create(point_mass_data, constants)
         assert _id not in id_body_map, (list(id_body_map.keys()), _id)
-        id_body_map[_id] = rigid_ball
+        id_body_map[_id] = point_mass
 
     if "vertical_pin_2d" in _data:
         for vertical_pin_2d_data in _data.pop("vertical_pin_2d"):

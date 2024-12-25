@@ -7,7 +7,7 @@ from dynamics.body.point_mass import PointMass
 from dynamics.instant_creators.constants import Constants
 
 
-class RigidBallCreator:
+class PointMassCreator:
     @staticmethod
     def create(
         data: dict[str, str | int | float | list[float | int]], constants: Constants
