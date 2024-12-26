@@ -42,9 +42,6 @@ class VerticalWall1D(FixedBodyBase):
     def add_objs(self, ax: Axes) -> None:
         ax.add_patch(self._polygon)
 
-    def update_obj(self) -> None:
-        pass
-
     @property
     def objs(self) -> Sequence[Artist]:
         return [self._polygon]

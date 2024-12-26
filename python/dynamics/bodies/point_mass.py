@@ -34,7 +34,7 @@ class PointMass(BodyBase):
 
         self._obj = Circle((self.loc[0], self.loc[1]), **circ_kwargs)
 
-    def update_obj(self) -> None:
+    def update_objs(self) -> None:
         self._obj.center = (self.loc[0], self.loc[1])
 
     def add_objs(self, ax: Axes) -> None:

@@ -2,16 +2,15 @@
 base class for all objects in dynamics package
 """
 
-from abc import ABC, abstractmethod
-from typing import Any, Sequence
+from typing import Any
 
 import numpy as np
 from numpy.linalg import norm
-from matplotlib.artist import Artist
-from matplotlib.axes import Axes
+
+from dynamics.obj_base import ObjBase
 
 
-class BodyBase(ABC):
+class BodyBase(ObjBase):
     def __init__(
         self,
         mass: float | int,
@@ -111,22 +110,3 @@ class BodyBase(ABC):
     @property
     def dissipated_energy(self) -> float:
         return self._dissipated_energy
-
-    # visualization
-
-    @property
-    @abstractmethod
-    def objs(self) -> Sequence[Artist]:
-        pass
-
-    @property
-    def updated_objs(self) -> Sequence[Artist]:
-        return list()
-
-    @abstractmethod
-    def add_objs(self, ax: Axes) -> None:
-        pass
-
-    @abstractmethod
-    def update_obj(self) -> None:
-        pass

@@ -3,7 +3,7 @@ base class for sources of force, e.g., spring, gravity, electric or magnetic fie
 
 """
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Sequence
 
 import numpy as np
@@ -12,9 +12,10 @@ from matplotlib.axes import Axes
 
 from dynamics.bodies.body_base import BodyBase
 from dynamics.bodies.bodies import Bodies
+from dynamics.obj_base import ObjBase
 
 
-class ForceBase(ABC):
+class ForceBase(ObjBase):
 
     _NUM_PLT_POINTS_PER_COIL: int = 10
 
@@ -50,16 +51,12 @@ class ForceBase(ABC):
 
     # visualization
 
-    @property
-    def objs(self) -> Sequence[Artist]:
-        return list()
-
-    @property
-    def updated_objs(self) -> Sequence[Artist]:
-        return list()
+    def add_objs(self, ax: Axes) -> None:
+        pass
 
     def update_objs(self) -> None:
         pass
 
-    def add_objs(self, ax: Axes) -> None:
-        pass
+    @property
+    def objs(self) -> Sequence[Artist]:
+        return list()

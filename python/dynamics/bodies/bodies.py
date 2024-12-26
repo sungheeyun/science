@@ -54,7 +54,7 @@ class Bodies:
                 continue
             body.loc = locs[list(self.coordinate_indices(body))]
             body.vel = np.zeros_like(body.vel)
-            body.update_obj()
+            body.update_objs()
 
     # simulation
 
@@ -117,7 +117,7 @@ class Bodies:
 
     def update_objs(self) -> None:
         for body in self.bodies:
-            body.update_obj()
+            body.update_objs()
 
     @property
     def objs(self) -> Sequence[Artist]:
