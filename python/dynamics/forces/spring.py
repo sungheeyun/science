@@ -61,7 +61,7 @@ class Spring(SpringBase):
         )
         self._ydata: np.ndarray = 0.5 * self._SPRING_WIDTH * np.sin(self._t_1d_p)
 
-        self._line2d_list: list[Artist] = self._create_objs()
+        self._obj_list: list[Artist] = self._create_objs()
 
     # getters
     @property
@@ -159,11 +159,11 @@ class Spring(SpringBase):
 
     @property
     def objs(self) -> Sequence[Artist]:
-        return self._line2d_list
+        return self._obj_list
 
     @property
     def updated_objs(self) -> Sequence[Artist]:
-        return self._line2d_list
+        return self._obj_list
 
     def add_objs(self, ax: Axes) -> None:
         for line2d in self.objs:

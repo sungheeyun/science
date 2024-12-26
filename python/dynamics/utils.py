@@ -10,12 +10,15 @@ import numpy as np
 from numpy.linalg import norm
 from matplotlib.axes import Axes
 
+from dynamics.accessories.accessory_base import AccessoryBase
+from dynamics.accessories.accessories import Accessories
 from dynamics.bodies.body_base import BodyBase
 from dynamics.bodies.bodies import Bodies
 from dynamics.bodies.fixed_body_base import FixedBodyBase
 from dynamics.forces.force_base import ForceBase
 from dynamics.forces.forces import Forces
 from dynamics.instant_creators.constants import Constants
+from dynamics.instant_creators.fan_creator import FanCreator
 from dynamics.instant_creators.point_mass_creator import PointMassCreator
 from dynamics.instant_creators.vertical_wall_1d_creator import VerticalWall1DCreator
 from dynamics.instant_creators.vertical_pin_2d_creator import VerticalPin2DCreator
@@ -100,7 +103,9 @@ def kinematics_info_text(bodies: Bodies) -> list[str]:
 
 def load_dynamic_system_simulation_setting(
     data: dict[str, Any]
-) -> tuple[dict[str, str | float | int | bool | list[int | float] | None], Bodies, Forces]:
+) -> tuple[
+    dict[str, str | float | int | bool | list[int | float] | None], Bodies, Forces, Accessories
+]:
     # data hierarchy check
     assert "name" in data
     # assert "constants" in data
@@ -161,6 +166,15 @@ def load_dynamic_system_simulation_setting(
             int(1.0 / simulation_setting["real_world_time_interval"]),  # type:ignore
         )
         simulation_setting["num_frames_saved"] = simulation_setting.get("num_frames_saved", 250)
+
+    # parse accessories
+
+    accessories: list[AccessoryBase] = list()
+
+    if "fan" in _data:
+        accessories.extend(
+            [FanCreator.create(fan_data, constants) for fan_data in _data.pop("fan")]
+        )
 
     # parse body information
 
@@ -238,7 +252,12 @@ def load_dynamic_system_simulation_setting(
         )
         sys.exit(1)
 
-    return simulation_setting, Bodies(*id_body_map.values()), Forces(*forces)
+    return (
+        simulation_setting,
+        Bodies(*id_body_map.values()),
+        Forces(*forces),
+        Accessories(*accessories),
+    )
 
 
 # visualization

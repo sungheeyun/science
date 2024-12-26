@@ -41,7 +41,7 @@ def main(input_file: str) -> None:
     with open(input_file, "r") as fid:
         data = yaml.safe_load(fid)
 
-    simulation_setting, bodies, forces = load_dynamic_system_simulation_setting(data)
+    simulation_setting, bodies, forces, accessories = load_dynamic_system_simulation_setting(data)
 
     Bodies.set_time_step_lengths(
         (
@@ -99,6 +99,7 @@ def main(input_file: str) -> None:
     animation_axis: Axes = fig.get_axes()[0]
     energy_bar_axis: Axes = fig.get_axes()[1]
 
+    accessories.add_objs(animation_axis)
     forces.add_objs(animation_axis)
     bodies.add_objs(animation_axis)
 
@@ -224,6 +225,7 @@ def main(input_file: str) -> None:
         t = frame * real_world_time_interval  # convert frame number to time in sec
 
         bodies.update(t, forces)
+        accessories.update(t)
         forces.update_objs()
 
         (
