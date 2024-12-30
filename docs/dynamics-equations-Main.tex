@@ -567,6 +567,7 @@ simulation_setting:
 
 
 \section{Simple harmonic motions}
+\label{section:simple-harmonic-motions}
 
 \subsection{Spring}
 
@@ -710,12 +711,24 @@ Now if $c<2 \sqrt{mk}$, we can rewrite the solution as below:
 \pm
 i \omega
 \]
-where $b= {c}/ {2m}$ and $\omega={\sqrt{4mk-c^2}}/ {2m}$.
+where
+\begin{equation}
+\label{eq:attenuation-coefficient}
+b= {c}/ {2m}
+\end{equation}
+and
+\begin{equation}
+\label{eq:angular-frequency}
+\omega
+= {\sqrt{4mk-c^2}}/ {2m}
+= \sqrt{k/m - (c/2m)^2}.
+\end{equation}
+
 If we plug this solution in (\ref{eq:harmonic-gen-sol-complex}),
 we obtain
-\[
+\begin{equation}
 	x(t) =  A e^{-bt} \cos(\omega t + \theta_0)
-\]
+\end{equation}
 with some $A>0$ and $0\leq \theta_0 < 2\pi$,
 which are determined by $\beta$ in (\ref{eq:harmonic-gen-sol-complex}),
 which again are determined by the initial conditions,
@@ -735,10 +748,12 @@ Note that $c=0$ (of course) gives us the same solution as in (\ref{eq:freq-sol})
 (Note that I've omitted some technical arguments here, but please trust me on that
 the solutions we have derived are correct.)
 
-\subsubsection{Analysis and design}
+\section{Dynamic system analysis, design, and verification}
 
-From the above derivations,
-we note two tasks we can do.
+From the derivations in \S\ref{section:simple-harmonic-motions},
+we note several tasks we can do using those formula.
+
+\paragraph{System analysis}
 
 We first note that the three numbers $m$, $k$, and $c$
 completely characterizes the motion,
@@ -748,6 +763,22 @@ the attenuation rate,
 and the frequency of the harmonic motion.
 This means we can do the analysis of the motion
 if we know exact (or even approximate) values for these parameters.
+
+We can also do some quantitative analysis such as follows.
+We know if the coefficient of friction gets large,
+the mass will stop faster (\ie, earlier).
+This may sound obvious,
+but what the formula provides is the attenuation coefficient is exactly proportional to the coefficient of friction $c$,
+\eg,
+not to the square of $c$ (if you know what I mean).
+I also know that if $m$ gets larger,
+the mass will stops slower (\ie, later),
+and the attenuation coefficient is exactly inversely proportional to $m$.
+Similarly,
+not only do we know that when $c$ gets smaller, the frequency gets larger,
+but that exactly how much it gets larger from (\ref{eq:angular-frequency}).
+
+\paragraph{System design}
 
 On the other hand,
 we can design a system
@@ -759,6 +790,25 @@ by deciding,
 the stiffness of the spring,
 the mass,
 or the coefficient of friction.
+
+\paragraph{System verification}
+
+Finally we can verify the motions using software such as we develop in this project {\tt science}.
+Note that we can exactly design simple systems such as the one we show for the analysis here,
+it is in general impossible to derive such exact closed form equations
+in general cases,
+\eg, where there exist hundreds of point masses, thousands of springs, and lots of diverse friction forces.
+To make the situation even more complicated,
+we sometimes have to model the frictional forces and spring forces, for example,
+using quite advanced modeling technique, not just a simple assumption that they will be proportional to the velocity and the displacement.
+The software such as {\tt science} provides a great verification tool even for such cases.
+
+In real world, the verification is crucial for virtually every industry field.
+Typical examples include
+semiconductor chip design and manufacturing,
+aircraft design and manufacturing,
+and still other great number of mission critical tasks.
+
 
 %\bibliographystyle{unsrt}
 %\bibliographystyle{abbrv}
