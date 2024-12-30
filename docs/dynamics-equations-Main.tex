@@ -32,12 +32,20 @@ The force exerted on $m_1$ is
 \begin{equation}
 \label{eq:force:spring}
 	F_s(x_1;k,l,x_2) = -k (\|x_1-x_2\| - l) v_{2,1}
-	= -k \left(\frac{\|x_1-x_2\| - l}{\|x_1-x_2\|}\right) (x_1-x_2)
+	= -k
+	\left(
+	\frac{\|x_1-x_2\| - l}{\|x_1-x_2\|}
+	\right)
+	(x_1-x_2)
 \end{equation}
-where $v_{2,1}\in\reals^3$ is a length-one vector pointing to the direction of $x_1$ from view point of $x_2$,
+where $v_{2,1}\in\reals^3$ is a unit-length vector pointing to the direction of $x_1-x_2$,
 \ie,
 \[
-	v_{2,1} = \left(\frac{1}{\|x_2-x_1\|}\right) (x_2-x_1).
+	v_{2,1} =
+%	\left(
+	\frac{1}{\|x_1-x_2\|}
+%	\right)
+	(x_1-x_2).
 \]
 Here $\|x\|$ is the $2$-norm or the size of a vector $x\in\reals^3$ defined by
 \[
@@ -483,11 +491,13 @@ and the partial derivatives are
 \begin{equation}
 \label{eq:1}
 -\frac{\partial}{\partial x_1} f(x_1,x_2) = -k_1 (x_1-y_1) -k_2(x_1-x_2) + m_1 a = 0
+\in\reals^3
 \end{equation}
 and
 \begin{equation}
 \label{eq:2}
--\frac{\partial}{\partial x_2} f(x_1,x_2) = -k_2 (x_2-x_1) -k_3(x_2-y_2) + m_2 a = 0.
+-\frac{\partial}{\partial x_2} f(x_1,x_2) = -k_2 (x_2-x_1) -k_3(x_2-y_2) + m_2 a = 0
+\in\reals^3.
 \end{equation}
 
 Note that the system of equations (\ref{eq:1}) and (\ref{eq:2})
@@ -509,7 +519,8 @@ x_2
 m_1a
 \\
 m_2a
-\end{my-matrix}.
+\end{my-matrix}
+\in\reals^6.
 \end{equation}
 
 Using a modern computer system and the numerical packages (that have been developed for decades by amazing experts based on amazing research results),
