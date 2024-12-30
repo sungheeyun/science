@@ -52,7 +52,7 @@ Here $\|x\|$ is the $2$-norm or the size of a vector $x\in\reals^3$ defined by
 	\|x\| = \sqrt{x_1^2+x_2^2+x_3^2}.
 \]
 
-The force exerted on $m_2$ $F_s(x_2;k,l,x_1)$ be can obtained using 
+The force exerted on $m_2$ $F_s(x_2;k,l,x_1)$ be can obtained using
 
 \begin{figure}
 \begin{center}
@@ -73,7 +73,7 @@ The force exerted on $m_2$ $F_s(x_2;k,l,x_1)$ be can obtained using
 
 	\def\ballo{(-2, 0)}
     \def\ballt{(2.3, 0)}
-    
+
     % Draw balls
     \draw[fill=black] \ballo circle (0.1); % Ball 1
     \draw[fill=black] \ballt circle (0.1); % Ball 2
@@ -132,6 +132,7 @@ A typical example, of course, is \emph{the} gravity where
 with $g = 9.8 m/s^2$.
 
 \subsection{Frictional forces}
+\label{subsection:frictional-forces}
 
 We model frictional forces exerted on bodies (not point mass)
 using the coefficient of friction $c\in\ppreals$ where the force is modeled by
@@ -232,7 +233,7 @@ where we use the definition of velocity,
 $v(t) = {dx(t)}/{dt}$.
 
 Now we will show that $\int (-F(t)) dt $ is the same as (the difference of) the potential energies defined for
-the gravity-like force and the spring respectively. 
+the gravity-like force and the spring respectively.
 For the gravity-like force,
 we have
 \begin{equation}
@@ -269,7 +270,9 @@ E_\mathrm{p}(t_2) - E_\mathrm{p}(t_1)
 =
 \frac{m}{2} v(t_1)^2
 - \frac{m}{2}v(t_2)^2
+\quad
 \Leftrightarrow
+\quad
 \frac{m}{2} v(t_1)^2 + E_\mathrm{p}(t_1)
 =
 \frac{m}{2} v(t_2)^2 + E_\mathrm{p}(t_2),
@@ -367,7 +370,7 @@ while the conditions mentioned above are satisfied.
 An equilibrium point of a system
 is defined by the configuration of all the masses in the system
 so as to minimize the total energy
-or equivalently, 
+or equivalently,
 that where the force exerted on every mass, \ie, the sum of all the forces exerted on every mass,
 is zero.
 
@@ -469,7 +472,7 @@ one can repeat the following procedure for $k=1,2,\ldots$
 where $DF:\reals^6 \to \reals^{6\times 6}$ is the Jacobian matrix of $F$
 and $0<\alpha_k<1$ is step lengths for each iterate.
 
-\subsubsection{Way easier approximate solution method}
+\subsubsection{Way easier, but approximate, solution method}
 
 While the function $f:\reals^6 \to\reals$ in (\ref{eq:sum-of-potential-energies}) is not a convex function,
 hence it is not easy to minimize (we need some definition of \emph{easiness} here!),
@@ -520,8 +523,29 @@ m_1a
 \\
 m_2a
 \end{my-matrix}
-\in\reals^6.
 \end{equation}
+which is nothing but a (simple) linear system
+\begin{equation}
+Ax = b
+\end{equation}
+with
+\[
+A=
+\begin{my-matrix}{cc}
+(k_1 + k_2)I_3 & -k_2I_3
+\\
+-k_2 I_3 & (k_2+k_3)I_3
+\end{my-matrix}
+\in\reals^{6\times 6},
+\quad
+b=
+\begin{my-matrix}{c}
+m_1a
+\\
+m_2a
+\end{my-matrix}
+\in\reals^6.
+\]
 
 Using a modern computer system and the numerical packages (that have been developed for decades by amazing experts based on amazing research results),
 any linear system can be solved extremely fast, stably, and efficiently
@@ -532,7 +556,209 @@ Hence, we can use this solution for a surrogate for the equilibrium point
 to find the lowest energy point fast and easily
 for \emph{an arbitrarily complicated and large system}.
 
+If you turn on the \verb+minimize_energy+ as below,
+{\tt science} will calculate this \emph{approximate} lowest energy configuration
+and will put the point masses at those points initially.
 
+\begin{verbatim}
+simulation_setting:
+  minimize_energy: true
+\end{verbatim}
+
+
+\section{Simple harmonic motions}
+
+\subsection{Spring}
+
+\subsubsection{Without frictional force}
+
+Suppose a (point) mass $m$ is attached to a spring with spring constant $k$.
+Suppose also hat $x:\preals\to\reals$ is the displacement of the mass from the natural length of the spring,
+which is a function of time $t$.
+The Newton's second law dictates that
+\begin{equation}
+\label{eq:ode:spring-harmonic-no-attenuation}
+	m \ddot{x}(t)
+	=
+	-kx(t)
+\end{equation}
+where we define
+\[
+	\ddot{x}(t) = \frac{d}{dt^2} x(t).
+\]
+
+This is what is called an \href{https://en.wikipedia.org/wiki/Ordinary_differential_equation}{ordinary differential equation (ODE)}.
+We could use some fancy techniques such as \href{https://en.wikipedia.org/wiki/Laplace_transform}{Laplace transform}~\cite{Laplace-transform}
+(which has some advantages, \eg, effortlessly taking into account the initial conditions),
+but we will \emph{NOT} use such methods
+because we can achieve the very same thing with much easier methods as will be seen below.
+
+Because we know the motion dictates by (\ref{eq:ode:spring-harmonic-no-attenuation}) is a harmonic motion,
+we can assume it is of the form
+\begin{equation}
+\label{eq:harmonic-gen-sol}
+	x(t) = A \cos(\omega t + \theta_0)
+	= A \cos(2\pi f t + \theta_0)
+\end{equation}
+for some $A>0$, $\omega=2\pi f >0$, and $0\leq \theta_0 <2\pi$.
+Here $\omega$ is called an \emph{angular frequency}
+and $f$ just a \emph{frequency}.
+
+Now if we plug (\ref{eq:harmonic-gen-sol}) in (\ref{eq:ode:spring-harmonic-no-attenuation}),
+we have
+\[
+-m \omega^2 x(t) = - k x(t)
+\]
+which gives
+\begin{equation}
+\label{eq:freq-sol}
+\omega = \sqrt{k/m}
+\quad
+\Leftrightarrow
+\quad
+f = \sqrt{k/m} / 2\pi
+\end{equation}
+
+We can confirm this formula by using our dynamic simulation tool, {\tt science}.
+Here are some examples, which are the results of the simulation by {\tt science}.
+
+\begin{itemize}
+\item
+{\tt \href{https://github.com/sungheeyun/science/blob/main/animations/1d-spring-harmonic-motion-0.5-Hz.gif}{1d-spring-harmonic-motion-0.5-Hz.gif}}
+\item
+{\tt \href{https://github.com/sungheeyun/science/blob/main/animations/1d-spring-harmonic-motion-1-Hz.gif}{1d-spring-harmonic-motion-1-Hz.gif}}
+\item
+{\tt \href{https://github.com/sungheeyun/science/blob/main/animations/1d-spring-harmonic-motion-2-Hz.gif}{1d-spring-harmonic-motion-2-Hz.gif}}
+\end{itemize}
+
+Note that the other two parameters, $A$ and $\theta_0$, are determined by the initial conditions,
+that is, the initial location $x(0)$ and the initial velocity $\dot{x}(0)$.
+Because we have $2$ variables and $2$ equations,
+those are uniquely determined by those equations.
+
+
+\subsubsection{With frictional force}
+\label{subsubsection:spring-with-frictional-force}
+
+Here we assume that the frictional force exerts on $m$,
+the magnitude of which is proportional to the velocity
+(and, of course, the direction is the opposite of the velocity),
+as described in \S\ref{subsection:frictional-forces}.
+
+Again the Newton's second law dictates that
+\begin{equation}
+\label{eq:ode:spring-harmonic-attenuation}
+	m \ddot{x}(t)
+	=
+	-kx(t) - c \dot{x}(t)
+\end{equation}
+where we define
+\[
+	\dot{x}(t) = \frac{d}{dt} x(t).
+\]
+
+This is also an ODE and we also can use fancy methods like Laplace transform, but again we avoid using it here.
+We know that the solution to (\ref{eq:ode:spring-harmonic-attenuation})
+is of the form
+\begin{equation}
+\label{eq:harmonic-gen-sol-attenuation}
+	x(t) = A e^{-at} \cos(\omega t + \theta_0)
+	= A e^{-at}\cos(2\pi f t + \theta_0)
+\end{equation}
+for some $A>0$, $a>0$, $\omega=2\pi f >0$, and $0\leq \theta_0 <2\pi$.
+Note the difference between (\ref{eq:harmonic-gen-sol}) and (\ref{eq:harmonic-gen-sol-attenuation}),
+that is,
+we have an attenuation term,
+which exponentially reduces the magnitude of the harmonic motion.
+Instead of dealing with this solution dependent of four parameters, $A$, $a$, $\omega$, and $\theta_0$,
+we can (equivalently) deal with the below solution with two complex parameters, $\alpha,\beta\in\complexes$.
+\begin{equation}
+\label{eq:harmonic-gen-sol-complex}
+x(t) = \exp(\alpha t + \beta)
+\end{equation}
+Note that they have the same degrees of freedom (so to speak).
+
+Once again,
+let us plug (\ref{eq:harmonic-gen-sol-complex}) in (\ref{eq:ode:spring-harmonic-attenuation})
+to obtain
+the quadratic equation:
+\begin{equation}
+\label{eq:quad}
+m \alpha^2 x(t) = -k x(t) - c \alpha x(t)
+\quad
+\Leftrightarrow
+\quad
+m \alpha^2 + c \alpha + k = 0
+\end{equation}
+
+The solution of (\ref{eq:quad}) characterizes the (harmonic) attenuated motion. Using the quadratic formula,
+we obtain the solution.
+\[
+\alpha = \frac
+{-c \pm \sqrt{c^2 - 4mk}}
+{2m}
+\]
+
+First, if $c > 2\sqrt{mk}$, then $\alpha$ is a real number,
+hence there is no harmonic motion, but only attenuation. This is shown at
+{\tt \href{https://github.com/sungheeyun/science/blob/main/animations/1d-spring-attenuation-motion.gif}{1d-spring-attenuation-motion.gif}}.
+
+Now if $c<2 \sqrt{mk}$, we can rewrite the solution as below:
+\[
+\alpha =
+-b
+\pm
+i \omega
+\]
+where $b= {c}/ {2m}$ and $\omega={\sqrt{4mk-c^2}}/ {2m}$.
+If we plug this solution in (\ref{eq:harmonic-gen-sol-complex}),
+we obtain
+\[
+	x(t) =  A e^{-bt} \cos(\omega t + \theta_0)
+\]
+with some $A>0$ and $0\leq \theta_0 < 2\pi$,
+which are determined by $\beta$ in (\ref{eq:harmonic-gen-sol-complex}),
+which again are determined by the initial conditions,
+\ie,
+$x(0)$ and $\dot{x}(0)$.
+
+This gives an attenuated harmonic motion,
+that is,
+it oscillates, but the amplitude of the oscillation reduces exponentially.
+The attenuation rate is determined by $b$
+and the frequency of the oscillation is determined by $\omega$ (of course).
+One such example is shown at
+{\tt \href{https://github.com/sungheeyun/science/blob/main/animations/1d-spring-attenuated-harmonic-motion.gif}{1d-spring-attenuated-harmonic-motion.gif}}
+
+Note that $c=0$ (of course) gives us the same solution as in (\ref{eq:freq-sol}).
+
+(Note that I've omitted some technical arguments here, but please trust me on that
+the solutions we have derived are correct.)
+
+\subsubsection{Analysis and design}
+
+From the above derivations,
+we note two tasks we can do.
+
+We first note that the three numbers $m$, $k$, and $c$
+completely characterizes the motion,
+\eg,
+whether or not it will oscillates,
+the attenuation rate,
+and the frequency of the harmonic motion.
+This means we can do the analysis of the motion
+if we know exact (or even approximate) values for these parameters.
+
+On the other hand,
+we can design a system
+using the formula we have derived in \S\ref{subsubsection:spring-with-frictional-force},
+\ie,
+we know how we should design the system to achieve the attenuation rate or frequency we want
+by deciding,
+\eg,
+the stiffness of the spring,
+the mass,
+or the coefficient of friction.
 
 %\bibliographystyle{unsrt}
 %\bibliographystyle{abbrv}
