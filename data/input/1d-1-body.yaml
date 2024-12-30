@@ -27,7 +27,7 @@ simulation_setting:
 point_mass:
   - id: ball
     mass: 2
-    position: [2, 0]
+    position: [1, 0]
     velocity: [0, 0]
 
 non_sticky_left_horizontal_spring:
@@ -38,5 +38,5 @@ gravity_like:
   - acceleration: [-2, 0]
 
 horizontal_frictional_force_1d:
-  - coefficient_of_friction: .1
-    boundary: .5
+  - coefficient_of_friction: .3
+    boundary: 0

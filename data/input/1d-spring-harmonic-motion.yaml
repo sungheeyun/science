@@ -17,7 +17,7 @@ simulation_setting:
   frame_interval: 40
 
 #  save_to_gif: true
-  gif_filepath: 1d-spring-harmonic-motion-0.5-Hz.gif
+  gif_filepath: 1d-spring-attenuated-harmonic-motion.gif
   num_frames_saved: 250
   num_frames_per_sec: 25
 
@@ -31,10 +31,10 @@ vertical_wall_1d:
     position: -3
 
 spring:
-  - spring_constant: 9.869604401089358
+  - spring_constant: 39.47841760435743
     natural_length: 3
     bodies: [ball, wall]
 
 horizontal_frictional_force_1d:
-  - coefficient_of_friction: 0
-    boundary: 0
+  - coefficient_of_friction: 1
+    boundary: 3

@@ -4,7 +4,7 @@ constants:
   common_spring_natural_length: 10 ** (0)
 
 simulation_setting:
-#  minimize_energy: true
+  minimize_energy: true
 #  sim_time_step: 1e-2
 #  sim_time_step_const_vel: 1e-2
 

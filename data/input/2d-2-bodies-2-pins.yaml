@@ -1,7 +1,7 @@
 name: "2d - 2 bodies, 2 pins & 3 springs"
 
 simulation_setting:
-  minimize_energy: false
+  minimize_energy: true
   sim_time_step: 1e-2
   sim_time_step_const_vel: 1e-2
 
@@ -45,7 +45,7 @@ spring:
     bodies: [pin_2, ball_2]
 
 gravity_like:
-- acceleration: [-5, 5]
+- acceleration: [0, -5]
 
 frictional_force_2d:
 - coefficient_of_friction: 10**0.0
