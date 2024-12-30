@@ -16,7 +16,7 @@ simulation_setting:
   num_frames: 10000
   frame_interval: 40
 
-  save_to_gif: true
+#  save_to_gif: true
   gif_filepath: 1d-spring-harmonic-motion-0.5-Hz.gif
   num_frames_saved: 250
   num_frames_per_sec: 25
