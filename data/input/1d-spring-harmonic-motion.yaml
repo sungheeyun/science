@@ -1,0 +1,40 @@
+name: "1d - spring harmonic motion"
+
+simulation_setting:
+#  minimize_energy: true
+#  sim_time_step: 1e-2
+#  sim_time_step_const_vel: 1e-2
+
+  upper_left_window_corner_coordinate: [10, 200]
+  window_width_inch: 6
+  xlim: [-3, 2]
+  ylim: [-1, 1]
+  grid: true
+#  energy_bar_padding: .3
+
+  real_world_time_interval: 0.040
+  num_frames: 10000
+  frame_interval: 40
+
+  save_to_gif: true
+  gif_filepath: 1d-spring-harmonic-motion-0.5-Hz.gif
+  num_frames_saved: 250
+  num_frames_per_sec: 25
+
+point_mass:
+  - id: ball
+    mass: 1
+    position: [1, 0]
+
+vertical_wall_1d:
+  - id: wall
+    position: -3
+
+spring:
+  - spring_constant: 9.869604401089358
+    natural_length: 3
+    bodies: [ball, wall]
+
+horizontal_frictional_force_1d:
+  - coefficient_of_friction: 0
+    boundary: 0
