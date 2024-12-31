@@ -4,7 +4,7 @@ constants:
   common_spring_natural_length: 10 ** (0)
 
 simulation_setting:
-  minimize_energy: true
+#  minimize_energy: true
 #  sim_time_step: 1e-2
 #  sim_time_step_const_vel: 1e-2
 
@@ -18,7 +18,7 @@ simulation_setting:
   frame_interval: 40
 
 #  save_to_gif: true
-  gif_filepath: 2d-4-bodies.gif
+  gif_filepath: 2d-4-bodies-true-energy-min.gif
   num_frames_saved: 250
   num_frames_per_sec: 25
 
@@ -52,36 +52,36 @@ vertical_pin_2d:
 
 spring:
 - id: spring_ul
-  spring_constant: 5
+  spring_constant: 10
   natural_length: common_spring_natural_length
   bodies: [pin_ul, ball_ul]
 - id: spring_ur
-  spring_constant: 5.3
+  spring_constant: 10.3
   natural_length: common_spring_natural_length
   bodies: [pin_ur, ball_ur]
 - id: spring_ll
-  spring_constant: 4.7
+  spring_constant: 10.7
   natural_length: common_spring_natural_length
   bodies: [pin_ll, ball_ll]
 - id: spring_lr
-  spring_constant: 5
+  spring_constant: 12
   natural_length: common_spring_natural_length
   bodies: [pin_lr, ball_lr]
 
 - id: spring_u
-  spring_constant: 2
+  spring_constant: 15
   natural_length: common_spring_natural_length
   bodies: [ball_ul, ball_ur]
 - id: spring_l
-  spring_constant: 1.5
+  spring_constant: 27.5
   natural_length: common_spring_natural_length
   bodies: [ball_ll, ball_lr]
 - id: spring_r
-  spring_constant: 2
+  spring_constant: 12
   natural_length: common_spring_natural_length
   bodies: [ball_lr, ball_ur]
 - id: spring_le
-  spring_constant: 3
+  spring_constant: 18
   natural_length: common_spring_natural_length
   bodies: [ball_ll, ball_ul]
 
@@ -89,5 +89,5 @@ gravity_like:
 - acceleration: [-.5, -1]
 
 frictional_force_2d:
-- coefficient_of_friction: .1
+- coefficient_of_friction: 1
   upper_right_point: [2., 2.0]
