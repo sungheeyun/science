@@ -358,7 +358,7 @@ thus
 	-
 	E_\mathrm{p,s}(t_1)
 \end{equation}
-assuming only $m_1$ moves while $m_2$ is being fixed.
+assuming only $m_1$ moves while $m_2$ does not.
 We can generalize this argument where two masses $m_1$ and $m_2$
 move simultaneously (though we will not show it here).
 
@@ -771,6 +771,8 @@ where we define
 \]
 
 This is also an ODE and we also can use fancy methods like Laplace transform, but again we avoid using it here.
+(The readers who are interested in learning how one can do this using Laplace transform
+may want to refer to \S\ref{app:section:harmonic-motion-via-laplace-transform}.)
 We know that the solution to (\ref{eq:ode:spring-harmonic-attenuation})
 is of the form
 \begin{equation}
@@ -839,6 +841,7 @@ and
 If we plug this solution in (\ref{eq:harmonic-gen-sol-complex}),
 we obtain
 \begin{equation}
+\label{eq:sol-spring-with-friction}
 	x(t) =  A e^{-bt} \cos(\omega t + \theta_0)
 \end{equation}
 with some $A>0$ and $0\leq \theta_0 < 2\pi$,
@@ -920,6 +923,121 @@ Typical examples include
 semiconductor chip design and manufacturing,
 aircraft design and manufacturing,
 and still other great number of mission critical tasks.
+
+\appendix
+\section{Harmonic motion via Laplace transform}
+\label{app:section:harmonic-motion-via-laplace-transform}
+
+The Laplace transform $X:\complexes\to\complexes$ of $x:\preals\to\reals$ is defined by
+\begin{equation}
+X(s) = \int_{0}^\infty x(t) e^{-st} dt
+\end{equation}
+where $x\in\complexes$.
+If we take Laplace transform~\cite{Laplace-transform} on both sides of the ODE (\ref{eq:ode:spring-harmonic-attenuation}),
+we have
+\[
+	m (s^2X(s) -s x(0) - \dot{x}(0))
+	=
+	-kX(x)
+	-c(sX(s) - x(0) )
+\]
+which is equivalent to
+\begin{equation}
+(ms^2 + cs + k ) X(s) = smx(0) + m\dot{x}(0) + cx(0).
+\end{equation}
+
+Let $\gamma$ and $\delta$ be the two (distinct) roots of the quadratic equation,
+then
+\[
+X(s)
+=
+\frac{
+sx(0) + \dot{x}(0) + cx(0)/m
+}{
+(s-\gamma)(s-\delta)
+}
+=
+\frac{C}{s-\gamma}
++
+\frac{D}{s-\delta}
+\]
+%\begin{eqnarray*}
+%C + D &=& x(0)
+%\\
+%\delta C + \gamma D  &=& -(\dot{x}(0) + cx(0)/m)
+%\end{eqnarray*}
+where
+\begin{eqnarray*}
+C &=&
+\frac{
+\gamma x(0) +(\dot{x}(0) + cx(0)/m)
+}{
+\gamma-\delta
+}
+\\
+D &=&
+-
+\frac{
+\delta x(0) +(\dot{x}(0) + cx(0)/m)
+}{
+\gamma-\delta
+}
+\end{eqnarray*}
+hence
+\[
+x(t) = C e^{\gamma t} + D e^{\delta t}.
+\]
+
+In case that $c < s\sqrt{mk}$,
+we have $\gamma=-b +  i \omega$ and $\delta = -b - i \omega$
+where
+$
+b= {c}/ {2m}
+$
+and
+$
+\omega
+= {\sqrt{4mk-c^2}}/ {2m}
+= \sqrt{k/m - (c/2m)^2}$.
+Then
+\begin{eqnarray*}
+C &=&
+\frac{
+(-b+i\omega) x(0) +(\dot{x}(0) + cx(0)/m)
+}{
+2i\omega
+}
+= \frac{x(0)}{2}
+- i\frac{\dot{x}(0) + (c/m-b)x(0)}{2\omega}
+=\frac{A}{2} e^{ i \theta_0}
+\\
+D &=&
+\frac{
+(b+i\omega) x(0) - (\dot{x}(0) + cx(0)/m)
+}{
+2i\omega
+}
+=
+\frac{x(0)}{2}
++
+i
+\frac{
+\dot{x}(0) + (c/m-b)x(0)
+}{
+2\omega
+}
+=\frac{A}{2} e^{- i \theta_0}
+\end{eqnarray*}
+for some $A>0$ and $0\leq \theta_0 < 2\pi$,
+hence $D = \overline{C}$ and
+\[
+x(t) = C e^{\gamma t} + \overline{C e^{\gamma t}}
+=  2 \Re (C e^{\gamma t} )
+=  A \Re (e^{(-b+i\omega) t+i\theta_0} )
+= A  e^{-bt} \cos(\omega t + \theta_0)
+\]
+which coincides with the solution (\ref{eq:sol-spring-with-friction}) found in \S\ref{subsubsection:spring-with-frictional-force}.
+
 
 
 %\bibliographystyle{unsrt}
