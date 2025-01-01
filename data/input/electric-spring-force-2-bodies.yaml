@@ -1,0 +1,55 @@
+name: "electric-like force between 2 bodies and springs"
+
+simulation_setting:
+  minimize_energy: false
+  sim_time_step: 1e-3
+  sim_time_step_const_vel: 1e-3
+
+  upper_left_window_corner_coordinate: [10, 200]
+  window_width_inch: 8
+  xlim: [-6, 6]
+  ylim: [-3, 3]
+  grid: true
+  real_world_time_interval: 0.040
+  num_frames: 10000
+  frame_interval: 40
+
+#  save_to_gif: true
+  gif_filepath: electric-like0force-between-2-bodies.gif
+  num_frames_saved: 250
+  num_frames_per_sec: 25
+
+point_mass:
+- id: ball_1
+  mass: 1
+  position: [-2, 0]
+  velocity: [2, -1]
+- id: ball_2
+  mass: 1
+  position: [2, 0]
+  velocity: [-2, 1]
+
+vertical_pin_2d:
+  - id: pin_1
+    position: [-3, 0]
+  - id: pin_2
+    position: [3, 0]
+
+spring:
+  - spring_constant: 1
+    natural_length: 1
+    bodies: [ball_1, pin_1]
+  - spring_constant: 1
+    natural_length: 1
+    bodies: [ball_2, pin_2]
+
+electric_force_like:
+- coefficient: -21.147425268811286
+  exponent: 1.5
+  bodies: [ball_1, ball_2]
+  threshold: 2
+
+frictional_force_2d:
+  - coefficient_of_friction: 0
+    upper_right_point: [6, 3]
+    stretch: 12
