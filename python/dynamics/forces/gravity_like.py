@@ -33,10 +33,6 @@ class GravityLike(ForceBase):
     def body_potential_energy(self, body: BodyBase) -> float:
         return -body.mass * float(np.dot(self._acceleration, body.loc))
 
-    @property
-    def potential_energy(self) -> float:
-        return 0.0
-
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
         return -body.mass * self._acceleration[0] * x_1d
 

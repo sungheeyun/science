@@ -70,9 +70,6 @@ class Spring(SpringBase):
 
     # dynamics simulation
 
-    def register_force(self, bodies: Bodies) -> None:
-        pass
-
     def force(self, time: float, body: BodyBase) -> np.ndarray:
         if body is self._body_1:
             return -self._second_body_force(time)
@@ -124,12 +121,9 @@ class Spring(SpringBase):
 
         return a_2d, b_1d
 
-    def body_potential_energy(self, body: BodyBase) -> float:
-        return 0.0
-
     @property
-    def potential_energy(self) -> float:
-        return (
+    def potential_energy(self) -> tuple[float, float]:
+        return 0.0, (
             0.5
             * self.spring_constant
             * float(norm(self._body_1.loc - self._body_2.loc) - self._natural_length) ** 2.0
@@ -189,7 +183,7 @@ class Spring(SpringBase):
         theta: float = math.atan2(
             self._body_2.loc[1] - self._body_1.loc[1], self._body_2.loc[0] - self._body_1.loc[0]
         )
-        spring_length: float = float(norm(self._body_2.loc - self._body_1.loc))
+        spring_length: float = norm(self._body_2.loc - self._body_1.loc).item()
 
         return (
             0.5

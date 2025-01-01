@@ -45,8 +45,13 @@ class Forces:
     # energy
 
     @property
-    def potential_energy(self) -> float:
-        return sum([force.potential_energy for force in self._forces])
+    def potential_energy(self) -> tuple[float, float]:
+        """
+        :return: non-spring potential energy, spring potential energy
+        """
+        return tuple(
+            np.array([force.potential_energy for force in self._forces], float).sum(axis=0)
+        )
 
     def approx_min_energy(self, bodies: Bodies) -> None:
         """

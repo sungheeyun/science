@@ -6,7 +6,7 @@ from functools import reduce
 from typing import Any, Sequence
 
 import numpy as np
-from numpy import linalg as la
+from numpy.linalg import norm
 from matplotlib.axes import Axes
 from matplotlib.artist import Artist
 
@@ -63,9 +63,7 @@ class Bodies:
         if next_time == self._cur_time:
             return
 
-        max_vel: float = float(
-            max([la.norm(body._cur_vel) for body in self.bodies])  # type:ignore
-        )
+        max_vel: float = max([norm(body._cur_vel).item() for body in self.bodies])
 
         t_step: float = min(
             self.SIM_TIME_STEP, self.SIM_TIME_STEP_CONST_VEL / (max_vel if max_vel > 0.0 else 1.0)

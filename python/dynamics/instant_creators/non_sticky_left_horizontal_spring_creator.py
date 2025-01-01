@@ -18,4 +18,4 @@ class NonStickyLeftHorizontalSpringCreator:
         spring_constant: float | int = constants.value(_data.pop("spring_constant"))  # type:ignore
         equilibrium_point: float | int = constants.value(_data.pop("equilibrium_point"))
 
-        return NonStickyLeftHorizontalSpring(spring_constant, equilibrium_point)
+        return NonStickyLeftHorizontalSpring(spring_constant, equilibrium_point, **_data)

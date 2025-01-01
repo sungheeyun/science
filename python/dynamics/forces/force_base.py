@@ -23,7 +23,6 @@ class ForceBase(ObjBase):
     def is_frictional_force(self) -> bool:
         return False
 
-    @abstractmethod
     def register_force(self, bodies: Bodies) -> None:
         pass
 
@@ -33,21 +32,21 @@ class ForceBase(ObjBase):
 
     # potential energy
 
-    @abstractmethod
     def min_energy_matrices(self, bodies: Bodies) -> tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError()
 
     def x_potential_energy(self, body: BodyBase, x_1d: np.ndarray) -> np.ndarray:
-        return np.zeros_like(x_1d)
+        raise NotImplementedError()
 
-    @abstractmethod
     def body_potential_energy(self, body: BodyBase) -> float:
-        pass
+        return 0.0
 
     @property
-    @abstractmethod
-    def potential_energy(self) -> float:
-        pass
+    def potential_energy(self) -> tuple[float, float]:
+        """
+        :return: non-spring potential energy, spring potential energy
+        """
+        return 0.0, 0.0
 
     # visualization
 

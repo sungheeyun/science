@@ -28,6 +28,7 @@ from dynamics.utils import (
     energy_info,
     load_dynamic_system_simulation_setting,
     remove_axes_boundary,
+    kinematics_info_text,
 )
 
 logger: Logger = getLogger()
@@ -75,15 +76,16 @@ def main(input_file: str) -> None:
     y_range: float | int = ylim[1] - ylim[0]
     window_width_inch: float | int = simulation_setting["window_width_inch"]  # type:ignore
 
-    title_height_inch: float = 0.5
+    title_height_inch: float = 1.5
     info_text_head_height_cm: float = 1.5
-    kinematics_info_height_cm: float = 0.0  # (2.8 / 5) * len(kinematics_info_text(bodies))
+    kinematics_info_height_cm: float = (2.8 / 5) * len(kinematics_info_text(bodies))
     info_text_box_height_inch: float = 0.393701 * (
         info_text_head_height_cm + kinematics_info_height_cm
     )
     energy_bar_width: float = 1.0
     energy_bar_padding: float | int = simulation_setting["energy_bar_padding"]  # type:ignore
     below_title_padding: float = (info_text_box_height_inch + 0.3) * 72
+    energy_bar_vertical_margin: float = 0.1
 
     fig: Figure = get_figure(
         1,
@@ -161,6 +163,17 @@ def main(input_file: str) -> None:
         dx=-0.4,
         dy=0,  # Direction and length
         color="#cc9933",
+        alpha=0.8,
+        width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
+    )
+
+    total_energy_arrow = Arrow(
+        x=1.5,
+        y=initial_energies[:3].sum(),  # Start point
+        dx=-0.4,
+        dy=0,  # Direction and length
+        color="blue",
+        alpha=0.8,
         width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
     )
 
@@ -169,6 +182,7 @@ def main(input_file: str) -> None:
     energy_bar_axis.add_patch(dissipated_energy_bar)
     energy_bar_axis.add_patch(body_potential_energy_arrow)
     energy_bar_axis.add_patch(potential_energy_arrow)
+    energy_bar_axis.add_patch(total_energy_arrow)
 
     body_potential_energy_text: Text = energy_bar_axis.text(
         1.6, initial_energies[1], r"$E_\mathrm{p, gravity}$", ha="left", va="top"
@@ -177,6 +191,13 @@ def main(input_file: str) -> None:
         1.6,
         initial_energies[1:3].sum(),
         r"$E_\mathrm{p, gravity}+E_\mathrm{p,spring}$",
+        ha="left",
+        va="top",
+    )
+    total_energy_text: Text = energy_bar_axis.text(
+        1.6,
+        initial_energies[:3].sum(),
+        r"$E_\mathrm{total}$",
         ha="left",
         va="top",
     )
@@ -202,9 +223,19 @@ def main(input_file: str) -> None:
         va="center",
     )
 
+    energy_levels: np.ndarray = np.array(
+        [
+            initial_energies[1],
+            initial_energies[1:3].sum(),
+            initial_energies[:3].sum(),
+            initial_energies.sum(),
+        ]
+    )
     energy_bar_y_lim: list[float] = [
-        1.1 * initial_energies[1] - 0.1 * initial_total_energy,
-        1.1 * initial_total_energy - 0.1 * initial_energies[1],
+        (1.0 + energy_bar_vertical_margin) * energy_levels.min()
+        - energy_bar_vertical_margin * energy_levels.max(0),
+        (1.0 + energy_bar_vertical_margin) * energy_levels.max()
+        - energy_bar_vertical_margin * energy_levels.min(),
     ]
 
     energy_bar_axis.set_xlim(0, 1.5)
@@ -238,25 +269,45 @@ def main(input_file: str) -> None:
             ),
         ) = energy_info(bodies, forces)
 
-        if 1.1 * energies[1] - 0.1 * initial_total_energy < energy_bar_y_lim[0]:
-            energy_bar_y_lim[0] = 1.1 * energies[1] - 0.1 * initial_total_energy
+        energy_levels = np.array(
+            [
+                energies[1],
+                energies[1:3].sum(),
+                energies[:3].sum(),
+                energies.sum(),
+            ]
+        )
+
+        ylim_min: float = (
+            1.0 + energy_bar_vertical_margin
+        ) * energy_levels.min() - energy_bar_vertical_margin * energy_levels.max()
+        if ylim_min < energy_bar_y_lim[0]:
+            energy_bar_y_lim[0] = ylim_min
+            energy_bar_axis.set_ylim(*energy_bar_y_lim)
+
+        ylim_max: float = (
+            1.0 + energy_bar_vertical_margin
+        ) * energy_levels.max() - energy_bar_vertical_margin * energy_levels.min()
+        if ylim_max > energy_bar_y_lim[1]:
+            energy_bar_y_lim[1] = ylim_max
             energy_bar_axis.set_ylim(*energy_bar_y_lim)
 
         force_potential_energy_bar.set_xy(force_potential_energy_bar_vertices.T)
         kinetic_energy_bar.set_xy(kinetic_energy_bar_vertices.T)
         dissipated_energy_bar.set_xy(dissipated_energy_bar_vertices.T)
 
-        body_potential_energy_arrow.set_data(
-            y=energies[1],
-            width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
+        arrow_width: float = (
+            arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0].item()
         )
+
+        body_potential_energy_arrow.set_data(y=energies[1], width=arrow_width)
         body_potential_energy_text.set_y(energies[1])
 
-        potential_energy_arrow.set_data(
-            y=energies[1:3].sum(),
-            width=arrow_width_ratio * np.diff(np.array(energy_bar_axis.get_ylim()))[0],
-        )
+        potential_energy_arrow.set_data(y=energies[1:3].sum(), width=arrow_width)
         potential_energy_text.set_y(energies[1:3].sum())
+
+        total_energy_arrow.set_data(y=energies[:3].sum(), width=arrow_width)
+        total_energy_text.set_y(energies[:3].sum())
 
         force_potential_energy_text.set_y(force_potential_energy_bar_vertices[1].mean())
         kinetic_energy_text.set_y(kinetic_energy_bar_vertices[1].mean())
@@ -266,8 +317,8 @@ def main(input_file: str) -> None:
             f"{t:.2f} sec. - frame: {frame}"
             + "\n"
             + "\n".join(energy_info_texts)
-            # + "\n"
-            # + "\n".join(kinematics_info_text(bodies))
+            + "\n"
+            + "\n".join(kinematics_info_text(bodies))
         )
 
         return []
@@ -300,7 +351,7 @@ def main(input_file: str) -> None:
         frames=num_frames,
         interval=frame_interval,
         blit=True,
-        repeat=False,
+        repeat=simulation_setting["repeat"],
     )
 
     if simulation_setting["save_to_gif"]:

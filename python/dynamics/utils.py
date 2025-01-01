@@ -23,7 +23,8 @@ from dynamics.instant_creators.point_mass_creator import PointMassCreator
 from dynamics.instant_creators.vertical_wall_1d_creator import VerticalWall1DCreator
 from dynamics.instant_creators.vertical_pin_2d_creator import VerticalPin2DCreator
 from dynamics.instant_creators.spring_creator import SpringCreator
-from dynamics.instant_creators.gtavity_like_creator import GravityLikeCreator
+from dynamics.instant_creators.gravity_like_creator import GravityLikeCreator
+from dynamics.instant_creators.electric_like_creator import ElectricForceLikeCreator
 from dynamics.instant_creators.frictional_force_2d_creator import FrictionalForce2DCreator
 from dynamics.instant_creators.non_sticky_left_horizontal_spring_creator import (
     NonStickyLeftHorizontalSpringCreator,
@@ -46,8 +47,9 @@ def energy_info(
     bodies: Bodies, forces: Forces
 ) -> tuple[list[str], np.ndarray, tuple[np.ndarray, ...]]:
     ke: float = bodies.kinetic_energy
-    bpe: float = bodies.potential_energy(forces)
-    fpe: float = forces.potential_energy
+    _bpe: float = bodies.potential_energy(forces)
+    nspe, fpe = forces.potential_energy
+    bpe: float = nspe + _bpe
     pe: float = bpe + fpe
     de: float = bodies.dissipated_energy
 
@@ -93,8 +95,8 @@ def kinematics_info_text(bodies: Bodies) -> list[str]:
         + ", ".join([f"{x:.2f}" for x in body.loc])
         + "), $v$ = ("
         + ", ".join([f"{x:.2f}" for x in body.vel])
-        + f"), $\|v\|$ = {norm(body.vel):.2f}"  # noqa:W605
-        + r"& $E_\mathrm{d}$ = "
+        + f"), $\|v\|$ = {norm(body.vel):.2f}"  # noqa: W605
+        + r" & $E_\mathrm{d}$ = "
         + f"{body.dissipated_energy:.2f}"
         for body in bodies.bodies
         if not isinstance(body, FixedBodyBase)
@@ -147,6 +149,7 @@ def load_dynamic_system_simulation_setting(
     simulation_setting["upper_left_window_corner_coordinate"] = simulation_setting.get(
         "upper_left_window_corner_coordinate", None
     )
+    simulation_setting["repeat"] = simulation_setting.get("repeat", False)
 
     if "sim_time_step" in simulation_setting:
         simulation_setting["sim_time_step"] = constants.value(
@@ -214,6 +217,14 @@ def load_dynamic_system_simulation_setting(
             [
                 GravityLikeCreator.create(gravity_like_data)
                 for gravity_like_data in _data.pop("gravity_like")
+            ]
+        )
+
+    if "electric_force_like" in _data:
+        forces.extend(
+            [
+                ElectricForceLikeCreator.create(electric_like_data, id_body_map, constants)
+                for electric_like_data in _data.pop("electric_force_like")
             ]
         )
 

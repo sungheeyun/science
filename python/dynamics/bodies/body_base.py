@@ -102,7 +102,7 @@ class BodyBase(ObjBase):
 
     @property
     def kinetic_energy(self) -> float:
-        return 0.5 * self.mass * float(norm(self.vel)) ** 2.0
+        return 0.5 * self.mass * norm(self.vel).item() ** 2.0
 
     def body_potential_energy(self, forces: Any) -> float:
         return sum([force.body_potential_energy(self) for force in forces._forces])

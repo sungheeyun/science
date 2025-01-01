@@ -16,7 +16,7 @@ class FanCreator:
         _data: dict[str, str | int | float | list[float | int]] = data.copy()
 
         _data.pop("id", None)
-        center: list[float | int] = constants.value(_data.pop("center"))  # type:ignore
+        center: list[float | int] = _data.pop("center")  # type:ignore
         radius: float | int = constants.value(_data.pop("radius"))  # type:ignore
         freq: float | int = constants.value(_data.pop("freq"))  # type:ignore
         num_blades: int = constants.value(_data.pop("num_blades"))  # type:ignore

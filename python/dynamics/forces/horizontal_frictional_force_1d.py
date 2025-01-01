@@ -54,13 +54,6 @@ class HorizontalFrictionalForce1D(FrictionalForceBase):
             [0.0 if body.loc[0] >= self._boundary else (-self._coef_friction * body.vel[0]), 0.0]
         )
 
-    def body_potential_energy(self, body: BodyBase) -> float:
-        return 0.0
-
-    @property
-    def potential_energy(self) -> float:
-        return 0.0
-
     # visualization
 
     def add_objs(self, ax: Axes) -> None:

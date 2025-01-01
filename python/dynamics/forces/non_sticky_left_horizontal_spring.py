@@ -70,12 +70,9 @@ class NonStickyLeftHorizontalSpring(SpringBase):
 
     # potential energy
 
-    def body_potential_energy(self, body: BodyBase) -> float:
-        return 0.0
-
     @property
-    def potential_energy(self) -> float:
-        return (
+    def potential_energy(self) -> tuple[float, float]:
+        return 0.0, (
             0.5 * self.spring_constant * (self._cur_x - self._equilibrium_point) ** 2.0
             if self._cur_x < self._equilibrium_point
             else 0.0
