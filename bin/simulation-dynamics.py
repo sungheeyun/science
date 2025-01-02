@@ -76,9 +76,13 @@ def main(input_file: str) -> None:
     y_range: float | int = ylim[1] - ylim[0]
     window_width_inch: float | int = simulation_setting["window_width_inch"]  # type:ignore
 
-    title_height_inch: float = 1.5
+    title_height_inch: float = 0.5
     info_text_head_height_cm: float = 1.5
-    kinematics_info_height_cm: float = (2.8 / 5) * len(kinematics_info_text(bodies))
+    kinematics_info_height_cm: float = (
+        (2.8 / 5) * len(kinematics_info_text(bodies))
+        if simulation_setting["show_kinematics"]
+        else 0.0
+    )
     info_text_box_height_inch: float = 0.393701 * (
         info_text_head_height_cm + kinematics_info_height_cm
     )
@@ -317,8 +321,11 @@ def main(input_file: str) -> None:
             f"{t:.2f} sec. - frame: {frame}"
             + "\n"
             + "\n".join(energy_info_texts)
-            + "\n"
-            + "\n".join(kinematics_info_text(bodies))
+            + (
+                "\n" + "\n".join(kinematics_info_text(bodies))
+                if simulation_setting["show_kinematics"]
+                else ""
+            )
         )
 
         return []

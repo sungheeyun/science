@@ -150,6 +150,7 @@ def load_dynamic_system_simulation_setting(
         "upper_left_window_corner_coordinate", None
     )
     simulation_setting["repeat"] = simulation_setting.get("repeat", False)
+    simulation_setting["show_kinematics"] = simulation_setting.get("show_kinematics", False)
 
     if "sim_time_step" in simulation_setting:
         simulation_setting["sim_time_step"] = constants.value(
