@@ -46,12 +46,12 @@ def is_mac_os() -> bool:
 def energy_info(
     bodies: Bodies, forces: Forces
 ) -> tuple[list[str], np.ndarray, tuple[np.ndarray, ...]]:
-    ke: float = bodies.kinetic_energy
-    _bpe: float = bodies.potential_energy(forces)
+    ke: float = bodies.total_kinetic_energy
+    _bpe: float = bodies.total_potential_energy(forces)
     nspe, fpe = forces.potential_energy
     bpe: float = nspe + _bpe
     pe: float = bpe + fpe
-    de: float = bodies.dissipated_energy
+    de: float = bodies.total_dissipated_energy
 
     force_potential_energy_bar_vertices: np.ndarray = np.vstack(
         (_SQUARE_X_COORDINATES, bpe + fpe * _SQUARE_Y_COORDINATES)

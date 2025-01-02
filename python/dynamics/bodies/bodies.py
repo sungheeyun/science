@@ -82,14 +82,14 @@ class Bodies:
     # energy
 
     @property
-    def kinetic_energy(self) -> float:
+    def total_kinetic_energy(self) -> float:
         return sum([body.kinetic_energy for body in self.bodies])
 
-    def potential_energy(self, forces: Any) -> float:
+    def total_potential_energy(self, forces: Any) -> float:
         return sum([body.body_potential_energy(forces) for body in self.bodies])
 
     @property
-    def dissipated_energy(self) -> float:
+    def total_dissipated_energy(self) -> float:
         return sum([body.dissipated_energy for body in self.bodies])
 
     # potential energy solving
