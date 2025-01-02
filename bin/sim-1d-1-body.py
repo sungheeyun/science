@@ -88,8 +88,8 @@ if __name__ == "__main__":
         forces.update_objs()
 
         # Update time display
-        x_loc: float = float(ball.loc[0])
-        v_x_vel: float = float(ball.vel[0])
+        x_loc: float = ball.loc[0].item()
+        v_x_vel: float = ball.vel[0].item()
 
         x_min, x_max = lim_info["x_lim"]
         lim_info["x_lim"] = (min(x_min, x_loc), max(x_max, x_loc))
