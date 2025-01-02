@@ -93,6 +93,7 @@ class Bodies:
         return sum([body.dissipated_energy for body in self.bodies])
 
     # potential energy solving
+
     @property
     def num_coordinates(self) -> int:
         return self._num_coordinates
@@ -106,6 +107,12 @@ class Bodies:
         assert start_idx is not None, body
 
         return tuple(range(start_idx, start_idx + body.loc.size))
+
+    # momentum
+
+    @property
+    def total_momentum(self) -> np.ndarray:
+        return np.vstack([body.momentum for body in self.bodies]).sum(axis=0)
 
     # visualization
 

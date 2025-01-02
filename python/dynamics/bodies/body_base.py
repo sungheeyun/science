@@ -110,3 +110,7 @@ class BodyBase(ObjBase):
     @property
     def dissipated_energy(self) -> float:
         return self._dissipated_energy
+
+    @property
+    def momentum(self) -> np.ndarray:
+        return self.mass * self.vel

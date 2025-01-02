@@ -25,7 +25,7 @@ from freq_used.plotting import get_figure
 
 from dynamics.bodies.bodies import Bodies
 from dynamics.utils import (
-    energy_info,
+    energy_and_momentum_info,
     load_dynamic_system_simulation_setting,
     remove_axes_boundary,
     kinematics_info_text,
@@ -77,7 +77,7 @@ def main(input_file: str) -> None:
     window_width_inch: float | int = simulation_setting["window_width_inch"]  # type:ignore
 
     title_height_inch: float = 0.5
-    info_text_head_height_cm: float = 1.5
+    info_text_head_height_cm: float = 1.7
     kinematics_info_height_cm: float = (
         (2.8 / 5) * len(kinematics_info_text(bodies))
         if simulation_setting["show_kinematics"]
@@ -138,7 +138,7 @@ def main(input_file: str) -> None:
             kinetic_energy_bar_vertices,
             dissipated_energy_bar_vertices,
         ),
-    ) = energy_info(bodies, forces)
+    ) = energy_and_momentum_info(bodies, forces)
     initial_total_energy: float = initial_energies.sum()
 
     force_potential_energy_bar: Polygon = Polygon(
@@ -271,7 +271,7 @@ def main(input_file: str) -> None:
                 kinetic_energy_bar_vertices,
                 dissipated_energy_bar_vertices,
             ),
-        ) = energy_info(bodies, forces)
+        ) = energy_and_momentum_info(bodies, forces)
 
         energy_levels = np.array(
             [

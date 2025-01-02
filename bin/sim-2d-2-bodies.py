@@ -14,7 +14,7 @@ from dynamics.forces.forces import Forces
 from dynamics.forces.gravity_like import GravityLike
 from dynamics.forces.frictional_force_2d import FrictionalForce2D
 from dynamics.forces.spring import Spring
-from dynamics.utils import energy_info
+from dynamics.utils import energy_and_momentum_info
 
 if __name__ == "__main__":
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # Set title and labels
     ax.set_title(
         f"{os.path.splitext(os.path.split(__file__)[1])[0]}"
-        + f" - initial total energy: {energy_info(bodies, forces)[1].sum():.2f}",
+        + f" - initial total energy: {energy_and_momentum_info(bodies, forces)[1].sum():.2f}",
         pad=10,
     )
     ax.set_xlabel("x (m)")
@@ -79,7 +79,7 @@ if __name__ == "__main__":
             + f", xy_1: {ball_1.loc_text}, x_2: {ball_2.loc_text}"
             + f", v_x_1: {ball_1.vel_text}, v_x_2: {ball_2.vel_text}"
             + "\n"
-            + "\n".join(energy_info(bodies, forces)[0])
+            + "\n".join(energy_and_momentum_info(bodies, forces)[0])
         )
 
         return objs

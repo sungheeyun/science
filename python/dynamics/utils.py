@@ -43,7 +43,7 @@ def is_mac_os() -> bool:
     return sys.platform == "darwin"
 
 
-def energy_info(
+def energy_and_momentum_info(
     bodies: Bodies, forces: Forces
 ) -> tuple[list[str], np.ndarray, tuple[np.ndarray, ...]]:
     ke: float = bodies.total_kinetic_energy
@@ -52,6 +52,7 @@ def energy_info(
     bpe: float = nspe + _bpe
     pe: float = bpe + fpe
     de: float = bodies.total_dissipated_energy
+    total_momentum: np.ndarray = bodies.total_momentum
 
     force_potential_energy_bar_vertices: np.ndarray = np.vstack(
         (_SQUARE_X_COORDINATES, bpe + fpe * _SQUARE_Y_COORDINATES)
@@ -79,6 +80,7 @@ def energy_info(
             + f"({fpe:.2f})"
             + r"), $E_\mathrm{d}$ = "
             + f"{de:.2f}",
+            "p = (" + ", ".join([f"{x:.2f}" for x in total_momentum]) + ")",
         ],
         np.array([ke, bpe, fpe, de], float),
         (
@@ -93,9 +95,14 @@ def kinematics_info_text(bodies: Bodies) -> list[str]:
     return [
         "$l$ = ("
         + ", ".join([f"{x:.2f}" for x in body.loc])
-        + "), $v$ = ("
+        + ")"
+        + ", $v$ = ("
         + ", ".join([f"{x:.2f}" for x in body.vel])
-        + f"), $\|v\|$ = {norm(body.vel):.2f}"  # noqa: W605
+        + ")"
+        + f", $\|v\|$ = {norm(body.vel):.2f}"  # noqa: W605
+        + ", $p$ = ("  # noqa: W605
+        + ", ".join([f"{x:.2f}" for x in body.momentum])
+        + ")"
         + r" & $E_\mathrm{d}$ = "
         + f"{body.dissipated_energy:.2f}"
         for body in bodies.bodies
