@@ -92,7 +92,7 @@ as show in \figurename~\ref{fig:spring}.
 The force exerted on $m_1$ is
 \begin{equation}
 \label{eq:force:spring}
-	F_s(x_1;k,l,x_2) = -k (\|x_1-x_2\| - l) v_{2,1}
+	F_\mathrm{s}(x_1;k,l,x_2) = -k (\|x_1-x_2\| - l) v_{2,1}
 	= -k
 	\left(
 	\frac{\|x_1-x_2\| - l}{\|x_1-x_2\|}
@@ -113,7 +113,7 @@ Here $\|x\|$ is the $2$-norm or the size of a vector $x\in\reals^3$ defined by
 	\|x\| = \sqrt{x_1^2+x_2^2+x_3^2}.
 \]
 
-The force exerted on $m_2$ $F_s(x_2;k,l,x_1)$ be can obtained using
+The force exerted on $m_2$ $F_\mathrm{s}(x_2;k,l,x_1)$ be can obtained using
 
 \begin{figure}
 \begin{center}
@@ -168,6 +168,15 @@ The force exerted on $m_2$ $F_s(x_2;k,l,x_1)$ be can obtained using
 \end{figure}
 
 \subsection{Electric-like force}
+\label{subsec:electric-like-force}
+
+(What I mean by electric-like force here is
+actually the force like the electric force,
+but i use the term \emph{electric-like force}
+with abuse of the language uses
+for obvious reason;
+\emph{electric-force-like force}
+sounds awkward.)
 
 We want to model a force like an electric force,
 \ie,
@@ -176,7 +185,7 @@ attract or push away each other.
 The force is exerted on $m_1$ is
 \begin{equation}
 \label{eq:force:eletric-like}
-	F_e(x_1;p,q,x_2)
+	F_\mathrm{e}(x_1;p,q,x_2)
 	= \left(\frac{p}{\|x_1-x_2\|^q} \right) v_{2,1}
 	= \left(\frac{p}{\|x_1-x_2\|^{q+1}} \right) (x_1-x_2)
 \end{equation}
@@ -184,12 +193,14 @@ where $v_{2,1} = x_1-x_2$, $p\in\reals$ and $q\geq1$.
 
 \subsection{Gravitational-like force}
 
+(I coined the term \emph{the gravitational-like force} for the same reason as in \S\ref{subsec:electric-like-force}.)
+
 We model a gravitational-like force that attracts or pulls two point masses,
 the magnitude of which is proportional to the product of both masses raised to the power of $p$ with $p\geq1$
 and inversely proportional to distance raised to the power of $q$ with $q\geq1$ as follows:
 \begin{equation}
 \label{eq:force:gravitational-like}
-	F_g(x_1,m_1,m_2;c,p,q,x_2)
+	F_\mathrm{g}(x_1,m_1,m_2;c,p,q,x_2)
 	= \left(\frac{c m_1^pm_2^p}{\|x_1-x_2\|^q} \right) v_{2,1}
 	= \left(\frac{c m_1^pm_2^p}{\|x_1-x_2\|^{q+1}} \right) (x_1-x_2)
 \end{equation}
@@ -205,7 +216,7 @@ the force exerted on a point mass $m>0$ located at $x\in\reals^3$
 is
 \begin{equation}
 \label{eq:force:gravity-like}
-F_g(m;a) = ma
+F_\mathrm{g}(m;a) = ma
 	\in\reals^3
 \end{equation}
 \ie,
@@ -228,7 +239,7 @@ whose magnitude and direction is constant regardless of their masses, locations,
 as follows:
 \begin{equation}
 \label{eq:force:constant}
-	F_c(m;f) = f
+	F_\mathrm{c}(m;f) = f
 \end{equation}
 
 \subsection{Frictional forces}
@@ -239,7 +250,7 @@ using the coefficient of friction $c>0$ where the force is modeled by
 
 \begin{equation}
 \label{eq:force:frictional}
-F_f(v;c) = -c v
+F_\mathrm{f}(v;c) = -c v
 	\in\reals^3
 \end{equation}
 where $v\in\reals^3$ is the velocity along the surface.
@@ -389,20 +400,8 @@ $v(t) = {dx(t)}/{dt}$.
 
 Now we will show that $\int (-F(t)) dt $ is the same as (the difference of) the potential energies defined for
 the gravity-like force and the spring respectively.
-For the gravity-like force,
-we have
-\begin{equation}
-\label{eq:potential-energy-gravity-like}
-	\int_{t_1}^{t_2} (-F_g(m;a))\cdot dx
-=
-	-m \int_{t_1}^{t_2} a\cdot dx
-=
-	-m (a\cdot x(t_2) - a\cdot x(t_1))
-=
-	E_\mathrm{p,g}(t_2)
-	-
-	E_\mathrm{p,g}(t_1).
-\end{equation}
+\begin{itemize}
+\item
 For the spring,
 %we have
 we re-parameterize the coordinates of $x_1$ using $r\geq0$, $-\pi/2\leq \phi \leq \pi/2$, $0\leq \theta < 2\pi$
@@ -445,8 +444,10 @@ hence
 (x_1-x_2)\cdot dx_1 = r dr
 \]
 and
+(\ref{eq:force:spring})
+implies
 \[
--F_s(x_1;k,l,x_2)\cdot dx_1
+-F_\mathrm{s}(x_1;k,l,x_2)\cdot dx_1
 =
 	k
 	\left(
@@ -460,7 +461,7 @@ and
 \]
 thus
 \begin{equation}
-	\int_{t_1}^{t_2} (-F_s(x_1(t);k,l,x_2))\cdot dx_1(t)
+	\int_{t_1}^{t_2} (-F_\mathrm{s}(x_1(t);k,l,x_2))\cdot dx_1(t)
 =
 	\frac{k}{2}(\|x_1(t_2)-x_2\|-l)^2
 	-
@@ -473,6 +474,79 @@ thus
 assuming only $m_1$ moves while $m_2$ does not.
 We can generalize this argument where two masses $m_1$ and $m_2$
 move simultaneously (though we will not show it here).
+
+\item For the electric-like force,
+we again use the re-parameterization method as above,
+with which (\ref{eq:force:eletric-like}) gives
+\[
+F_\mathrm{e}(x_1;p,q,x_2)\cdot dx_1
+= \frac{p}{r^q} dr
+\]
+hence
+\begin{eqnarray}
+\nonumber
+\lefteqn{
+	\int_{t_1}^{t_2} (-F_\mathrm{e}(x_1(t);k,l,x_2))\cdot dx_1(t)
+}
+\\
+\nonumber
+&=&
+\left\{
+\begin{array}{ll}
+	p/(q-1)\|x_1(t_2)-x_2(t_2)\|^{q-1}
+	-p/(q-1)\|x_1(t_1)-x_2(t_1)\|^{q-1}
+	&
+	\mbox{if } q>1
+	\\
+	p\log(\|x_1(t_1)-x_2(t_1)\|)
+	- p\log(\|x_1(t_2)-x_2(t_2)\|)
+	&
+	\mbox{if } q=1
+\end{array}
+\right.
+\\
+&=&
+	E_\mathrm{p,e}(t_2)
+	-
+	E_\mathrm{p,e}(t_1)
+\end{eqnarray}
+
+\item For the gravitational-like force,
+
+\item
+For the gravity-like force,
+(\ref{eq:force:gravity-like}) implies
+\begin{equation}
+\label{eq:potential-energy-gravity-like}
+	\int_{t_1}^{t_2} (-F_\mathrm{g}(m;a)(t))\cdot dx(t)
+=
+	-m \int_{t_1}^{t_2} a\cdot dx(t)
+=
+	-m (a\cdot x(t_2) - a\cdot x(t_1))
+=
+	E_\mathrm{p,g}(t_2)
+	-
+	E_\mathrm{p,g}(t_1).
+\end{equation}
+
+\item
+Similarly,
+for the constant force,
+(\ref{eq:force:constant}) implies
+\begin{equation}
+\label{eq:potential-energy-gravity-like}
+	\int_{t_1}^{t_2} (-F_\mathrm{g}(m;f)(t))\cdot dx(t)
+=
+	- \int_{t_1}^{t_2} f\cdot dx(t)
+=
+	- (f\cdot x(t_2) - f\cdot x(t_1))
+=
+	E_\mathrm{p,c}(t_2)
+	-
+	E_\mathrm{p,c}(t_1).
+\end{equation}
+
+\end{itemize}
 
 Therefore for both spring force and gravity-like force,
 (\ref{eq:energy:conserve:1})
@@ -508,7 +582,7 @@ for a dynamic system satisfying the conditions mentioned above.
 The energy dissipated due to a frictional force exerted on a mass
 can be calculated by
 \begin{equation}
-\int F_f(v(t);c) \cdot dx(t)
+\int F_\mathrm{f}(v(t);c) \cdot dx(t)
 \end{equation}
 
 \subsection{Conservation of energy with frictional forces}

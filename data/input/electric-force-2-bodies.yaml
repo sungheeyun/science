@@ -2,20 +2,22 @@ name: "electric-like force between 2 bodies"
 
 simulation_setting:
   minimize_energy: false
-  sim_time_step: 5e-4
-  sim_time_step_const_vel: 5e-4
+#  sim_time_step: 5e-4
+#  sim_time_step_const_vel: 5e-4
+
+  show_kinematics: true
 
   upper_left_window_corner_coordinate: [10, 200]
   window_width_inch: 8
   xlim: [-3, 3]
   ylim: [-3, 3]
   grid: true
-  real_world_time_interval: 0.005
+  real_world_time_interval: 0.040
   num_frames: 10000
   frame_interval: 40
 
 #  save_to_gif: true
-  gif_filepath: electric-like0force-between-2-bodies.gif
+  gif_filepath: electric-like-force-between-2-bodies.gif
   num_frames_saved: 250
   num_frames_per_sec: 25
 
@@ -25,17 +27,17 @@ point_mass:
   position: [-2, 1]
   velocity: [1, 2]
 - id: ball_2
-  mass: 2
+  mass: 1
   position: [2, -1]
   velocity: [-1, -2]
 
-spring:
-  - spring_constant: 10
-    natural_length: 2
-    bodies: [ball_1, ball_2]
+#spring:
+#  - spring_constant: 10
+#    natural_length: 2
+#    bodies: [ball_1, ball_2]
 
 electric_force_like:
-- coefficient: -233.147425268811286
+- coefficient: -100
   exponent: 1.5
   threshold: .1
   bodies: [ball_1, ball_2]

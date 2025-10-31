@@ -2,8 +2,8 @@ name: "electric-like force between 2 bodies and springs"
 
 simulation_setting:
   minimize_energy: false
-  sim_time_step: 1e-3
-  sim_time_step_const_vel: 1e-3
+#  sim_time_step: 1e-3 / 10
+#  sim_time_step_const_vel: 1e-3 / 10
 
   upper_left_window_corner_coordinate: [10, 200]
   window_width_inch: 8
